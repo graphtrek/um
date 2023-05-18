@@ -1,0 +1,16 @@
+spring:
+  thymeleaf:
+    cache: false
+  jpa:
+    open-in-view: false
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+  datasource:
+    generate-unique-name: false
+    name: um
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
