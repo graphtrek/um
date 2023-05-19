@@ -21,8 +21,8 @@ public class UmApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(UserRepository users, PasswordEncoder encoder) {
 		return args -> {
-			users.save(new User("user",encoder.encode("password"),"ROLE_USER"));
-			users.save(new User("admin",encoder.encode("password"),"ROLE_USER,ROLE_ADMIN"));
+			users.save(new User("user", "user@user.com", encoder.encode("password"),"ROLE_USER"));
+			users.save(new User("admin","admin@admin.com",encoder.encode("password"),"ROLE_USER,ROLE_ADMIN"));
 		};
 	}
 
