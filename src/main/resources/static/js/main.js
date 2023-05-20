@@ -15,7 +15,7 @@
       } else {
         $("#navbar li a").each(function () {
           var href = $(this).attr('href');
-          if (path.length > 2 && path.indexOf(href) !== -1) {
+          if (href.length > 1 && path.indexOf(href) !== -1) {
             $(this).addClass('active');
           }
         });
