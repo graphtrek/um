@@ -15,7 +15,20 @@ $(function () {
             },
             statusCode: {
                 200: function(response) {
-                    alert("HTTP 200 OK response:" + response);
+                    console.log("HTTP 200 OK response:", response);
+                    var users = JSON.parse(response);
+                    var data = [];
+                    for (var i=0; i<users.length; i++) {
+                        const user = users[i];
+                        data.push([user.username,user.email]);
+                    };
+                    $("#usersTable").DataTable({
+                        data: data,
+                        columns: [
+                            { title: 'username' },
+                            { title: 'email' }
+                        ]
+                    });
                 },
                 401: function() {
                     $("#errorMessage").append("HTTP 401 UnAuthenticated");
