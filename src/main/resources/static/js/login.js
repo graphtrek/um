@@ -14,11 +14,13 @@ $( "#loginFormButton" ).on( "click", function() {
         //     password: password
         // },
         statusCode: {
-            200: function(response) {
-                alert("The username or password were correct granted token:" + response);
+            200: function(token) {
+                alert("The username or password were correct granted token:" + token);
+                localStorage.setItem("token", token);
             },
             401: function() {
                 $("#errorMessage").append("HTTP 401 The username or password were not correct. Try again.");
+                localStorage.removeItem("token");
             }
         },
         success: function (response) {

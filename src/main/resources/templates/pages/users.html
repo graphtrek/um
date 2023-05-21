@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}">
+
+<th:block layout:fragment="content">
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div id="errorMessage" class="alert alert-danger hidden" role="alert">
+                </div>
+            </div>
+            <div class="row">
+           </div>
+        </div>
+
+    </section>
+    <!-- End Hero -->
+</th:block>
+
+<th:block layout:fragment="page_scripts">
+    <script type="text/javascript" th:src="@{/js/users.js}"></script>
+</th:block>
+
+</html>

@@ -65,6 +65,7 @@ $(function () {
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 400 UnAuthenticated");
+                        localStorage.removeItem("token");
                     }
                 },
                 success: function (response) {
