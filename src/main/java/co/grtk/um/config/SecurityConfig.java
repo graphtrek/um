@@ -35,11 +35,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
         private static final String[] WHITE_LIST_URLS = {
                 "/",
+                "/login",
+                "/register",
                 "/assets/**",
                 "/js/**",
                 "/token",
-                "/login",
-                "/register"
+                "/api/registerUserForm",
+                "/api/registerUser"
         };
 
         private final RsaKeyProperties jwtConfigProperties;
@@ -50,7 +52,8 @@ public class SecurityConfig {
                 return http
                         .csrf(csrf -> csrf.ignoringRequestMatchers(
                                 AntPathRequestMatcher.antMatcher("/h2-console/**"),
-                                AntPathRequestMatcher.antMatcher("/token"))
+                                AntPathRequestMatcher.antMatcher("/token"),
+                                AntPathRequestMatcher.antMatcher("/api/**"))
                         )
                         .authorizeHttpRequests( auth -> auth
                                 .requestMatchers(WHITE_LIST_URLS).permitAll()

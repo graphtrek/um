@@ -30,13 +30,6 @@ public class TemplatesController {
         return LOGIN_INDEX;
     }
 
-    @PostMapping("login")
-    String postLogin(@ModelAttribute("LoginCredentials") LoginCredentials loginCredentials, Model model) {
-        log.info("POST /login LoginCredentials: {}", loginCredentials);
-        model.addAttribute("loginCredentials", loginCredentials);
-        return LOGIN_INDEX;
-    }
-
     @GetMapping(value = "/register")
     public String getRegister(Model model) {
         model.addAttribute("title", "");

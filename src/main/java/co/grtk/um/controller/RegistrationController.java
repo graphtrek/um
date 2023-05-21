@@ -16,9 +16,9 @@ import static co.grtk.um.controller.TemplatesController.REGISTER_INDEX;
 @Controller
 public class RegistrationController {
     private final RegistrationService registrationService;
-    @PostMapping("/register")
-    String postLogin(@ModelAttribute("User") User user, Model model) {
-        log.info("POST /register user: {}", user);
+    @PostMapping("/api/registerUserForm")
+    String postRegister(@ModelAttribute("User") User user, Model model) {
+        log.info("POST /api/registerUserForm user: {}", user);
         registrationService.registerUser(user);
         return REGISTER_INDEX;
     }
