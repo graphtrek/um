@@ -1,7 +1,6 @@
 package co.grtk.um.controller;
 
 import co.grtk.um.dto.UserDTO;
-import co.grtk.um.model.User;
 import co.grtk.um.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
