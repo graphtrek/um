@@ -8,19 +8,15 @@
     <section id="hero" class="hero d-flex align-items-center">
         <div class="container">
             <div class="row">
-                <div class=" alert alert-danger" role="alert">
-                    A simple danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+                <div id="errorMessage" class="alert alert-danger hidden" role="alert">
                 </div>
             </div>
-
-
             <div class="row">
-
                 <div class="col-md-6 d-flex flex-column justify-content-center">
                     <p class="text-center h3 fw-bold">Sign up</p>
                     <div>
-                        <form name="registrationForm" class="mx-1 mx-md-4"
-                              th:method="POST" th:action="@{/register}" th:object="${user}">
+                        <form id="registerUserForm" name="registerUserForm" class="mx-1 mx-md-4"
+                              th:method="POST" th:action="@{/api/registerUserForm}" th:object="${user}">
 
                             <div class="d-flex flex-row align-items-center mb-4">
                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>

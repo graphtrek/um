@@ -1,5 +1,6 @@
 package co.grtk.um.service;
 
+import co.grtk.um.exception.UserAlreadyExistsException;
 import co.grtk.um.model.User;
 import co.grtk.um.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,10 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void registerUser(User user) {
+    public void registerUser(User user) throws UserAlreadyExistsException {
+        userRepository.findByEmail(user.getEmail()).ifPresent(user1 -> {
+            throw new UserAlreadyExistsException("User Already Exists");
+        });
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
         userRepository.save(user);
