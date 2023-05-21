@@ -13,27 +13,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Slf4j
 @Controller
 public class TemplatesController {
-
     static final String VIEW_INDEX = "pages/index";
     static final String LOGIN_INDEX = "pages/login";
-
     static final String REGISTER_INDEX = "pages/register";
+
     @GetMapping(value = "/")
     public String getHome(Model model) {
-        model.addAttribute("title", "");
+        model.addAttribute("page", "home");
         return VIEW_INDEX;
     }
 
     @GetMapping(value = "/login")
     public String getLogin(Model model) {
-        model.addAttribute("title", "");
+        model.addAttribute("page", "login");
         return LOGIN_INDEX;
     }
 
     @GetMapping(value = "/register")
     public String getRegister(Model model) {
-        model.addAttribute("title", "");
+        model.addAttribute("page", "register");
         return REGISTER_INDEX;
     }
-
 }

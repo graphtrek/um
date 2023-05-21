@@ -23,5 +23,4 @@ public class AuthRestController {
         LOG.info("Token granted: {}", token);
         return token;
     }
-
 }
