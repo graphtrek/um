@@ -61,17 +61,21 @@ $(function () {
                         console.log("200 OK response:", response);
                     },
                     400: function() {
-                        alert("User Already Exists");
+                        $("#errorMessage").append("HTTP 400 User Already Exists");
                     },
                     401: function() {
-                        alert("UnAuthenticated");
+                        $("#errorMessage").append("HTTP 400 UnAuthenticated");
                     }
                 },
                 success: function (response) {
-                    consloe.log("Success response:", response);
+                    console.log("Success response:", response);
+                    $("#errorMessage").empty();
+                    $("#errorMessage").hide();
                 },
                 error: function(response) {
-                    alert("Error response:" + response);
+                    console.log("Error response:", response);
+                    $("#errorMessage").empty();
+                    $("#errorMessage").show();
                 }
             });
             e.preventDefault();
