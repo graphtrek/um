@@ -16,7 +16,7 @@ import java.security.Principal;
 public class UsersRestController {
     public final UserRepository userRepository;
 
-    @PreAuthorize("hasAuthority('SCOPE_read')")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/api/users")
     public Iterable<User> getUsers(Principal principal) {
         return userRepository.findAll();

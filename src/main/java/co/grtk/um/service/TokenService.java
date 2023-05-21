@@ -1,5 +1,6 @@
 package co.grtk.um.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -11,6 +12,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class TokenService {
 
@@ -32,6 +34,7 @@ public class TokenService {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
+        log.info("token scope:{}", scope);
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 

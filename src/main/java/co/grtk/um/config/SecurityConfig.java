@@ -37,6 +37,7 @@ public class SecurityConfig {
                 "/",
                 "/login",
                 "/register",
+                "/users",
                 "/assets/**",
                 "/js/**",
                 "/token",
@@ -68,7 +69,7 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                         )
-                        .httpBasic(Customizer.withDefaults()) //
+                        .httpBasic(Customizer.withDefaults())
                         .build();
         }
 

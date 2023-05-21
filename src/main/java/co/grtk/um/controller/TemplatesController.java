@@ -2,7 +2,6 @@ package co.grtk.um.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,25 +18,27 @@ public class TemplatesController {
     @GetMapping(value = "/")
     public String getHome(Model model) {
         model.addAttribute("page", "home");
+        model.addAttribute("secured", false);
         return VIEW_INDEX;
     }
 
     @GetMapping(value = "/login")
     public String getLogin(Model model) {
         model.addAttribute("page", "login");
+        model.addAttribute("secured", false);
         return LOGIN_INDEX;
     }
 
     @GetMapping(value = "/register")
     public String getRegister(Model model) {
         model.addAttribute("page", "register");
+        model.addAttribute("secured", false);
         return REGISTER_INDEX;
     }
-    @PreAuthorize("hasAuthority('SCOPE_read')")
     @GetMapping("/users")
-    public String getUsers(Principal principal, Model model) {
+    public String getUsers(Model model) {
         model.addAttribute("page", "users");
-        model.addAttribute("userName", principal.getName());
+        model.addAttribute("secured", true);
         return VIEW_USERS;
     }
 }

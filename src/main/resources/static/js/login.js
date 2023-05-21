@@ -9,14 +9,11 @@ $( "#loginFormButton" ).on( "click", function() {
         headers: {
             "Authorization": "Basic " + btoa(username+":"+password)
         },
-        // data: {
-        //     username: username,
-        //     password: password
-        // },
         statusCode: {
             200: function(token) {
-                alert("The username or password were correct granted token:" + token);
+                console.log("The username or password were correct granted token:", token);
                 localStorage.setItem("token", token);
+                location.href = "/users";
             },
             401: function() {
                 $("#errorMessage").append("HTTP 401 The username or password were not correct. Try again.");

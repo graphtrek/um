@@ -1,6 +1,6 @@
 (function() {
   "use strict";
-  console.log('main .js loaded');
+  console.log('main.js loaded');
   $(document).ready(function(){
 
     function setNav() {
@@ -23,6 +23,12 @@
     }
 
     setNav();
+
+    $( "#logout" ).on( "click", function(event) {
+      localStorage.removeItem("token");
+      location.href = "/";
+      event.preventDefault();
+    });
 
   });
 })();
