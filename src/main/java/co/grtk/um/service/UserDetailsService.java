@@ -5,7 +5,7 @@ import co.grtk.um.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import co.grtk.um.dao.SecurityUser;
+import co.grtk.um.dto.SecurityUser;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {

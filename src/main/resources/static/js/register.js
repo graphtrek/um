@@ -59,6 +59,7 @@ $(function () {
                 statusCode: {
                     200: function(response) {
                         console.log("200 OK response:", response);
+                        location.href = "/login";
                     },
                     400: function() {
                         $("#errorMessage").append("HTTP 400 User Already Exists");

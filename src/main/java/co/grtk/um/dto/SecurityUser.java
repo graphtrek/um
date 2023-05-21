@@ -1,4 +1,4 @@
-package co.grtk.um.dao;
+package co.grtk.um.dto;
 
 import co.grtk.um.model.User;
 import org.springframework.security.core.GrantedAuthority;

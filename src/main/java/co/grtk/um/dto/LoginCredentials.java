@@ -1,4 +1,4 @@
-package co.grtk.um.dao;
+package co.grtk.um.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
