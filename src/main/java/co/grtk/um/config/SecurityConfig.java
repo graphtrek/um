@@ -1,7 +1,7 @@
 package co.grtk.um.config;
 
 
-import co.grtk.um.service.UserDetailsService;
+import co.grtk.um.service.UmUserDetailsService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -46,7 +46,7 @@ public class SecurityConfig {
         };
 
         private final RsaKeyProperties jwtConfigProperties;
-        private final UserDetailsService myUserDetailsService;
+        private final UmUserDetailsService userDetailsService;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -62,10 +62,10 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                         )
                         .headers(headers -> headers.frameOptions().disable())
-                        .userDetailsService(myUserDetailsService)
+                        .userDetailsService(userDetailsService)
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                        .exceptionHandling((ex) -> ex
+                        .exceptionHandling(ex -> ex
                                 .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                         )

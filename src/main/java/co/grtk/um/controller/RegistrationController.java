@@ -23,4 +23,5 @@ public class RegistrationController {
         return REGISTER_INDEX;
     }
 
+
 }
