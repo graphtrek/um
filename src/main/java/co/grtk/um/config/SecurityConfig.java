@@ -42,7 +42,8 @@ public class SecurityConfig {
                 "/js/**",
                 "/token",
                 "/api/registerUserForm",
-                "/api/registerUser"
+                "/api/registerUser",
+                "/api/validateToken"
         };
 
         private final RsaKeyProperties jwtConfigProperties;

@@ -1,12 +1,12 @@
 package co.grtk.um.service;
 
 
+import co.grtk.um.dto.SecurityUser;
 import co.grtk.um.model.UserStatus;
 import co.grtk.um.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import co.grtk.um.dto.SecurityUser;
 
 @Service
 public class UmUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
@@ -24,4 +24,5 @@ public class UmUserDetailsService implements org.springframework.security.core.u
                 .map(SecurityUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found email: " + email));
     }
+
 }

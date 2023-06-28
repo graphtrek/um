@@ -1,5 +1,6 @@
 package co.grtk.um.service;
 
+import co.grtk.um.exception.InvalidVerificationTokenException;
 import co.grtk.um.exception.UserAlreadyExistsException;
 import co.grtk.um.model.User;
 import co.grtk.um.model.UserStatus;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 @Slf4j
@@ -34,6 +36,23 @@ public class RegistrationService {
 
         var verificationToken = new VerificationToken(UUID.randomUUID().toString(), user);
         tokenRepository.save(verificationToken);
+        log.info("Saved verificationToken: {}", verificationToken.getToken());
+    }
+
+    @Transactional
+    public void validateToken(String token) {
+        log.info("Received token: {}", token);
+        VerificationToken verificationToken = tokenRepository.findByToken(token);
+        if(verificationToken == null){
+            throw new InvalidVerificationTokenException("Invalid verification token:" + token);
+        }
+        User user = verificationToken.getUser();
+        Calendar calendar = Calendar.getInstance();
+        if ((verificationToken.getExpirationTime().getTime()-calendar.getTime().getTime())<= 0){
+            throw new InvalidVerificationTokenException("Invalid verification token:" + token);
+        }
+        user.setUserStatus(UserStatus.REGISTERED);
+        userRepository.save(user);
     }
 
 }

@@ -5,9 +5,9 @@ import co.grtk.um.service.RegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @Slf4j
@@ -15,10 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationRestController {
     private final RegistrationService registrationService;
     private final HttpServletRequest servletRequest;
+
+
     @PostMapping("/api/registerUser")
-    public void register(@RequestBody User user) {
-        log.info("Application url: {}", applicationUrl(servletRequest));
+    public ResponseEntity<String> register(@RequestBody User user) {
+        log.info("registerUser application url: {}", applicationUrl(servletRequest));
         registrationService.registerUser(user);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @GetMapping("/api/validateToken")
+    public ResponseEntity<String> validateToken(@RequestParam("token") String token){
+        log.info("verifyEmail token {}", token);
+        registrationService.validateToken(token);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     public String applicationUrl(HttpServletRequest request) {
