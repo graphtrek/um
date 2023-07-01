@@ -1,0 +1,1 @@
+console.log('forgot-password.js loaded');

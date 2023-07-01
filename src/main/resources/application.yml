@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: imre.tatai@graphtrek.co
-    password: Almafa1...
+    password: qrodxpqgbfohjnof
     properties:
       mail:
         smtp:

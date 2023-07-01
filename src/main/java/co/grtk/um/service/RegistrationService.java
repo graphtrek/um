@@ -25,8 +25,8 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void registerUser(User user) throws UserAlreadyExistsException {
-        userRepository.findByEmailAndUserStatus(user.getEmail(), UserStatus.REGISTERED).ifPresent(user1 -> {
+    public VerificationToken registerUser(User user) throws UserAlreadyExistsException {
+        userRepository.findByEmail(user.getEmail()).ifPresent(user1 -> {
             throw new UserAlreadyExistsException("User Already Exists");
         });
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -37,6 +37,7 @@ public class RegistrationService {
         var verificationToken = new VerificationToken(UUID.randomUUID().toString(), user);
         tokenRepository.save(verificationToken);
         log.info("Saved verificationToken: {}", verificationToken.getToken());
+        return verificationToken;
     }
 
     @Transactional
@@ -54,5 +55,15 @@ public class RegistrationService {
         user.setUserStatus(UserStatus.REGISTERED);
         userRepository.save(user);
     }
+
+    @Transactional
+    public VerificationToken generateNewVerificationToken(String oldToken) {
+        VerificationToken verificationToken = tokenRepository.findByToken(oldToken);
+        var verificationTokenTime = new VerificationToken();
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationToken.setExpirationTime(verificationTokenTime.getTokenExpirationTime());
+        return tokenRepository.save(verificationToken);
+    }
+
 
 }

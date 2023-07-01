@@ -6,8 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import static co.grtk.um.controller.TemplatesController.REGISTER_INDEX;
 
@@ -16,12 +20,18 @@ import static co.grtk.um.controller.TemplatesController.REGISTER_INDEX;
 @Controller
 public class RegistrationController {
     private final RegistrationService registrationService;
+
     @PostMapping("/api/registerUserForm")
     String postRegister(@ModelAttribute("User") User user, Model model) {
         log.info("POST /api/registerUserForm user: {}", user);
         registrationService.registerUser(user);
         return REGISTER_INDEX;
     }
-
+    @GetMapping("/api/validateToken")
+    public ModelAndView validateToken(@RequestParam("token") String token, ModelMap model){
+        log.info("validateToken token {}", token);
+        registrationService.validateToken(token);
+        return new ModelAndView("redirect:/login" , model);
+    }
 
 }

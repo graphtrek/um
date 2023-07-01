@@ -13,6 +13,7 @@ public class TemplatesController {
     static final String LOGIN_INDEX = "pages/login";
     static final String REGISTER_INDEX = "pages/register";
     static final String VIEW_USERS = "pages/users";
+    static final String VIEW_FORGOT_PASSWORD = "pages/forgot-password";
     static final String SECURED = "secured";
 
     @GetMapping(value = "/")
@@ -35,6 +36,14 @@ public class TemplatesController {
         model.addAttribute(SECURED, false);
         return REGISTER_INDEX;
     }
+
+    @GetMapping(value = "/forgot-password")
+    public String getForgotPassword(Model model) {
+        model.addAttribute("page", "forgot-password");
+        model.addAttribute(SECURED, false);
+        return VIEW_FORGOT_PASSWORD;
+    }
+
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute("page", "users");

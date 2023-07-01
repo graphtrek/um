@@ -67,7 +67,12 @@ $(function () {
                     401: function() {
                         $("#errorMessage").append("HTTP 400 UnAuthenticated");
                         localStorage.removeItem("token");
+                    },
+                    500: function() {
+                        $("#errorMessage").append("HTTP 500 application error");
+                        localStorage.removeItem("token");
                     }
+
                 },
                 success: function (response) {
                     console.log("Success response:", response);
