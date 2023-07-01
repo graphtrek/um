@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: classpath:env.properties
   thymeleaf:
     cache: false
   jpa:
@@ -13,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: imre.tatai@graphtrek.co
-    password: qrodxpqgbfohjnof
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
