@@ -26,6 +26,7 @@ public class TemplatesController {
     @GetMapping(value = "/login")
     public String getLogin(Model model) {
         model.addAttribute("page", "login");
+        model.addAttribute("error", false);
         model.addAttribute(SECURED, false);
         return LOGIN_INDEX;
     }

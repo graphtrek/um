@@ -7,13 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
+import static co.grtk.um.controller.TemplatesController.LOGIN_INDEX;
 import static co.grtk.um.controller.TemplatesController.REGISTER_INDEX;
 
 @AllArgsConstructor
@@ -23,22 +21,25 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/api/registerUserForm")
-    String postRegister(@ModelAttribute("User") User user, Model model) {
+    public String postRegister(@ModelAttribute("User") User user, Model model) {
         log.info("POST /api/registerUserForm user: {}", user);
         registrationService.registerUser(user);
         return REGISTER_INDEX;
     }
     @GetMapping("/api/validateToken")
-    public ModelAndView validateToken(@RequestParam("token") String token, ModelMap model){
+    public String validateToken(@ModelAttribute("token") String token, Model model){
         log.info("validateToken token {}", token);
-        model.put("secured",false);
-        model.put("token", token);
+        model.addAttribute("page", "login");
+        model.addAttribute("secured",false);
+        model.addAttribute("token", token);
+        model.addAttribute("error", false);
         try {
             registrationService.validateToken(token);
         } catch (InvalidVerificationTokenException e) {
-            model.put("error", true);
+            log.error("InvalidVerificationToken :" + token);
+            model.addAttribute("error", true);
         }
-        return new ModelAndView("redirect:/login" , model);
+        return LOGIN_INDEX;
     }
 
 }
