@@ -47,9 +47,9 @@ $(function () {
         }
 
         $("#registerUserForm").on("submit", function (e) {
-
             const user = convertFormToJSON(this);
             $("#submitButton").attr("disabled", true);
+            $("#submitButtonLoading").removeAttr("hidden");
             $.ajax({
                 type: "POST",
                 dataType : "text",
@@ -57,18 +57,17 @@ $(function () {
                 url: "/api/registerUser",
                 data: JSON.stringify(user),
                 statusCode: {
-                    200: function(response) {
-                        console.log("200 OK response:", response);
-
-                        $("#successMessage").append("Check your emails. " +
-                            '<a href="/api/resendToken?token='+response+'" class="link-danger">Resend email</a></p>');
+                    200: function(verificationToken) {
+                        console.log("200 OK response:", verificationToken);
+                        localStorage.setItem("verificationToken", verificationToken);
+                        //$("#resendEmail").attr("href","/api/resendToken?token=" + response);
                         //location.href = "/login";
                     },
                     400: function() {
                         $("#errorMessage").append("HTTP 400 User Already Exists");
                     },
                     401: function() {
-                        $("#errorMessage").append("HTTP 400 UnAuthenticated");
+                        $("#errorMessage").append("HTTP 401 UnAuthenticated");
                         localStorage.removeItem("token");
                     },
                     500: function() {
@@ -81,20 +80,75 @@ $(function () {
                     console.log("Success response:", response);
                     $("#errorMessage").empty();
                     $("#errorMessage").hide();
-                    $("#successMessage").empty();
                     $("#successMessage").show();
+                    localStorage.removeItem("verificationToken");
+                    $("#submitButtonLoading").attr("hidden","hidden");
                 },
                 error: function(response) {
                     console.log("Error response:", response);
                     $("#submitButton").attr("disabled", false);
                     $("#errorMessage").empty();
                     $("#errorMessage").show();
-                    $("#successMessage").empty();
                     $("#successMessage").hide();
+                    localStorage.removeItem("verificationToken");
+                    $("#submitButtonLoading").attr("hidden","hidden");
                 }
             });
             e.preventDefault();
         });
+
+        $("#resendEmail").on("click", function (e) {
+            $("#submitButton").attr("disabled", true);
+            $("#submitButtonLoading").removeAttr("hidden");
+            $.ajax({
+                type: "GET",
+                dataType : "text",
+                contentType: "application/json; charset=utf-8",
+                url: "/api/resendToken",
+                data: {
+                    token: localStorage.getItem("verificationToken")
+                },
+                statusCode: {
+                    200: function(verificationToken) {
+                        console.log("200 OK response:", verificationToken);
+                        localStorage.setItem("verificationToken", verificationToken);
+                        //$("#resendEmail").attr("href","/api/resendToken?token=" + response);
+                        //location.href = "/login";
+                    },
+                    400: function() {
+                        $("#errorMessage").append("HTTP 400 User Already Exists");
+                    },
+                    401: function() {
+                        $("#errorMessage").append("HTTP 401 UnAuthenticated");
+                        localStorage.removeItem("token");
+                    },
+                    500: function() {
+                        $("#errorMessage").append("HTTP 500 application error");
+                        localStorage.removeItem("token");
+                    }
+
+                },
+                success: function (response) {
+                    console.log("Success response:", response);
+                    $("#errorMessage").empty();
+                    $("#errorMessage").hide();
+                    $("#successMessage").show();
+                    localStorage.removeItem("verificationToken");
+                    $("#submitButtonLoading").attr("hidden","hidden");
+                },
+                error: function(response) {
+                    console.log("Error response:", response);
+                    $("#submitButton").attr("disabled", false);
+                    $("#errorMessage").empty();
+                    $("#errorMessage").show();
+                    $("#successMessage").hide();
+                    localStorage.removeItem("verificationToken");
+                    $("#submitButtonLoading").attr("hidden","hidden");
+                }
+            });
+            e.preventDefault();
+        });
+
 
     });
 });

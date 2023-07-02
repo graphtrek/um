@@ -10,7 +10,8 @@
             <div class="row">
                 <div id="errorMessage" class="alert alert-danger hidden" role="alert">
                 </div>
-                <div id="successMessage" class="alert alert-info hidden" role="alert">
+                <div id="successMessage" class="alert alert-info hidden" role="link">
+                    <p> Check your emails. <a id="resendEmail" href="#" class="link-danger">Resend email</a></p>
                 </div>
             </div>
             <div class="row">
@@ -57,7 +58,10 @@
                             </div>
 
                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                <button id="submitButton" type="submit" name="submitButton" class="btn btn-primary btn-lg">Register</button>
+                                <button  id="submitButton" type="submit" name="submitButton" class="btn btn-primary btn-lg">
+                                    <span id="submitButtonLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                                    Register
+                                </button>
                             </div>
 
                         </form>
