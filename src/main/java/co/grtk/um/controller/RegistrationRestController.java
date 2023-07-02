@@ -21,15 +21,29 @@ public class RegistrationRestController {
     private final HttpServletRequest servletRequest;
     private final ApplicationEventPublisher publisher;
 
-
     @PostMapping("/api/registerUser")
     public ResponseEntity<String> register(@RequestBody User user,final HttpServletRequest request) {
         log.info("registerUser application url: {}", applicationUrl(servletRequest));
         VerificationToken verificationToken = registrationService.registerUser(user);
-        publisher.publishEvent(new MailEvent(MailType.REGISTRATION, user,applicationUrl(request) + "/api/validateToken?token="+verificationToken.getToken()));
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        publisher.publishEvent(
+                new MailEvent(
+                        MailType.REGISTRATION,
+                        verificationToken.getUser(),
+                        applicationUrl(request) + "/api/validateToken?token="+verificationToken.getToken()));
+        return new ResponseEntity<>(verificationToken.getToken(), HttpStatus.OK);
     }
 
+    @GetMapping("/api/resendToken")
+    public ResponseEntity<String> resendToken(@RequestParam("token") String oldToken,final HttpServletRequest request) {
+        log.info("resendToken application url: {}", applicationUrl(servletRequest));
+        VerificationToken verificationToken = registrationService.generateNewVerificationToken(oldToken);
+        publisher.publishEvent(
+                new MailEvent(
+                    MailType.RESEND_TOKEN,
+                    verificationToken.getUser(),
+                        applicationUrl(request) + "/api/validateToken?token="+verificationToken.getToken()));
+        return new ResponseEntity<>(verificationToken.getToken(), HttpStatus.OK);
+    }
 
     public String applicationUrl(HttpServletRequest request) {
         return request.getScheme() + "://"+request.getServerName()+":"

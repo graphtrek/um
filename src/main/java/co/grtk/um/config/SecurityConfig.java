@@ -35,6 +35,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
         private static final String[] WHITE_LIST_URLS = {
                 "/",
+                "/favicon.ico",
                 "/login",
                 "/register",
                 "/forgot-password",
@@ -42,6 +43,7 @@ public class SecurityConfig {
                 "/assets/**",
                 "/js/**",
                 "/token",
+                "/api/resendToken",
                 "/api/registerUserForm",
                 "/api/registerUser",
                 "/api/validateToken"
