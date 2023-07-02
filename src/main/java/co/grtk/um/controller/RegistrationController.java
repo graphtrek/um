@@ -1,5 +1,6 @@
 package co.grtk.um.controller;
 
+import co.grtk.um.exception.InvalidVerificationTokenException;
 import co.grtk.um.model.User;
 import co.grtk.um.service.RegistrationService;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,13 @@ public class RegistrationController {
     @GetMapping("/api/validateToken")
     public ModelAndView validateToken(@RequestParam("token") String token, ModelMap model){
         log.info("validateToken token {}", token);
-        registrationService.validateToken(token);
+        model.put("secured",false);
+        model.put("token", token);
+        try {
+            registrationService.validateToken(token);
+        } catch (InvalidVerificationTokenException e) {
+            model.put("error", true);
+        }
         return new ModelAndView("redirect:/login" , model);
     }
 
