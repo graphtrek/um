@@ -18,7 +18,7 @@ public class MailEventListener implements ApplicationListener<MailEvent> {
     @Override
     public void onApplicationEvent(MailEvent event) throws RuntimeException {
         try {
-            if(MailType.REGISTRATION.equals(event.getMailType()) || MailType.RESEND_TOKEN.equals(event.getMailType()))
+            if(MailType.REGISTRATION.equals(event.getMailType()))
                 mailService.sendVerificationEmail(event.getUser(), event.getApplicationUrl());
             else if(MailType.PASSWORD_RESET.equals(event.getMailType()))
                 mailService.sendPasswordResetVerificationEmail(event.getUser(), event.getApplicationUrl());

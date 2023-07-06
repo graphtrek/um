@@ -48,7 +48,8 @@ public class SecurityConfig {
                 "/api/registerUser",
                 "/api/validateToken",
                 "/api/forgotPassword",
-                "/api/resendPasswordResetToken"
+                "/api/resendPasswordResetToken",
+                "/api/validatePasswordResetToken"
         };
 
         private final RsaKeyProperties jwtConfigProperties;

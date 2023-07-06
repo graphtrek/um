@@ -42,7 +42,7 @@ public class RegistrationRestController {
         VerificationToken verificationToken = verificationTokenService.generateNewVerificationToken(oldToken);
         publisher.publishEvent(
                 new MailEvent(
-                    MailType.RESEND_TOKEN,
+                    MailType.REGISTRATION,
                     verificationToken.getUser(),
                         applicationUrl(request) + "/api/validateToken?token="+verificationToken.getToken()));
         return new ResponseEntity<>(verificationToken.getToken(), HttpStatus.OK);
