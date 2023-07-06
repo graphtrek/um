@@ -68,11 +68,11 @@ $(function () {
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("verificationToken");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("verificationToken");
                     }
 
                 },
@@ -120,11 +120,11 @@ $(function () {
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("verificationToken");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("verificationToken");
                     }
 
                 },

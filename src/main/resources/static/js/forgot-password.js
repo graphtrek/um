@@ -13,24 +13,22 @@ $(function () {
                 dataType : "text",
                 contentType: "application/json; charset=utf-8",
                 url: "/api/forgotPassword",
-                data: {
-                    email: email
-                },
+                data: email,
                 statusCode: {
                     200: function(passwordResetToken) {
                         console.log("200 OK response:", passwordResetToken);
                         localStorage.setItem("passwordResetToken", passwordResetToken);
                     },
                     400: function() {
-                        $("#errorMessage").append("HTTP 400 User Already Exists");
+                        $("#errorMessage").append("HTTP 400 User Not Found");
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("passwordResetToken");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("passwordResetToken");
                     }
 
                 },
@@ -74,15 +72,15 @@ $(function () {
                         //location.href = "/login";
                     },
                     400: function() {
-                        $("#errorMessage").append("HTTP 400 User Already Exists");
+                        $("#errorMessage").append("HTTP 400 User Not Found");
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("passwordResetToken");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");
-                        localStorage.removeItem("token");
+                        localStorage.removeItem("passwordResetToken");
                     }
 
                 },
