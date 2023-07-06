@@ -3,6 +3,7 @@ package co.grtk.um.controller;
 import co.grtk.um.exception.InvalidVerificationTokenException;
 import co.grtk.um.model.User;
 import co.grtk.um.service.RegistrationService;
+import co.grtk.um.service.VerificationTokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import static co.grtk.um.controller.TemplatesController.REGISTER_INDEX;
 @Controller
 public class RegistrationController {
     private final RegistrationService registrationService;
+    private final VerificationTokenService verificationTokenService;
 
     @PostMapping("/api/registerUserForm")
     public String postRegister(@ModelAttribute("User") User user, Model model) {
@@ -34,7 +36,7 @@ public class RegistrationController {
         model.addAttribute("token", token);
         model.addAttribute("error", false);
         try {
-            registrationService.validateToken(token);
+            verificationTokenService.validateToken(token);
         } catch (InvalidVerificationTokenException e) {
             log.error("InvalidVerificationToken :" + token);
             model.addAttribute("error", true);

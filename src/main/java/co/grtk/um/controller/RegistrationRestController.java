@@ -5,6 +5,7 @@ import co.grtk.um.listener.MailType;
 import co.grtk.um.model.User;
 import co.grtk.um.model.VerificationToken;
 import co.grtk.um.service.RegistrationService;
+import co.grtk.um.service.VerificationTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import static co.grtk.um.controller.TemplatesController.applicationUrl;
 @RestController
 public class RegistrationRestController {
     private final RegistrationService registrationService;
+    private final VerificationTokenService verificationTokenService;
     private final ApplicationEventPublisher publisher;
 
     @PostMapping("/api/registerUser")
@@ -37,7 +39,7 @@ public class RegistrationRestController {
     @GetMapping("/api/resendToken")
     public ResponseEntity<String> resendToken(@RequestParam("token") String oldToken,final HttpServletRequest request) {
         log.info("resendToken application url: {}", applicationUrl(request));
-        VerificationToken verificationToken = registrationService.generateNewVerificationToken(oldToken);
+        VerificationToken verificationToken = verificationTokenService.generateNewVerificationToken(oldToken);
         publisher.publishEvent(
                 new MailEvent(
                     MailType.RESEND_TOKEN,
