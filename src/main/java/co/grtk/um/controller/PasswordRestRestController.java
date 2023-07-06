@@ -34,7 +34,8 @@ public class PasswordRestRestController {
     @GetMapping("/api/resendPasswordResetToken")
     public ResponseEntity<String> resendPasswordToken(@RequestParam("token") String oldToken, final HttpServletRequest request) {
         log.info("resendPasswordResetToken oldToken: {} applicationUrl: {}",oldToken, applicationUrl(request));
-        return new ResponseEntity<>("passwordResetToken", HttpStatus.OK);
+        PasswordResetToken passwordRestToken = passwordResetTokenService.generateNewPasswordResetTokenFor(oldToken);
+        return new ResponseEntity<>(passwordRestToken.getToken(), HttpStatus.OK);
     }
 
 }
