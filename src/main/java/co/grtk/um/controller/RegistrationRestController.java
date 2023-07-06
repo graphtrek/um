@@ -13,17 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static co.grtk.um.controller.TemplatesController.applicationUrl;
+
 @AllArgsConstructor
 @Slf4j
 @RestController
 public class RegistrationRestController {
     private final RegistrationService registrationService;
-    private final HttpServletRequest servletRequest;
     private final ApplicationEventPublisher publisher;
 
     @PostMapping("/api/registerUser")
     public ResponseEntity<String> register(@RequestBody User user,final HttpServletRequest request) {
-        log.info("registerUser application url: {}", applicationUrl(servletRequest));
+        log.info("registerUser application url: {}", applicationUrl(request));
         VerificationToken verificationToken = registrationService.registerUser(user);
         publisher.publishEvent(
                 new MailEvent(
@@ -35,7 +36,7 @@ public class RegistrationRestController {
 
     @GetMapping("/api/resendToken")
     public ResponseEntity<String> resendToken(@RequestParam("token") String oldToken,final HttpServletRequest request) {
-        log.info("resendToken application url: {}", applicationUrl(servletRequest));
+        log.info("resendToken application url: {}", applicationUrl(request));
         VerificationToken verificationToken = registrationService.generateNewVerificationToken(oldToken);
         publisher.publishEvent(
                 new MailEvent(
@@ -45,8 +46,4 @@ public class RegistrationRestController {
         return new ResponseEntity<>(verificationToken.getToken(), HttpStatus.OK);
     }
 
-    public String applicationUrl(HttpServletRequest request) {
-        return request.getScheme() + "://"+request.getServerName()+":"
-                +request.getServerPort()+request.getContextPath();
-    }
 }

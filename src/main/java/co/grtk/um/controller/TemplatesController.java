@@ -1,6 +1,7 @@
 package co.grtk.um.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,4 +52,10 @@ public class TemplatesController {
         model.addAttribute(SECURED, true);
         return VIEW_USERS;
     }
+
+    public static String applicationUrl(HttpServletRequest request) {
+        return request.getScheme() + "://"+request.getServerName()+":"
+                +request.getServerPort()+request.getContextPath();
+    }
+
 }

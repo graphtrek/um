@@ -1,14 +1,21 @@
 package co.grtk.um.config;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@Configuration
+import static lombok.AccessLevel.PRIVATE;
+
+@Getter
+@Setter
+@FieldDefaults(level = PRIVATE)
+
+@Component
+@ConfigurationProperties(prefix = "application")
 public class ApplicationConfig {
 
-    @Bean
-    public ModelMapper getModelMapper() {
-        return new ModelMapper();
-    }
+    public String name;
+
 }
