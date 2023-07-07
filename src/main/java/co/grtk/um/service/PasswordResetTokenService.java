@@ -3,7 +3,6 @@ package co.grtk.um.service;
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.model.PasswordResetToken;
 import co.grtk.um.model.User;
-import co.grtk.um.model.VerificationToken;
 import co.grtk.um.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class PasswordResetTokenService {
         passwordResetToken.setExpirationTime(passwordResetTokenTime.getTokenExpirationTime());
         return passwordResetTokenRepository.save(passwordResetToken);
     }
-    public PasswordResetToken validatePasswordResetToken(String passwordResetToken) {
+    public void validatePasswordResetToken(String passwordResetToken) {
         PasswordResetToken passwordToken =
                 passwordResetTokenRepository.
                         findByToken(passwordResetToken).
@@ -44,7 +43,6 @@ public class PasswordResetTokenService {
         if ((passwordToken.getExpirationTime().getTime()-calendar.getTime().getTime())<= 0){
             throw new InvalidPasswordResetTokenException("PasswordRestToken expired");
         }
-        return passwordToken;
     }
     public User findUserByPasswordToken(String passwordResetToken) {
         return passwordResetTokenRepository.

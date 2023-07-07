@@ -58,8 +58,9 @@ public class RegistrationController {
         } catch (InvalidPasswordResetTokenException e) {
             log.error("InvalidPasswordResetTokenException :" + token);
             model.addAttribute("error", true);
+            return VIEW_FORGOT_PASSWORD;
         }
-        return VIEW_FORGOT_PASSWORD;
+        return VIEW_CHANGE_PASSWORD;
     }
 
 }
