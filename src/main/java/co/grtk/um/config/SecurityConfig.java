@@ -1,7 +1,7 @@
 package co.grtk.um.config;
 
 
-import co.grtk.um.service.UserDetailsService;
+import co.grtk.um.service.UmUserDetailsService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -15,7 +15,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,18 +35,27 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
         private static final String[] WHITE_LIST_URLS = {
                 "/",
+                "/favicon.ico",
                 "/login",
                 "/register",
+                "/forgot-password",
+                "/change-password",
                 "/users",
                 "/assets/**",
                 "/js/**",
                 "/token",
+                "/api/resendToken",
                 "/api/registerUserForm",
-                "/api/registerUser"
+                "/api/registerUser",
+                "/api/validateToken",
+                "/api/forgotPassword",
+                "/api/resendPasswordResetToken",
+                "/api/validatePasswordResetToken",
+                "/api/resetPassword"
         };
 
         private final RsaKeyProperties jwtConfigProperties;
-        private final UserDetailsService myUserDetailsService;
+        private final UmUserDetailsService userDetailsService;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -61,11 +70,11 @@ public class SecurityConfig {
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                                 .anyRequest().authenticated()
                         )
-                        .headers(headers -> headers.frameOptions().disable())
-                        .userDetailsService(myUserDetailsService)
+                        .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                        .userDetailsService(userDetailsService)
                         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                        .exceptionHandling((ex) -> ex
+                        .oauth2ResourceServer((oauth2 -> oauth2.jwt(Customizer.withDefaults())))
+                        .exceptionHandling(ex -> ex
                                 .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                                 .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                         )

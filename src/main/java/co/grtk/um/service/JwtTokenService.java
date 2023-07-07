@@ -3,6 +3,7 @@ package co.grtk.um.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -14,11 +15,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class TokenService {
+public class JwtTokenService {
 
     private final JwtEncoder encoder;
+    private final JwsHeader jwsHeader = JwsHeader.with(() -> "RS256").type("JWT").build();
 
-    public TokenService(JwtEncoder encoder) {
+    public JwtTokenService(JwtEncoder encoder) {
         this.encoder = encoder;
     }
 
@@ -34,8 +36,9 @@ public class TokenService {
                 .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
+
         log.info("token scope:{}", scope);
-        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        return this.encoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
     }
 
 }

@@ -2,77 +2,33 @@ $(function () {
     "use strict";
     $(document).ready(function(){
 
-        console.log('register.js loaded');
+        console.log('forgot-password.js loaded');
 
-        var password = document.getElementById("registrationFormPassword")
-            , confirm_password = document.getElementById("registrationFormRepeatPassword");
-
-        function validatePassword(){
-            if(password.value !== confirm_password.value) {
-                confirm_password.setCustomValidity("Passwords Don't Match");
-            } else {
-                confirm_password.setCustomValidity('');
-            }
-        }
-
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;
-
-        // $("#registerUserForm").on("submit", function (e) {
-        //
-        //     var dataString = $(this).serialize();
-        //
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/registerUserForm",
-        //         data: dataString,
-        //         success: function () {
-        //            alert("Success");
-        //         },
-        //         error: function() {
-        //             alert("Error");
-        //         }
-        //     });
-        //     e.preventDefault();
-        // });
-
-        function convertFormToJSON(form) {
-            const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
-            const json = {};
-            $.each(array, function () {
-                if(this.name !== "_csrf")
-                    json[this.name] = this.value || "";
-            });
-            return json;
-        }
-
-        $("#registerUserForm").on("submit", function (e) {
-            const user = convertFormToJSON(this);
+        $( "#forgotPasswordForm" ).on("submit", function (e) {
+            const email = $("#email").val();
             $("#submitButton").attr("disabled", true);
             $("#submitButtonLoading").removeAttr("hidden");
             $.ajax({
                 type: "POST",
                 dataType : "text",
                 contentType: "application/json; charset=utf-8",
-                url: "/api/registerUser",
-                data: JSON.stringify(user),
+                url: "/api/forgotPassword",
+                data: email,
                 statusCode: {
-                    200: function(verificationToken) {
-                        console.log("200 OK response:", verificationToken);
-                        localStorage.setItem("verificationToken", verificationToken);
-                        //$("#resendEmail").attr("href","/api/resendToken?token=" + response);
-                        //location.href = "/login";
+                    200: function(passwordResetToken) {
+                        console.log("200 OK response:", passwordResetToken);
+                        localStorage.setItem("passwordResetToken", passwordResetToken);
                     },
                     400: function() {
-                        $("#errorMessage").append("HTTP 400 User Already Exists");
+                        $("#errorMessage").append("HTTP 400 User Not Found");
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                        localStorage.removeItem("verificationToken");
+                        localStorage.removeItem("passwordResetToken");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");
-                        localStorage.removeItem("verificationToken");
+                        localStorage.removeItem("passwordResetToken");
                     }
 
                 },
@@ -81,7 +37,7 @@ $(function () {
                     $("#errorMessage").empty();
                     $("#errorMessage").hide();
                     $("#successMessage").show();
-                    localStorage.removeItem("verificationToken");
+                    localStorage.removeItem("passwordResetToken");
                     $("#submitButtonLoading").attr("hidden","hidden");
                 },
                 error: function(response) {
@@ -90,7 +46,7 @@ $(function () {
                     $("#errorMessage").empty();
                     $("#errorMessage").show();
                     $("#successMessage").hide();
-                    localStorage.removeItem("verificationToken");
+                    localStorage.removeItem("passwordResetToken");
                     $("#submitButtonLoading").attr("hidden","hidden");
                 }
             });
@@ -104,27 +60,27 @@ $(function () {
                 type: "GET",
                 dataType : "text",
                 contentType: "application/json; charset=utf-8",
-                url: "/api/resendToken",
+                url: "/api/resendPasswordResetToken",
                 data: {
-                    token: localStorage.getItem("verificationToken")
+                    token: localStorage.getItem("passwordResetToken")
                 },
                 statusCode: {
-                    200: function(verificationToken) {
-                        console.log("200 OK response:", verificationToken);
-                        localStorage.setItem("verificationToken", verificationToken);
+                    200: function(passwordResetToken) {
+                        console.log("200 OK response:", passwordResetToken);
+                        localStorage.setItem("passwordResetToken", passwordResetToken);
                         //$("#resendEmail").attr("href","/api/resendToken?token=" + response);
                         //location.href = "/login";
                     },
                     400: function() {
-                        $("#errorMessage").append("HTTP 400 User Already Exists");
+                        $("#errorMessage").append("HTTP 400 User Not Found");
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                        localStorage.removeItem("verificationToken");
+                        localStorage.removeItem("passwordResetToken");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");
-                        localStorage.removeItem("verificationToken");
+                        localStorage.removeItem("passwordResetToken");
                     }
 
                 },
@@ -133,7 +89,7 @@ $(function () {
                     $("#errorMessage").empty();
                     $("#errorMessage").hide();
                     $("#successMessage").show();
-                    localStorage.removeItem("verificationToken");
+                    localStorage.removeItem("passwordResetToken");
                     $("#submitButtonLoading").attr("hidden","hidden");
                 },
                 error: function(response) {
@@ -142,13 +98,12 @@ $(function () {
                     $("#errorMessage").empty();
                     $("#errorMessage").show();
                     $("#successMessage").hide();
-                    localStorage.removeItem("verificationToken");
+                    localStorage.removeItem("passwordResetToken");
                     $("#submitButtonLoading").attr("hidden","hidden");
                 }
             });
             e.preventDefault();
         });
-
 
     });
 });

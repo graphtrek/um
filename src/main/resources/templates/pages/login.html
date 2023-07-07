@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:with="http://www.thymeleaf.org/extras/with"
       layout:decorate="~{layout}">
 
 <th:block layout:fragment="content">
     <section id="hero" class="hero d-flex align-items-center">
         <div class="container">
             <div class="row">
-                <div id="errorMessage" class="alert alert-danger hidden" role="alert">
+                <div th:if="${error} == false" id="errorMessage" class="alert alert-danger hidden" role="alert">
+                </div>
+                <div th:if="${error} == true" id="errorMessage" class="alert alert-danger" role="alert">
+                    Invalid verification token
                 </div>
             </div>
             <div class="row">
@@ -39,12 +41,12 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <!-- Checkbox -->
                             <div class="form-check mb-0">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="loginFormRememberMe" />
+                                <input class="form-check-input me-2" type="checkbox" name="remember-me" value="" id="loginFormRememberMe" />
                                 <label class="form-check-label" for="loginFormRememberMe">
                                     Remember me
                                 </label>
                             </div>
-                            <a href="#!" class="">Forgot password?</a>
+                            <a href="/forgot-password" class="">Forgot password?</a>
                         </div>
 
                         <div class="text-center text-lg-start mt-4 pt-2">
