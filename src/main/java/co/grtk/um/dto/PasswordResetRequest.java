@@ -10,6 +10,6 @@ import lombok.ToString;
 @ToString
 public class PasswordResetRequest {
     private String token;
-    private String oldPassword;
-    private String newPassword;
+    private String password;
+    private String repeatPassword;
 }

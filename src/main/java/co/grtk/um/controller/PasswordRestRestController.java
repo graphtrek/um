@@ -6,7 +6,6 @@ import co.grtk.um.listener.MailEvent;
 import co.grtk.um.listener.MailType;
 import co.grtk.um.model.PasswordResetToken;
 import co.grtk.um.model.User;
-import co.grtk.um.model.VerificationToken;
 import co.grtk.um.repository.UserRepository;
 import co.grtk.um.service.PasswordResetTokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,7 +56,7 @@ public class PasswordRestRestController {
     @PostMapping("/api/resetPassword")
     public ResponseEntity<String> register(@RequestBody PasswordResetRequest passwordResetRequest, final HttpServletRequest request) {
         log.info("resetPassword application passwordResetRequest: {}", passwordResetRequest);
-
+        passwordResetTokenService.validatePasswordResetToken(passwordResetRequest.getToken());
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }
