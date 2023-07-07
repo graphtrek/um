@@ -38,4 +38,9 @@ public class RegistrationService {
         return verificationToken;
     }
 
+    @Transactional
+    public void resetPassword(User theUser, String newPassword) {
+        theUser.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(theUser);
+    }
 }

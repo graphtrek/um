@@ -8,6 +8,7 @@ import co.grtk.um.model.PasswordResetToken;
 import co.grtk.um.model.User;
 import co.grtk.um.repository.UserRepository;
 import co.grtk.um.service.PasswordResetTokenService;
+import co.grtk.um.service.RegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class PasswordRestRestController {
     private final UserRepository userRepository;
     private final PasswordResetTokenService passwordResetTokenService;
     private final ApplicationEventPublisher publisher;
+    private final RegistrationService registrationService;
     @PostMapping("/api/forgotPassword")
     public ResponseEntity<String> passwordResetEmail(@RequestBody String email, HttpServletRequest request) {
         log.info("forgotPassword email: {} applicationUrl: {}", email, applicationUrl(request));
@@ -57,6 +59,8 @@ public class PasswordRestRestController {
     public ResponseEntity<String> register(@RequestBody PasswordResetRequest passwordResetRequest, final HttpServletRequest request) {
         log.info("resetPassword application passwordResetRequest: {}", passwordResetRequest);
         passwordResetTokenService.validatePasswordResetToken(passwordResetRequest.getToken());
+        User user = passwordResetTokenService.findPasswordResetToken(passwordResetRequest.getToken()).getUser();
+        registrationService.resetPassword(user,passwordResetRequest.getPassword());
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }
