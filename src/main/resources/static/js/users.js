@@ -21,19 +21,44 @@ $(function () {
                     for (var i=0; i<users.length; i++) {
                         const user = users[i];
                         data.push([
+                            user.id,
                             user.name,
                             user.email,
                             user.roles
                         ]);
                     }
-                    $("#usersTable").DataTable({
+                    let table = $("#usersTable").DataTable({
+                        fixedHeader: true,
                         data: data,
+                        columnDefs: [
+                            {
+                                target: 0,
+                                visible: false,
+                                searchable: false
+                            },
+                        ],
                         columns: [
+                            { title: 'id' },
                             { title: 'name' },
                             { title: 'email' },
                             { title: 'roles' },
                         ]
                     });
+
+                    table.on('click', 'tbody tr', function (e) {
+                        let data = table.row(this).data();
+                        console.log('You clicked on ' + data[0] + "'s row");
+
+                        $("#tableSection").hide();
+                        $("#formSection").show();
+                    });
+
+                    $("#userFormButton").on( "click", function(e) {
+                        $("#formSection").hide();
+                        $("#tableSection").show();
+                        e.preventDefault();
+                    });
+
                 },
                 401: function() {
                     $("#errorMessage").append("HTTP 401 UnAuthenticated");

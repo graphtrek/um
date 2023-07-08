@@ -15,7 +15,13 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"email"}))
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames={"email"}),
+        indexes = {
+                @Index(name = "name_idx", columnList = "name"),
+                @Index(name = "status_idx", columnList = "status")
+        }
+)
 public class Principal {
 
     @Id
