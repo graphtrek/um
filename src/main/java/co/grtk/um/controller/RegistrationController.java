@@ -2,7 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.exception.InvalidVerificationTokenException;
-import co.grtk.um.model.User;
+import co.grtk.um.model.Principal;
 import co.grtk.um.service.PasswordResetTokenService;
 import co.grtk.um.service.RegistrationService;
 import co.grtk.um.service.VerificationTokenService;
@@ -23,11 +23,11 @@ public class RegistrationController {
     private final RegistrationService registrationService;
     private final VerificationTokenService verificationTokenService;
     private final PasswordResetTokenService passwordResetTokenService;
-
+    private static final String ERROR = "error";
     @PostMapping("/api/registerUserForm")
-    public String postRegister(@ModelAttribute("User") User user, Model model) {
-        log.info("POST /api/registerUserForm user: {}", user);
-        registrationService.registerUser(user);
+    public String postRegister(@ModelAttribute("User") Principal principal, Model model) {
+        log.info("POST /api/registerUserForm user: {}", principal);
+        registrationService.registerUser(principal);
         return REGISTER_INDEX;
     }
     @GetMapping("/api/validateToken")
@@ -36,12 +36,12 @@ public class RegistrationController {
         model.addAttribute("page", "login");
         model.addAttribute("secured",false);
         model.addAttribute("token", token);
-        model.addAttribute("error", false);
+        model.addAttribute(ERROR, false);
         try {
             verificationTokenService.validateToken(token);
         } catch (InvalidVerificationTokenException e) {
             log.error("InvalidVerificationToken :" + token);
-            model.addAttribute("error", true);
+            model.addAttribute(ERROR, true);
         }
         return LOGIN_INDEX;
     }
@@ -52,12 +52,12 @@ public class RegistrationController {
         model.addAttribute("page", "login");
         model.addAttribute("secured",false);
         model.addAttribute("token", token);
-        model.addAttribute("error", false);
+        model.addAttribute(ERROR, false);
         try {
             passwordResetTokenService.validatePasswordResetToken(token);
         } catch (InvalidPasswordResetTokenException e) {
             log.error("InvalidPasswordResetTokenException :" + token);
-            model.addAttribute("error", true);
+            model.addAttribute(ERROR, true);
             return VIEW_FORGOT_PASSWORD;
         }
         return VIEW_CHANGE_PASSWORD;

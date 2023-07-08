@@ -2,26 +2,26 @@ package co.grtk.um.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
-@Table(name = "VERIFICATION_TOKEN", uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
-public class VerificationToken {
+@Table(name = "JWT_TOKEN")
+public class JwtToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition = "TEXT")
     private String token;
     private Instant expirationTime;
+    private String scope;
+    private String subject;
     private static final int EXPIRATION_TIME = 5;
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
@@ -32,15 +32,11 @@ public class VerificationToken {
     @JoinColumn(name = "principal_id")
     private Principal principal;
 
-    public VerificationToken(String token, Principal principal) {
-        super();
-        this.token = token;
+    public JwtToken(Principal principal, String scope, Instant expirationTime, String token) {
         this.principal = principal;
-        this.expirationTime = this.getTokenExpirationTime();
-    }
-
-    public Instant getTokenExpirationTime() {
-        Instant now = Instant.now();
-        return now.plus(EXPIRATION_TIME, ChronoUnit.MINUTES);
+        this.subject = principal.getEmail();
+        this.scope= scope;
+        this.expirationTime =expirationTime;
+        this.token = token;
     }
 }

@@ -2,13 +2,13 @@ package co.grtk.um.service;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.model.PasswordResetToken;
-import co.grtk.um.model.User;
+import co.grtk.um.model.Principal;
 import co.grtk.um.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -18,8 +18,8 @@ public class PasswordResetTokenService {
 
     private static final String TOKEN_NOT_FOUND= "PasswordRestToken Not Found";
     @Transactional
-    public PasswordResetToken createPasswordResetTokenForUser(User user, String passwordToken) {
-        PasswordResetToken passwordRestToken = new PasswordResetToken(passwordToken, user);
+    public PasswordResetToken createPasswordResetTokenForUser(Principal principal, String passwordToken) {
+        PasswordResetToken passwordRestToken = new PasswordResetToken(passwordToken, principal);
         return passwordResetTokenRepository.save(passwordRestToken);
     }
 
@@ -39,15 +39,15 @@ public class PasswordResetTokenService {
                         findByToken(passwordResetToken).
                         orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND));
 
-        Calendar calendar = Calendar.getInstance();
-        if ((passwordToken.getExpirationTime().getTime()-calendar.getTime().getTime())<= 0){
+        Instant now = Instant.now();
+        if (now.isAfter(passwordToken.getExpirationTime())){
             throw new InvalidPasswordResetTokenException("PasswordRestToken expired");
         }
     }
-    public User findUserByPasswordToken(String passwordResetToken) {
+    public Principal findUserByPasswordToken(String passwordResetToken) {
         return passwordResetTokenRepository.
                 findByToken(passwordResetToken).
-                orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND)).getUser();
+                orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND)).getPrincipal();
     }
 
     public PasswordResetToken findPasswordResetToken(String token){

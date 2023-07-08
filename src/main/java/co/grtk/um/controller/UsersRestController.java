@@ -1,7 +1,7 @@
 package co.grtk.um.controller;
 
 import co.grtk.um.dto.UserDTO;
-import co.grtk.um.repository.UserRepository;
+import co.grtk.um.repository.PrincipalRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,11 +15,11 @@ import java.security.Principal;
 @AllArgsConstructor
 @RestController
 public class UsersRestController {
-    public final UserRepository userRepository;
+    public final PrincipalRepository principalRepository;
     public final ModelMapper modelMapper;
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @GetMapping("/api/users")
     public UserDTO[] getUsers(Principal principal) {
-        return modelMapper.map(userRepository.findAll(),UserDTO[].class);
+        return modelMapper.map(principalRepository.findAll(),UserDTO[].class);
     }
 }

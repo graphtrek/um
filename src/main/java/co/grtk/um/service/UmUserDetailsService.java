@@ -2,8 +2,8 @@ package co.grtk.um.service;
 
 
 import co.grtk.um.dto.SecurityUser;
-import co.grtk.um.model.UserStatus;
-import co.grtk.um.repository.UserRepository;
+import co.grtk.um.model.PrincipalStatus;
+import co.grtk.um.repository.PrincipalRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UmUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final PrincipalRepository principalRepository;
 
-    public UmUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UmUserDetailsService(PrincipalRepository principalRepository) {
+        this.principalRepository = principalRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository
-                .findByEmailAndUserStatus(email, UserStatus.REGISTERED)
+        return principalRepository
+                .findByEmailAndStatus(email, PrincipalStatus.REGISTERED)
                 .map(SecurityUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found email: " + email));
     }

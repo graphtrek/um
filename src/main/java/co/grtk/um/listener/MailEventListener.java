@@ -19,12 +19,10 @@ public class MailEventListener implements ApplicationListener<MailEvent> {
     public void onApplicationEvent(MailEvent event) throws RuntimeException {
         try {
             if(MailType.REGISTRATION.equals(event.getMailType()))
-                mailService.sendVerificationEmail(event.getUser(), event.getApplicationUrl());
+                mailService.sendVerificationEmail(event.getPrincipal(), event.getApplicationUrl());
             else if(MailType.PASSWORD_RESET.equals(event.getMailType()))
-                mailService.sendPasswordResetVerificationEmail(event.getUser(), event.getApplicationUrl());
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
+                mailService.sendPasswordResetVerificationEmail(event.getPrincipal(), event.getApplicationUrl());
+        } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }

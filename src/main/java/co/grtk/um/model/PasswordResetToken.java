@@ -4,43 +4,43 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "PASSWORD_RESET_TOKEN", uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
 public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long token_id;
+    private Long id;
     private String token;
-    private Date expirationTime;
+    private Instant expirationTime;
     private static final int EXPIRATION_TIME = 10;
+    @CreationTimestamp(source = SourceType.DB)
+    private Instant createdAt;
+    @UpdateTimestamp(source = SourceType.DB)
+    private Instant updatedAt;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "principal_id")
+    private Principal principal;
 
-    public PasswordResetToken(String token, User user) {
+    public PasswordResetToken(String token, Principal principal) {
         super();
         this.token = token;
-        this.user = user;
+        this.principal = principal;
         this.expirationTime = this.getTokenExpirationTime();
     }
 
-    public PasswordResetToken(String token) {
-        super();
-        this.token = token;
-        this.expirationTime = this.getTokenExpirationTime();
-    }
-
-    public Date getTokenExpirationTime() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, EXPIRATION_TIME);
-        return new Date(calendar.getTime().getTime());
+    public Instant getTokenExpirationTime() {
+        Instant now = Instant.now();
+        return now.plus(EXPIRATION_TIME, ChronoUnit.MINUTES);
     }
 }

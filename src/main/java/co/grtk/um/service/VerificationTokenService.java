@@ -1,16 +1,17 @@
 package co.grtk.um.service;
 
 import co.grtk.um.exception.InvalidVerificationTokenException;
-import co.grtk.um.model.User;
-import co.grtk.um.model.UserStatus;
+import co.grtk.um.model.Principal;
+import co.grtk.um.model.PrincipalStatus;
 import co.grtk.um.model.VerificationToken;
-import co.grtk.um.repository.UserRepository;
+import co.grtk.um.repository.PrincipalRepository;
 import co.grtk.um.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Service
 public class VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
-    private final UserRepository userRepository;
+    private final PrincipalRepository principalRepository;
 
     @Transactional
     public void validateToken(String token) {
@@ -28,13 +29,14 @@ public class VerificationTokenService {
         if(verificationToken == null){
             throw new InvalidVerificationTokenException("Invalid verification token:" + token);
         }
-        User user = verificationToken.getUser();
-        Calendar calendar = Calendar.getInstance();
-        if ((verificationToken.getExpirationTime().getTime()-calendar.getTime().getTime())<= 0){
+        Principal principal = verificationToken.getPrincipal();
+
+        Instant now = Instant.now();
+        if (now.isAfter(verificationToken.getTokenExpirationTime())){
             throw new InvalidVerificationTokenException("Invalid verification token:" + token);
         }
-        user.setUserStatus(UserStatus.REGISTERED);
-        userRepository.save(user);
+        principal.setStatus(PrincipalStatus.REGISTERED);
+        principalRepository.save(principal);
     }
 
     @Transactional

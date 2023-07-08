@@ -18,9 +18,9 @@ public class AuthRestController {
 
     @PostMapping("/token")
     public String token(Authentication authentication) {
-        LOG.info("Token requested for user: '{}'", authentication.getName());
+        LOG.info("Token requested for user:{}", authentication.getName());
         String token = jwtTokenService.generateToken(authentication);
-        LOG.info("Token granted: {}", token);
+        LOG.info("Token granted for user:{} token:{}",authentication.getName(), token);
         return token;
     }
 }

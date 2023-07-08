@@ -1,9 +1,9 @@
 package co.grtk.um;
 
 import co.grtk.um.config.RsaKeyProperties;
-import co.grtk.um.model.User;
-import co.grtk.um.model.UserStatus;
-import co.grtk.um.repository.UserRepository;
+import co.grtk.um.model.Principal;
+import co.grtk.um.model.PrincipalStatus;
+import co.grtk.um.repository.PrincipalRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,10 +22,10 @@ public class UmApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(UserRepository users, PasswordEncoder encoder) {
+	CommandLineRunner commandLineRunner(PrincipalRepository users, PasswordEncoder encoder) {
 		return args -> {
-			users.save(new User("user", "user@user.com", encoder.encode("password"),"ROLE_USER", UserStatus.REGISTERED));
-			users.save(new User("admin","admin@admin.com",encoder.encode("password"),"ROLE_USER,ROLE_ADMIN", UserStatus.REGISTERED));
+			users.save(new Principal("user", "user@graphtrek.co", encoder.encode("G1rafhus"),"ROLE_USER", PrincipalStatus.REGISTERED));
+			users.save(new Principal("admin","admin@graphtrek.co",encoder.encode("G1rafhus"),"ROLE_USER,ROLE_ADMIN", PrincipalStatus.REGISTERED));
 		};
 	}
 
