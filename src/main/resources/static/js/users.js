@@ -20,13 +20,18 @@ $(function () {
                     var data = [];
                     for (var i=0; i<users.length; i++) {
                         const user = users[i];
-                        data.push([user.username,user.email]);
-                    };
+                        data.push([
+                            user.name,
+                            user.email,
+                            user.roles
+                        ]);
+                    }
                     $("#usersTable").DataTable({
                         data: data,
                         columns: [
-                            { title: 'username' },
-                            { title: 'email' }
+                            { title: 'name' },
+                            { title: 'email' },
+                            { title: 'roles' },
                         ]
                     });
                 },

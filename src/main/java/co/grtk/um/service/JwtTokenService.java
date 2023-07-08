@@ -4,6 +4,7 @@ import co.grtk.um.model.JwtToken;
 import co.grtk.um.model.Principal;
 import co.grtk.um.repository.JwtTokenRepository;
 import co.grtk.um.repository.PrincipalRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class JwtTokenService {
 
 
     @Transactional
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, HttpServletRequest request) {
         Principal principal = principalRepository
                 .findByEmail(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found email: " + authentication.getName()));
@@ -50,7 +51,12 @@ public class JwtTokenService {
                 .build();
 
         String token = this.encoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
-        JwtToken jwtToken = new JwtToken(principal,scope,expiration,token);
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+
+        JwtToken jwtToken = new JwtToken(principal,scope,expiration,token, ipAddress);
         jwtTokenRepository.save(jwtToken);
 
         log.info("generated JwtToken email:{} scope:{}", authentication.getName(), scope);

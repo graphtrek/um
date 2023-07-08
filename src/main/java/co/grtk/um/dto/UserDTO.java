@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class UserDTO {
-    public String username;
-    public String email;
+    private String name;
+    private String email;
+    private String roles;
 }

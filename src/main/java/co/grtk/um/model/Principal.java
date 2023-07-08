@@ -15,7 +15,7 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Table(name = "PRINCIPAL", uniqueConstraints = @UniqueConstraint(columnNames={"email"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"email"}))
 public class Principal {
 
     @Id
@@ -34,12 +34,13 @@ public class Principal {
     private Instant updatedAt;
     public Principal() {}
 
-    public Principal(String name, String email, String password, String roles, PrincipalStatus principalStatus) {
+    public Principal(String name, String email, String password, String roles, PrincipalStatus principalStatus, String secret) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;
         this.status = principalStatus;
+        this.secret = secret;
     }
 
 

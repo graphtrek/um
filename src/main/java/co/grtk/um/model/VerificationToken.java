@@ -15,14 +15,14 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "VERIFICATION_TOKEN", uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
 public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
     private Instant expirationTime;
-    private static final int EXPIRATION_TIME = 5;
+    private static final int EXPIRATION_TIME = 10;
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
     @UpdateTimestamp(source = SourceType.DB)

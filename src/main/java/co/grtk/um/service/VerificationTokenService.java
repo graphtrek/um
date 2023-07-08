@@ -1,5 +1,6 @@
 package co.grtk.um.service;
 
+import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.exception.InvalidVerificationTokenException;
 import co.grtk.um.model.Principal;
 import co.grtk.um.model.PrincipalStatus;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Calendar;
 import java.util.UUID;
 
 @Slf4j
@@ -25,10 +25,11 @@ public class VerificationTokenService {
     @Transactional
     public void validateToken(String token) {
         log.info("Received token: {}", token);
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
-        if(verificationToken == null){
-            throw new InvalidVerificationTokenException("Invalid verification token:" + token);
-        }
+        VerificationToken verificationToken =
+                verificationTokenRepository.findByToken(token).
+                        orElseThrow(() ->
+                                new InvalidPasswordResetTokenException("Invalid verification token:" + token));
+
         Principal principal = verificationToken.getPrincipal();
 
         Instant now = Instant.now();
@@ -41,7 +42,9 @@ public class VerificationTokenService {
 
     @Transactional
     public VerificationToken generateNewVerificationToken(String oldToken) {
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(oldToken);
+        VerificationToken verificationToken =
+                verificationTokenRepository.findByToken(oldToken).
+                        orElseThrow(() -> new InvalidPasswordResetTokenException("Invalid verification oldToken:" + oldToken));
         var verificationTokenTime = new VerificationToken();
         verificationToken.setToken(UUID.randomUUID().toString());
         verificationToken.setExpirationTime(verificationTokenTime.getTokenExpirationTime());
