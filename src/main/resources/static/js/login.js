@@ -16,7 +16,7 @@ $(function () {
                     200: function(token) {
                         console.log("The username or password were correct granted token:", token);
                         localStorage.setItem("token", token);
-                        location.href = "/users";
+                        location.href = "/profile";
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 The username or password were not correct. Try again.");

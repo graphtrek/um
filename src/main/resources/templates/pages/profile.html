@@ -12,10 +12,7 @@
                 <div id="errorMessage" class="alert alert-danger hidden" role="alert">
                 </div>
             </div>
-            <div class="row display" id="tableSection">
-                <table id="usersTable" class="display"></table>
-            </div>
-            <div class="row hidden" id="formSection">
+            <div class="row" id="formSection">
                 <form class="row g-3" id="userForm">
                     <input type="hidden" name="id" id="id">
                     <div class="col-md-6">
@@ -76,7 +73,7 @@
 </th:block>
 
 <th:block layout:fragment="page_scripts">
-    <script type="text/javascript" th:src="@{/js/users.js}"></script>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
 </th:block>
 
 </html>

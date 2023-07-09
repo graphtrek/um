@@ -5,6 +5,7 @@ $(function () {
 
         const token = localStorage.getItem("token");
         console.log("token:",token);
+
         $.ajax({
             url: "/api/users",
             dataType : "text",
@@ -24,7 +25,8 @@ $(function () {
                             user.id,
                             user.name,
                             user.email,
-                            user.roles
+                            user.roles,
+                            user.status
                         ]);
                     }
                     let table = $("#usersTable").DataTable({
@@ -42,6 +44,7 @@ $(function () {
                             { title: 'name' },
                             { title: 'email' },
                             { title: 'roles' },
+                            { title: 'status' }
                         ]
                     });
 
@@ -49,14 +52,50 @@ $(function () {
                         let data = table.row(this).data();
                         console.log('You clicked on ' + data[0] + "'s row");
 
+                        var rowData = {
+                            id:  data[0],
+                            name:  data[1],
+                            email:  data[2],
+                            roles: data[3]
+                        }
+
+                        let entries = Object.entries(rowData)
+                        entries.map( ([key, val] = entry) => {
+                            console.log("key:", key, "value:", val);
+                            let elementKey = "#" + key;
+                            if ( $( elementKey ).length ) {
+                                let type = $(elementKey).prop('nodeName');
+                                console.log("type:", type);
+                                switch (type) {
+                                    default:
+                                        $(elementKey).val(val);
+                                        break;
+
+                                    case 'radio':
+                                    case 'checkbox': {
+                                    }
+                                        break;
+
+                                    case 'select-multiple': {
+                                    }
+                                        break;
+
+                                    case 'select':
+                                    case 'select-one':
+                                        break;
+
+                                    case 'date':
+                                        break;
+                                }
+
+                            }
+
+                        });
+
                         $("#tableSection").hide();
                         $("#formSection").show();
-                    });
-
-                    $("#userFormButton").on( "click", function(e) {
-                        $("#formSection").hide();
-                        $("#tableSection").show();
-                        e.preventDefault();
+                        $("#submitButton").attr("disabled", false);
+                        $("#submitButtonLoading").attr("hidden","hidden");
                     });
 
                 },
@@ -75,5 +114,30 @@ $(function () {
                 $("#errorMessage").show();
             }
         });
+
+        function convertFormToJSON(form) {
+            const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
+            const json = {};
+            $.each(array, function () {
+                if(this.name !== "_csrf")
+                    json[this.name] = this.value || "";
+            });
+            return json;
+        }
+
+        $("#userForm").on("submit", function (e) {
+            const user = convertFormToJSON(this);
+            $("#submitButton").attr("disabled", true);
+            $("#submitButtonLoading").removeAttr("hidden");
+            console.log("User:", user);
+
+
+            e.preventDefault();
+            $("#formSection").hide();
+            $("#tableSection").show();
+
+        });
+
+
     });
 });

@@ -9,13 +9,7 @@
 
 
     <nav id="navbar" class="navbar" >
-      <ul th:if="${secured}">
-        <li><a class="nav-link" href="/">Home</a></li>
-        <li><a class="nav-link" href="/users">Users</a></li>
-        <li><a class="nav-link" id="logout" href="">Logout</a></li>
-      </ul>
-
-      <ul th:unless="${secured}">
+      <ul>
         <li><a class="nav-link" href="/">Home</a></li>
         <li><a class="nav-link" href="/login">Login</a></li>
         <li><a class="nav-link" href="/register">Register</a></li>

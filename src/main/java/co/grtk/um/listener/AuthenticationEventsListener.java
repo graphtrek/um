@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 public class AuthenticationEventsListener {
     @EventListener
     public void onSuccess(AuthenticationSuccessEvent success) {
-        log.info("AuthenticationSuccessEvent");
+        log.info("AuthenticationSuccessEvent {}", success.getAuthentication().getName());
     }
 
     @EventListener
     public void onFailure(AbstractAuthenticationFailureEvent failures) {
-        log.info("AbstractAuthenticationFailureEvent");
+        log.warn("AbstractAuthenticationFailureEvent {}", failures.getAuthentication().getName());
     }
 }

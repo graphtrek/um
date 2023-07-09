@@ -3,6 +3,27 @@
   console.log('main.js loaded');
   $(document).ready(function(){
 
+
+    const token = localStorage.getItem("token");
+    if(token) {
+      $.ajax({
+        url: "/navbar",
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token
+        },
+        success: function (response) {
+          console.log("Success response:", response);
+          $("#navbar").html(response);
+          pageLoaded();
+        },
+        error: function(response) {
+          console.log("Error response:", response);
+          pageLoaded();
+        }
+      });
+    }
+
     function setNav() {
       $('#navbar li a').removeClass('active');
 
@@ -22,13 +43,15 @@
       }
     }
 
-    setNav();
+    function pageLoaded() {
+      setNav();
 
-    $( "#logout" ).on( "click", function(event) {
-      localStorage.removeItem("token");
-      location.href = "/";
-      event.preventDefault();
-    });
+      $("#logout").on("click", function (event) {
+        localStorage.removeItem("token");
+        location.href = "/";
+        event.preventDefault();
+      });
+    }
 
   });
 })();

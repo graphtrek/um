@@ -45,6 +45,8 @@ public class SecurityConfig {
                 "/forgot-password",
                 "/change-password",
                 "/users",
+                "/profile",
+                "/navbar",
                 "/assets/**",
                 "/js/**",
                 "/token",

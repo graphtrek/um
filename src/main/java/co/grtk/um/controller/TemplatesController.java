@@ -3,6 +3,7 @@ package co.grtk.um.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,8 @@ public class TemplatesController {
     static final String LOGIN_INDEX = "pages/login";
     static final String REGISTER_INDEX = "pages/register";
     static final String VIEW_USERS = "pages/users";
+    static final String VIEW_PROFILE = "pages/profile";
+    static final String VIEW_NAVBAR = "fragments/navbar";
     static final String VIEW_FORGOT_PASSWORD = "pages/forgot-password";
     static final String VIEW_CHANGE_PASSWORD = "pages/change-password";
     static final String SECURED = "secured";
@@ -57,11 +60,26 @@ public class TemplatesController {
         return VIEW_CHANGE_PASSWORD;
     }
 
+
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute(PAGE, "users");
         model.addAttribute(SECURED, true);
         return VIEW_USERS;
+    }
+
+    @GetMapping("/profile")
+    public String getProfile(Model model) {
+        model.addAttribute(PAGE, "profile");
+        model.addAttribute(SECURED, true);
+        return VIEW_PROFILE;
+    }
+
+    @GetMapping("/navbar")
+    public String getNavbar(Authentication authentication, Model model) {
+        model.addAttribute(PAGE, "navbar");
+        model.addAttribute(SECURED, true);
+        return VIEW_NAVBAR;
     }
 
     public static String applicationUrl(HttpServletRequest request) {
