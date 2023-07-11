@@ -1,9 +1,9 @@
 package co.grtk.um.service;
 
 import co.grtk.um.model.JwtToken;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.repository.JwtTokenRepository;
-import co.grtk.um.repository.PrincipalRepository;
+import co.grtk.um.repository.UmUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +26,14 @@ import java.util.stream.Collectors;
 @Service
 public class JwtTokenService {
     private final JwtTokenRepository jwtTokenRepository;
-    private final PrincipalRepository principalRepository;
+    private final UmUserRepository umUserRepository;
     private final JwtEncoder encoder;
     private final JwsHeader jwsHeader = JwsHeader.with(() -> "RS256").type("JWT").build();
 
 
     @Transactional
     public String generateToken(Authentication authentication, HttpServletRequest request) {
-        Principal principal = principalRepository
+        UmUser umUser = umUserRepository
                 .findByEmail(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found email: " + authentication.getName()));
 
@@ -56,7 +56,7 @@ public class JwtTokenService {
             ipAddress = request.getRemoteAddr();
         }
 
-        JwtToken jwtToken = new JwtToken(principal,scope,expiration,token, ipAddress);
+        JwtToken jwtToken = new JwtToken(umUser,scope,expiration,token, ipAddress);
         jwtTokenRepository.save(jwtToken);
 
         log.info("generated JwtToken email:{} scope:{}", authentication.getName(), scope);

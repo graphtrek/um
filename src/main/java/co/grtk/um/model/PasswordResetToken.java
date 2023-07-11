@@ -30,12 +30,12 @@ public class PasswordResetToken {
 
     @OneToOne
     @JoinColumn(name = "principal_id")
-    private Principal principal;
+    private UmUser umUser;
 
-    public PasswordResetToken(String token, Principal principal) {
+    public PasswordResetToken(String token, UmUser umUser) {
         super();
         this.token = token;
-        this.principal = principal;
+        this.umUser = umUser;
         this.expirationTime = this.getTokenExpirationTime();
     }
 

@@ -2,9 +2,9 @@ package co.grtk.um;
 
 import co.grtk.um.config.ApplicationConfig;
 import co.grtk.um.config.RsaKeyProperties;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.model.PrincipalStatus;
-import co.grtk.um.repository.PrincipalRepository;
+import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.service.TotpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -24,9 +24,9 @@ public class UmApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(PrincipalRepository users, PasswordEncoder encoder, TotpService totpService, ApplicationConfig applicationConfig) {
+	CommandLineRunner commandLineRunner(UmUserRepository users, PasswordEncoder encoder, TotpService totpService, ApplicationConfig applicationConfig) {
 		return args ->
-			users.save(new Principal(
+			users.save(new UmUser(
 							applicationConfig.getAdminUserName(),
 							applicationConfig.getAdminUserEmail(),
 							encoder.encode(applicationConfig.getAdminUserPassword()),

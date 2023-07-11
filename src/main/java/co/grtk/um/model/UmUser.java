@@ -22,7 +22,7 @@ import java.time.Instant;
                 @Index(name = "status_idx", columnList = "status")
         }
 )
-public class Principal {
+public class UmUser {
 
     @Id
     @GeneratedValue
@@ -38,9 +38,9 @@ public class Principal {
     private Instant createdAt;
     @UpdateTimestamp(source = SourceType.DB)
     private Instant updatedAt;
-    public Principal() {}
+    public UmUser() {}
 
-    public Principal(String name, String email, String password, String roles, PrincipalStatus principalStatus, String secret) {
+    public UmUser(String name, String email, String password, String roles, PrincipalStatus principalStatus, String secret) {
         this.name = name;
         this.email = email;
         this.password = password;

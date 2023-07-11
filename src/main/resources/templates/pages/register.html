@@ -19,10 +19,10 @@
                     <p class="text-center h3 fw-bold">Sign up</p>
                     <div>
                         <form id="registerUserForm" name="registerUserForm" class="mx-1 mx-md-4"
-                              th:method="POST" th:action="@{/api/registerUserForm}" th:object="${principal}">
+                              th:method="POST" th:action="@{/api/registerUserForm}" th:object="${umUser}">
 
                             <div class="d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-principal fa-lg me-3 fa-fw"></i>
+                                <i class="fas fa-umUser fa-lg me-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <input type="text" id="registrationFormUserName" name="name" required
                                            minlength="3" maxlength="40" class="form-control" />

@@ -2,10 +2,10 @@ package co.grtk.um.service;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.exception.InvalidVerificationTokenException;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.model.PrincipalStatus;
 import co.grtk.um.model.VerificationToken;
-import co.grtk.um.repository.PrincipalRepository;
+import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 public class VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
-    private final PrincipalRepository principalRepository;
+    private final UmUserRepository umUserRepository;
 
     @Transactional
     public void validateToken(String token) {
@@ -30,14 +30,14 @@ public class VerificationTokenService {
                         orElseThrow(() ->
                                 new InvalidPasswordResetTokenException("Invalid verification token:" + token));
 
-        Principal principal = verificationToken.getPrincipal();
+        UmUser umUser = verificationToken.getUmUser();
 
         Instant now = Instant.now();
         if (now.isAfter(verificationToken.getTokenExpirationTime())){
             throw new InvalidVerificationTokenException("Invalid verification token:" + token);
         }
-        principal.setStatus(PrincipalStatus.REGISTERED);
-        principalRepository.save(principal);
+        umUser.setStatus(PrincipalStatus.REGISTERED);
+        umUserRepository.save(umUser);
     }
 
     @Transactional

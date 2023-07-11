@@ -2,7 +2,7 @@ package co.grtk.um.service;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.model.PasswordResetToken;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.repository.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class PasswordResetTokenService {
 
     private static final String TOKEN_NOT_FOUND= "PasswordRestToken Not Found";
     @Transactional
-    public PasswordResetToken createPasswordResetTokenForUser(Principal principal, String passwordToken) {
-        PasswordResetToken passwordRestToken = new PasswordResetToken(passwordToken, principal);
+    public PasswordResetToken createPasswordResetTokenForUser(UmUser umUser, String passwordToken) {
+        PasswordResetToken passwordRestToken = new PasswordResetToken(passwordToken, umUser);
         return passwordResetTokenRepository.save(passwordRestToken);
     }
 
@@ -44,10 +44,10 @@ public class PasswordResetTokenService {
             throw new InvalidPasswordResetTokenException("PasswordRestToken expired");
         }
     }
-    public Principal findUserByPasswordToken(String passwordResetToken) {
+    public UmUser findUserByPasswordToken(String passwordResetToken) {
         return passwordResetTokenRepository.
                 findByToken(passwordResetToken).
-                orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND)).getPrincipal();
+                orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND)).getUmUser();
     }
 
     public PasswordResetToken findPasswordResetToken(String token){

@@ -1,6 +1,6 @@
 package co.grtk.um.dto;
 
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,25 +10,25 @@ import java.util.Collection;
 
 public class SecurityUser implements UserDetails {
 
-    private final Principal principal;
+    private final UmUser umUser;
 
-    public SecurityUser(Principal principal) {
-        this.principal = principal;
+    public SecurityUser(UmUser umUser) {
+        this.umUser = umUser;
     }
 
     @Override
     public String getUsername() {
-        return principal.getEmail();
+        return umUser.getEmail();
     }
 
     @Override
     public String getPassword() {
-        return principal.getPassword();
+        return umUser.getPassword();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(principal
+        return Arrays.stream(umUser
                 .getRoles()
                 .split(","))
                 .map(SimpleGrantedAuthority::new)

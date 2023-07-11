@@ -5,8 +5,8 @@ import co.grtk.um.exception.UserNotFoundException;
 import co.grtk.um.listener.MailEvent;
 import co.grtk.um.listener.MailType;
 import co.grtk.um.model.PasswordResetToken;
-import co.grtk.um.model.Principal;
-import co.grtk.um.repository.PrincipalRepository;
+import co.grtk.um.model.UmUser;
+import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.service.PasswordResetTokenService;
 import co.grtk.um.service.RegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,20 +25,20 @@ import static co.grtk.um.controller.TemplatesController.applicationUrl;
 @AllArgsConstructor
 @RestController
 public class PasswordRestRestController {
-    private final PrincipalRepository principalRepository;
+    private final UmUserRepository umUserRepository;
     private final PasswordResetTokenService passwordResetTokenService;
     private final ApplicationEventPublisher publisher;
     private final RegistrationService registrationService;
     @PostMapping("/api/forgotPassword")
     public ResponseEntity<String> passwordResetEmail(@RequestBody String email, HttpServletRequest request) {
         log.info("forgotPassword email: {} applicationUrl: {}", email, applicationUrl(request));
-        Principal principal = principalRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(("User Not Found")));
+        UmUser umUser = umUserRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(("User Not Found")));
         String passwordResetToken = UUID.randomUUID().toString();
-        PasswordResetToken passwordRestToken = passwordResetTokenService.createPasswordResetTokenForUser(principal,passwordResetToken);
+        PasswordResetToken passwordRestToken = passwordResetTokenService.createPasswordResetTokenForUser(umUser,passwordResetToken);
         publisher.publishEvent(
                 new MailEvent(
                         MailType.PASSWORD_RESET,
-                        passwordRestToken.getPrincipal(),
+                        passwordRestToken.getUmUser(),
                         applicationUrl(request) + "/api/validatePasswordResetToken?token="+passwordRestToken.getToken()));
         return new ResponseEntity<>(passwordRestToken.getToken(), HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class PasswordRestRestController {
         publisher.publishEvent(
                 new MailEvent(
                         MailType.PASSWORD_RESET,
-                        passwordRestToken.getPrincipal(),
+                        passwordRestToken.getUmUser(),
                         applicationUrl(request) + "/api/validatePasswordResetToken?token="+passwordRestToken.getToken()));
         return new ResponseEntity<>(passwordRestToken.getToken(), HttpStatus.OK);
     }
@@ -59,8 +59,8 @@ public class PasswordRestRestController {
     public ResponseEntity<String> register(@RequestBody PasswordResetRequest passwordResetRequest, final HttpServletRequest request) {
         log.info("resetPassword application passwordResetRequest: {}", passwordResetRequest);
         passwordResetTokenService.validatePasswordResetToken(passwordResetRequest.getToken());
-        Principal principal = passwordResetTokenService.findPasswordResetToken(passwordResetRequest.getToken()).getPrincipal();
-        registrationService.resetPassword(principal,passwordResetRequest.getPassword());
+        UmUser umUser = passwordResetTokenService.findPasswordResetToken(passwordResetRequest.getToken()).getUmUser();
+        registrationService.resetPassword(umUser,passwordResetRequest.getPassword());
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }

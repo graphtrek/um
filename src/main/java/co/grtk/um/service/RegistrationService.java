@@ -1,10 +1,10 @@
 package co.grtk.um.service;
 
 import co.grtk.um.exception.UserAlreadyExistsException;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.model.PrincipalStatus;
 import co.grtk.um.model.VerificationToken;
-import co.grtk.um.repository.PrincipalRepository;
+import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,32 +18,32 @@ import java.util.UUID;
 @AllArgsConstructor
 @Service
 public class RegistrationService {
-    private final PrincipalRepository principalRepository;
+    private final UmUserRepository umUserRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TotpService totpService;
 
 
     @Transactional
-    public VerificationToken registerUser(Principal principal) throws UserAlreadyExistsException {
-        principalRepository.findByEmail(principal.getEmail()).ifPresent(user1 -> {
+    public VerificationToken registerUser(UmUser umUser) throws UserAlreadyExistsException {
+        umUserRepository.findByEmail(umUser.getEmail()).ifPresent(user1 -> {
             throw new UserAlreadyExistsException("User Already Exists");
         });
-        principal.setPassword(passwordEncoder.encode(principal.getPassword()));
-        principal.setRoles("ROLE_USER");
-        principal.setStatus(PrincipalStatus.PENDING);
-        principal.setSecret(totpService.generateSecret());
-        principalRepository.save(principal);
+        umUser.setPassword(passwordEncoder.encode(umUser.getPassword()));
+        umUser.setRoles("ROLE_USER");
+        umUser.setStatus(PrincipalStatus.PENDING);
+        umUser.setSecret(totpService.generateSecret());
+        umUserRepository.save(umUser);
 
-        var verificationToken = new VerificationToken(UUID.randomUUID().toString(), principal);
+        var verificationToken = new VerificationToken(UUID.randomUUID().toString(), umUser);
         verificationTokenRepository.save(verificationToken);
         log.info("Saved verificationToken: {}", verificationToken.getToken());
         return verificationToken;
     }
 
     @Transactional
-    public void resetPassword(Principal thePrincipal, String newPassword) {
-        thePrincipal.setPassword(passwordEncoder.encode(newPassword));
-        principalRepository.save(thePrincipal);
+    public void resetPassword(UmUser theUmUser, String newPassword) {
+        theUmUser.setPassword(passwordEncoder.encode(newPassword));
+        umUserRepository.save(theUmUser);
     }
 }

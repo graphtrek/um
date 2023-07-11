@@ -2,7 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.exception.InvalidVerificationTokenException;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.service.PasswordResetTokenService;
 import co.grtk.um.service.RegistrationService;
 import co.grtk.um.service.VerificationTokenService;
@@ -25,9 +25,9 @@ public class RegistrationController {
     private final PasswordResetTokenService passwordResetTokenService;
     private static final String ERROR = "error";
     @PostMapping("/api/registerUserForm")
-    public String postRegister(@ModelAttribute("User") Principal principal, Model model) {
-        log.info("POST /api/registerUserForm user: {}", principal);
-        registrationService.registerUser(principal);
+    public String postRegister(@ModelAttribute("User") UmUser umUser, Model model) {
+        log.info("POST /api/registerUserForm user: {}", umUser);
+        registrationService.registerUser(umUser);
         return REGISTER_INDEX;
     }
     @GetMapping("/api/validateToken")

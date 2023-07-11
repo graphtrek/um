@@ -30,11 +30,11 @@ public class JwtToken {
     private Instant updatedAt;
 
     @ManyToOne
-    private Principal principal;
+    private UmUser umUser;
 
-    public JwtToken(Principal principal, String scope, Instant expirationTime, String token, String ip) {
-        this.principal = principal;
-        this.subject = principal.getEmail();
+    public JwtToken(UmUser umUser, String scope, Instant expirationTime, String token, String ip) {
+        this.umUser = umUser;
+        this.subject = umUser.getEmail();
         this.scope= scope;
         this.expirationTime =expirationTime;
         this.token = token;

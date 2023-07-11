@@ -2,7 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.listener.MailEvent;
 import co.grtk.um.listener.MailType;
-import co.grtk.um.model.Principal;
+import co.grtk.um.model.UmUser;
 import co.grtk.um.model.VerificationToken;
 import co.grtk.um.service.RegistrationService;
 import co.grtk.um.service.VerificationTokenService;
@@ -25,13 +25,13 @@ public class RegistrationRestController {
     private final ApplicationEventPublisher publisher;
 
     @PostMapping("/api/registerUser")
-    public ResponseEntity<String> register(@RequestBody Principal principal, final HttpServletRequest request) {
+    public ResponseEntity<String> register(@RequestBody UmUser umUser, final HttpServletRequest request) {
         log.info("registerUser application url: {}", applicationUrl(request));
-        VerificationToken verificationToken = registrationService.registerUser(principal);
+        VerificationToken verificationToken = registrationService.registerUser(umUser);
         publisher.publishEvent(
                 new MailEvent(
                         MailType.REGISTRATION,
-                        verificationToken.getPrincipal(),
+                        verificationToken.getUmUser(),
                         applicationUrl(request) + "/api/validateToken?token="+verificationToken.getToken()));
         return new ResponseEntity<>(verificationToken.getToken(), HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class RegistrationRestController {
         publisher.publishEvent(
                 new MailEvent(
                     MailType.REGISTRATION,
-                    verificationToken.getPrincipal(),
+                    verificationToken.getUmUser(),
                         applicationUrl(request) + "/api/validateToken?token="+verificationToken.getToken()));
         return new ResponseEntity<>(verificationToken.getToken(), HttpStatus.OK);
     }
