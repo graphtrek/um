@@ -3,7 +3,7 @@ package co.grtk.um;
 import co.grtk.um.config.ApplicationConfig;
 import co.grtk.um.config.RsaKeyProperties;
 import co.grtk.um.model.UmUser;
-import co.grtk.um.model.PrincipalStatus;
+import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.service.TotpService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class UmApplication {
 							applicationConfig.getAdminUserEmail(),
 							encoder.encode(applicationConfig.getAdminUserPassword()),
 							applicationConfig.getAdminUserRoles(),
-							PrincipalStatus.REGISTERED,
+							UmUserStatus.REGISTERED,
 							totpService.generateSecret())
 			);
 		}

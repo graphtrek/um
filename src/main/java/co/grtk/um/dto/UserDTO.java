@@ -1,6 +1,6 @@
 package co.grtk.um.dto;
 
-import co.grtk.um.model.PrincipalStatus;
+import co.grtk.um.model.UmUserStatus;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -11,5 +11,5 @@ public class UserDTO {
     private String name;
     private String email;
     private String roles;
-    private PrincipalStatus status;
+    private UmUserStatus status;
 }

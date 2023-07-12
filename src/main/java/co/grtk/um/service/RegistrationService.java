@@ -2,7 +2,7 @@ package co.grtk.um.service;
 
 import co.grtk.um.exception.UserAlreadyExistsException;
 import co.grtk.um.model.UmUser;
-import co.grtk.um.model.PrincipalStatus;
+import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.model.VerificationToken;
 import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.repository.VerificationTokenRepository;
@@ -31,7 +31,7 @@ public class RegistrationService {
         });
         umUser.setPassword(passwordEncoder.encode(umUser.getPassword()));
         umUser.setRoles("ROLE_USER");
-        umUser.setStatus(PrincipalStatus.PENDING);
+        umUser.setStatus(UmUserStatus.PENDING);
         umUser.setSecret(totpService.generateSecret());
         umUserRepository.save(umUser);
 

@@ -29,7 +29,7 @@ public class UsersRestController {
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     @PostMapping("/api/saveUser")
     public UserDTO saveUser(@RequestBody UserDTO userDTO) {
-        UmUser umUser = umUserDetailsService.saveUser(modelMapper.map(userDTO, UmUser.class));
+        UmUser umUser = umUserDetailsService.saveUser(userDTO);
         return modelMapper.map(umUser,UserDTO.class);
     }
 
@@ -39,4 +39,12 @@ public class UsersRestController {
         UmUser user = umUserDetailsService.loadUserByEmail(principal.getName());
         return modelMapper.map(user,UserDTO.class);
     }
+
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
+    @PostMapping("/api/saveProfile")
+    public UserDTO saveProfile(Principal principal, @RequestBody UserDTO userDTO) {
+        UmUser umUser = umUserDetailsService.saveProfile(principal.getName(), userDTO);
+        return modelMapper.map(umUser,UserDTO.class);
+    }
+
 }

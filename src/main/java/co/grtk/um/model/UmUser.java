@@ -32,7 +32,7 @@ public class UmUser {
     private String password;
     private String roles;
     @Enumerated(EnumType.STRING)
-    private PrincipalStatus status;
+    private UmUserStatus status;
     private String secret;
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
@@ -40,12 +40,12 @@ public class UmUser {
     private Instant updatedAt;
     public UmUser() {}
 
-    public UmUser(String name, String email, String password, String roles, PrincipalStatus principalStatus, String secret) {
+    public UmUser(String name, String email, String password, String roles, UmUserStatus umUserStatus, String secret) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;
-        this.status = principalStatus;
+        this.status = umUserStatus;
         this.secret = secret;
     }
 

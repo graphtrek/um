@@ -3,7 +3,7 @@ package co.grtk.um.service;
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.exception.InvalidVerificationTokenException;
 import co.grtk.um.model.UmUser;
-import co.grtk.um.model.PrincipalStatus;
+import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.model.VerificationToken;
 import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.repository.VerificationTokenRepository;
@@ -36,7 +36,7 @@ public class VerificationTokenService {
         if (now.isAfter(verificationToken.getTokenExpirationTime())){
             throw new InvalidVerificationTokenException("Invalid verification token:" + token);
         }
-        umUser.setStatus(PrincipalStatus.REGISTERED);
+        umUser.setStatus(UmUserStatus.REGISTERED);
         umUserRepository.save(umUser);
     }
 
