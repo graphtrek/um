@@ -19,9 +19,12 @@
         },
         error: function(response) {
           console.log("Error response:", response);
+          localStorage.removeItem("token");
           pageLoaded();
         }
       });
+    } else {
+      setNav();
     }
 
     function setNav() {
