@@ -36,16 +36,6 @@ $(function () {
         //     e.preventDefault();
         // });
 
-        function convertFormToJSON(form) {
-            const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
-            const json = {};
-            $.each(array, function () {
-                if(this.name !== "_csrf")
-                    json[this.name] = this.value || "";
-            });
-            return json;
-        }
-
         $("#registerUserForm").on("submit", function (e) {
             const user = convertFormToJSON(this);
             $("#submitButton").attr("disabled", true);
