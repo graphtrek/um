@@ -3,16 +3,6 @@ $(function () {
     $(document).ready(function(){
         console.log('profile.js loaded');
 
-        function convertFormToJSON(form) {
-            const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
-            const json = {};
-            $.each(array, function () {
-                if(this.name !== "_csrf")
-                    json[this.name] = this.value || "";
-            });
-            return json;
-        }
-
         const token = localStorage.getItem("token");
 
         $.ajax({
@@ -28,12 +18,14 @@ $(function () {
                     $("#email").val(profileData.email);
                     $("#name").val(profileData.name);
                     $("#roles").val(profileData.roles);
+                    $("#status").val(profileData.status);
                 },
                 400: function() {
                     $("#errorMessage").append("HTTP 400 User Already Exists");
                 },
                 401: function() {
                     $("#errorMessage").append("HTTP 401 UnAuthenticated");
+                    localStorage.removeItem("token");
                 },
                 500: function() {
                     $("#errorMessage").append("HTTP 500 application error");

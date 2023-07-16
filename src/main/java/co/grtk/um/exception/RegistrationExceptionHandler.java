@@ -29,6 +29,14 @@ public class RegistrationExceptionHandler {
         error.put(ERROR, ex.getMessage());
         return error;
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InvalidTwoFactorVerificationCode.class)
+    public Map<String, String> invalidTwoFactorVerificationCode(InvalidTwoFactorVerificationCode ex){
+        Map<String, String> error = new HashMap<>();
+        error.put(ERROR, ex.getMessage());
+        return error;
+    }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String, String> userNotFound(UserNotFoundException ex){
@@ -53,4 +61,11 @@ public class RegistrationExceptionHandler {
         return error;
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(UmException.class)
+    public Map<String, String> umException(UmException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put(ERROR, ex.getMessage());
+        return error;
+    }
 }

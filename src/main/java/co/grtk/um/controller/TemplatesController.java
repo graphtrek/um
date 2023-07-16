@@ -21,11 +21,13 @@ public class TemplatesController {
     static final String VIEW_FORGOT_PASSWORD = "pages/forgot-password";
     static final String VIEW_CHANGE_PASSWORD = "pages/change-password";
     static final String SECURED = "secured";
+    static final String ERROR = "error";
     static final String PAGE = "page";
 
     @GetMapping(value = "/")
     public String getHome(Model model) {
         model.addAttribute(PAGE, "home");
+        model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, false);
         return VIEW_INDEX;
     }
@@ -33,7 +35,7 @@ public class TemplatesController {
     @GetMapping(value = "/login")
     public String getLogin(Model model) {
         model.addAttribute(PAGE, "login");
-        model.addAttribute("error", false);
+        model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, false);
         return LOGIN_INDEX;
     }
@@ -41,6 +43,7 @@ public class TemplatesController {
     @GetMapping(value = "/register")
     public String getRegister(Model model) {
         model.addAttribute(PAGE, "register");
+        model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, false);
         return REGISTER_INDEX;
     }
@@ -48,6 +51,7 @@ public class TemplatesController {
     @GetMapping(value = "/forgot-password")
     public String getForgotPassword(Model model) {
         model.addAttribute(PAGE, "forgot-password");
+        model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, false);
         return VIEW_FORGOT_PASSWORD;
     }
@@ -55,6 +59,7 @@ public class TemplatesController {
     @GetMapping(value = "/change-password")
     public String getChangePassword(@ModelAttribute("token") String token, Model model) {
         model.addAttribute(PAGE, "change-password");
+        model.addAttribute(ERROR, false);
         model.addAttribute("token", token);
         model.addAttribute(SECURED, false);
         return VIEW_CHANGE_PASSWORD;
@@ -64,6 +69,7 @@ public class TemplatesController {
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute(PAGE, "users");
+        model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
         return VIEW_USERS;
     }
@@ -71,12 +77,14 @@ public class TemplatesController {
     @GetMapping("/profile")
     public String getProfile(Model model) {
         model.addAttribute(PAGE, "profile");
+        model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
         return VIEW_PROFILE;
     }
 
     @GetMapping("/navbar")
     public String getNavbar(Authentication authentication, Model model) {
+        model.addAttribute(ERROR, false);
         model.addAttribute(PAGE, "navbar");
         model.addAttribute(SECURED, true);
         return VIEW_NAVBAR;

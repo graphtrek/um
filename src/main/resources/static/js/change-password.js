@@ -17,16 +17,6 @@ $(function () {
         password.onchange = validatePassword;
         confirm_password.onkeyup = validatePassword;
 
-        function convertFormToJSON(form) {
-            const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
-            const json = {};
-            $.each(array, function () {
-                if(this.name !== "_csrf")
-                    json[this.name] = this.value || "";
-            });
-            return json;
-        }
-
         $("#changePasswordForm").on("submit", function (e) {
             const passwordResetRequest = convertFormToJSON(this);
             $("#submitButton").attr("disabled", true);

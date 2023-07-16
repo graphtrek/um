@@ -2,6 +2,7 @@ package co.grtk.um;
 
 import co.grtk.um.config.ApplicationConfig;
 import co.grtk.um.config.RsaKeyProperties;
+import co.grtk.um.exception.UmException;
 import co.grtk.um.model.UmUser;
 import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.repository.UmUserRepository;
@@ -25,6 +26,15 @@ public class UmApplication {
 
 	@Bean
 	CommandLineRunner commandLineRunner(UmUserRepository users, PasswordEncoder encoder, TotpService totpService, ApplicationConfig applicationConfig) {
+		String secret = totpService.generateSecret();
+		log.info("Secret:{}",secret);
+		try {
+			String actualCode = totpService.generateCode(secret, 30);
+			boolean isValidCode = totpService.isValidCode(secret, actualCode,30);
+			log.info("ActualCode {} valid:{}", actualCode, isValidCode);
+		} catch (Exception e) {
+			throw new UmException("Unable to start application", e);
+		}
 		return args ->
 			users.save(new UmUser(
 							applicationConfig.getAdminUserName(),
@@ -32,7 +42,7 @@ public class UmApplication {
 							encoder.encode(applicationConfig.getAdminUserPassword()),
 							applicationConfig.getAdminUserRoles(),
 							UmUserStatus.REGISTERED,
-							totpService.generateSecret())
+							secret)
 			);
 		}
 

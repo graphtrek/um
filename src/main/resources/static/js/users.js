@@ -3,19 +3,10 @@ $(function () {
     $(document).ready(function(){
         console.log('users.js loaded');
 
-        function convertFormToJSON(form) {
-            const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
-            const json = {};
-            $.each(array, function () {
-                if(this.name !== "_csrf")
-                    json[this.name] = this.value || "";
-            });
-            return json;
-        }
-
         const token = localStorage.getItem("token");
         console.log("token:",token);
-
+        let table;
+        let rowId;
         $.ajax({
             url: "/api/users",
             dataType : "text",
@@ -39,7 +30,7 @@ $(function () {
                             user.status
                         ]);
                     }
-                    let table = $("#usersTable").DataTable({
+                    table = $("#usersTable").DataTable({
                         fixedHeader: true,
                         data: data,
                         columnDefs: [
@@ -59,6 +50,9 @@ $(function () {
                     });
 
                     table.on('click', 'tbody tr', function (e) {
+
+                        let row = table.row( this );
+                        rowId = row.index();
                         let data = table.row(this).data();
                         console.log('You clicked on ' + data[0] + "'s row");
 
@@ -66,7 +60,8 @@ $(function () {
                             id:  data[0],
                             name:  data[1],
                             email:  data[2],
-                            roles: data[3]
+                            roles: data[3],
+                            status: data[4]
                         }
 
                         let entries = Object.entries(rowData)
@@ -111,6 +106,7 @@ $(function () {
                 },
                 401: function() {
                     $("#errorMessage").append("HTTP 401 UnAuthenticated");
+                    localStorage.removeItem("token");
                 }
             },
             success: function (response) {
@@ -131,6 +127,8 @@ $(function () {
             $("#submitButtonLoading").removeAttr("hidden");
             console.log("User:", user);
 
+            let newData = [user.id ,user.name, user.email, user.roles, user.status] //Array, data here must match structure of table data
+            table.row(rowId).data( newData ).draw();
 
             e.preventDefault();
             $("#formSection").hide();

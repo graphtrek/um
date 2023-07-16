@@ -15,7 +15,7 @@
             </div>
             <div class="row">
                 <div class="col-md-9 col-lg-6 col-xl-5">
-                    <img src="/assets/img/draw2.svg"
+                    <img src="/assets/img/draw2.svg" id="loginImage"
                          class="img-fluid" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
@@ -26,16 +26,23 @@
 
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                            <input type="email" id="loginFormEmail" th:name="email" class="form-control form-control-lg"
+                            <input type="email" id="loginFormEmail" name="email" class="form-control form-control-lg"
                                    placeholder="Enter a valid email address" />
                             <label class="form-label" for="loginFormEmail">Email address</label>
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline mb-3">
-                            <input type="password" id="loginFormPassword" th:name="password" class="form-control form-control-lg"
+                            <input type="password" id="loginFormPassword" name="password" class="form-control form-control-lg"
                                    placeholder="Enter password" />
                             <label class="form-label" for="loginFormPassword">Password</label>
+                        </div>
+
+                        <!-- Email input -->
+                        <div class="form-outline mb-4 hidden">
+                            <input type="text" id="loginFormCode" name="code" class="form-control form-control-lg"
+                                   placeholder="Enter Verification code" />
+                            <label class="form-label" for="loginFormCode">Verification code</label>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">

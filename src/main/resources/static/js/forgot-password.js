@@ -25,6 +25,7 @@ $(function () {
                     401: function() {
                         $("#errorMessage").append("HTTP 401 UnAuthenticated");
                         localStorage.removeItem("passwordResetToken");
+                        localStorage.removeItem("token");
                     },
                     500: function() {
                         $("#errorMessage").append("HTTP 500 application error");

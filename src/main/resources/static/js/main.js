@@ -1,3 +1,18 @@
+function convertFormToJSON(form) {
+  //let disabled = form.find(':input:disabled');
+  //if(disabled)
+  //  disabled.removeAttr('disabled');
+  const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
+  //if(disabled)
+  //  disabled.attr('disabled','disabled');
+  const json = {};
+  $.each(array, function () {
+    if(this.name !== "_csrf")
+      json[this.name] = this.value || "";
+  });
+  return json;
+}
+
 (function() {
   "use strict";
   console.log('main.js loaded');

@@ -18,15 +18,14 @@
                 <div class="col-md-6 d-flex flex-column justify-content-center">
                     <p class="text-center h3 fw-bold">Sign up</p>
                     <div>
-                        <form id="registerUserForm" name="registerUserForm" class="mx-1 mx-md-4"
-                              th:method="POST" th:action="@{/api/registerUserForm}" th:object="${umUser}">
+                        <form id="registerUserForm" name="registerUserForm" class="mx-1 mx-md-4" method="POST">
 
                             <div class="d-flex flex-row align-items-center mb-4">
                                 <i class="fas fa-umUser fa-lg me-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
                                     <input type="text" id="registrationFormUserName" name="name" required
                                            minlength="3" maxlength="40" class="form-control" />
-                                    <label class="form-label" for="registrationFormUserName">Your Name</label>
+                                    <label class="form-label" for="registrationFormUserName">User Name</label>
                                 </div>
                             </div>
 
@@ -35,7 +34,7 @@
                                 <div class="form-outline flex-fill mb-0">
                                     <input type="email" id="registrationFormEmail" name="email" required
                                            minlength="6" maxlength="40" class="form-control" />
-                                    <label class="form-label" for="registrationFormEmail">Your Email</label>
+                                    <label class="form-label" for="registrationFormEmail">Email</label>
                                 </div>
                             </div>
 
@@ -53,7 +52,7 @@
                                 <div class="form-outline flex-fill mb-0">
                                     <input type="password" id="registrationFormRepeatPassword" name="repeatPassword" required
                                            minlength="8" maxlength="40" class="form-control" />
-                                    <label class="form-label" for="registrationFormRepeatPassword">Repeat your password</label>
+                                    <label class="form-label" for="registrationFormRepeatPassword">Repeat password</label>
                                 </div>
                             </div>
 
