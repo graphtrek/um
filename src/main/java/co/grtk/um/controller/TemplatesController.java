@@ -84,9 +84,11 @@ public class TemplatesController {
 
     @GetMapping("/navbar")
     public String getNavbar(Authentication authentication, Model model) {
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         model.addAttribute(ERROR, false);
         model.addAttribute(PAGE, "navbar");
         model.addAttribute(SECURED, true);
+        model.addAttribute("admin", isAdmin);
         return VIEW_NAVBAR;
     }
 
