@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class RegistrationExceptionHandler {
+public class UmExceptionAdvice {
     private static final String ERROR = "error";
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -68,4 +68,13 @@ public class RegistrationExceptionHandler {
         error.put(ERROR, ex.getMessage());
         return error;
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(TokenRefreshException.class)
+    public Map<String, String> tokenRefreshException(TokenRefreshException ex){
+        Map<String, String> error = new HashMap<>();
+        error.put(ERROR, ex.getMessage());
+        return error;
+    }
+
 }

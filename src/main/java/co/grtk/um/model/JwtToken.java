@@ -18,27 +18,36 @@ public class JwtToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(columnDefinition = "TEXT")
     private String token;
-    private Instant expirationTime;
+
+    @Column(nullable = false)
+    private Instant expirationUtcTime;
+
+    @Column(nullable = false)
     private String scope;
+
+    @Column(nullable = false)
     private String subject;
+
     private String ip;
+
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
+
     @UpdateTimestamp(source = SourceType.DB)
     private Instant updatedAt;
 
     @ManyToOne
     private UmUser umUser;
 
-    public JwtToken(UmUser umUser, String scope, Instant expirationTime, String token, String ip) {
+    public JwtToken(UmUser umUser, String scope, Instant expirationUtcTime, String token, String ip) {
         this.umUser = umUser;
         this.subject = umUser.getEmail();
-        this.scope= scope;
-        this.expirationTime =expirationTime;
+        this.scope = scope;
+        this.expirationUtcTime = expirationUtcTime;
         this.token = token;
         this.ip = ip;
     }
-
 }

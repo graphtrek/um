@@ -1,7 +1,10 @@
 package co.grtk.um.service;
 
 import co.grtk.um.config.ApplicationConfig;
-import dev.samstevens.totp.code.*;
+import co.grtk.um.exception.InvalidTwoFactorVerificationCode;
+import dev.samstevens.totp.code.DefaultCodeGenerator;
+import dev.samstevens.totp.code.DefaultCodeVerifier;
+import dev.samstevens.totp.code.HashingAlgorithm;
 import dev.samstevens.totp.exceptions.CodeGenerationException;
 import dev.samstevens.totp.exceptions.QrGenerationException;
 import dev.samstevens.totp.qr.QrData;
@@ -11,20 +14,26 @@ import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.time.SystemTimeProvider;
 import dev.samstevens.totp.time.TimeProvider;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 
-@RequiredArgsConstructor
 @Service
 @Slf4j
 public class TotpService {
 
     private final ApplicationConfig applicationConfig;
-    TimeProvider timeProvider = new SystemTimeProvider();
-    DefaultCodeGenerator codeGenerator = new DefaultCodeGenerator();
+    private final TimeProvider timeProvider;
+    private final DefaultCodeGenerator codeGenerator;
+
+    private final DefaultCodeVerifier verifier;
+    public TotpService(ApplicationConfig applicationConfig) {
+        this.applicationConfig = applicationConfig;
+        this.timeProvider = new SystemTimeProvider();
+        this.codeGenerator = new DefaultCodeGenerator();
+        this.verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
+    }
 
     public String generateSecret() {
         SecretGenerator generator = new DefaultSecretGenerator();
@@ -60,13 +69,13 @@ public class TotpService {
         long currentBucket = Math.floorDiv(timeProvider.getTime(), timePeriod);
         return codeGenerator.generate(secret, currentBucket);
     }
-    public boolean verifyCode(String code, String secret) {
-        CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
-        return verifier.isValidCode(secret, code);
+    public void verifyCode(String code, String secret) {
+        if(!verifier.isValidCode(secret, code)) {
+            throw new InvalidTwoFactorVerificationCode("Invalid 2FA code:" + code);
+        }
     }
 
     public boolean isValidCode(String secret, String code, int timePeriod) {
-        DefaultCodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
         verifier.setTimePeriod(timePeriod);
         return verifier.isValidCode(secret, code);
     }

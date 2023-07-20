@@ -9,17 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class PasswordResetTokenService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
-
+    private static final int TIME_PERIOD_MINUTES = 30;
     private static final String TOKEN_NOT_FOUND= "PasswordRestToken Not Found";
     @Transactional
     public PasswordResetToken createPasswordResetTokenForUser(UmUser umUser, String passwordToken) {
-        PasswordResetToken passwordRestToken = new PasswordResetToken(passwordToken, umUser);
+        PasswordResetToken passwordRestToken = new PasswordResetToken(passwordToken,TIME_PERIOD_MINUTES, umUser);
         return passwordResetTokenRepository.save(passwordRestToken);
     }
 
@@ -28,9 +29,12 @@ public class PasswordResetTokenService {
         PasswordResetToken passwordResetToken =
                 passwordResetTokenRepository.
                         findByToken(oldToken).orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND));
-        var passwordResetTokenTime = new PasswordResetToken();
+
         passwordResetToken.setToken(UUID.randomUUID().toString());
-        passwordResetToken.setExpirationTime(passwordResetTokenTime.getTokenExpirationTime());
+        Instant now = Instant.now();
+        Instant expiration = now.plus(TIME_PERIOD_MINUTES, ChronoUnit.MINUTES);
+
+        passwordResetToken.setIssuedAtUtcTime(expiration);
         return passwordResetTokenRepository.save(passwordResetToken);
     }
     public void validatePasswordResetToken(String passwordResetToken) {
@@ -40,7 +44,7 @@ public class PasswordResetTokenService {
                         orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND));
 
         Instant now = Instant.now();
-        if (now.isAfter(passwordToken.getExpirationTime())){
+        if (now.isAfter(passwordToken.getTokenExpirationTime())){
             throw new InvalidPasswordResetTokenException("PasswordRestToken expired");
         }
     }

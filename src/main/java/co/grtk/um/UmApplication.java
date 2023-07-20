@@ -3,6 +3,7 @@ package co.grtk.um;
 import co.grtk.um.config.ApplicationConfig;
 import co.grtk.um.config.RsaKeyProperties;
 import co.grtk.um.exception.UmException;
+import co.grtk.um.model.MfaType;
 import co.grtk.um.model.UmUser;
 import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.repository.UmUserRepository;
@@ -30,8 +31,8 @@ public class UmApplication {
 		log.info("Secret:{}",secret);
 		try {
 			String actualCode = totpService.generateCode(secret, 30);
-			boolean isValidCode = totpService.isValidCode(secret, actualCode,30);
-			log.info("ActualCode {} valid:{}", actualCode, isValidCode);
+			boolean isValid = totpService.isValidCode(secret, actualCode,30);
+			log.info("Admin:{} secret:{} actualCode:{} isValid:{}",applicationConfig.getAdminUserName(), secret, actualCode, isValid);
 		} catch (Exception e) {
 			throw new UmException("Unable to start application", e);
 		}
@@ -42,7 +43,9 @@ public class UmApplication {
 							encoder.encode(applicationConfig.getAdminUserPassword()),
 							applicationConfig.getAdminUserRoles(),
 							UmUserStatus.REGISTERED,
-							secret)
+							secret,
+							MfaType.APP
+					)
 			);
 		}
 

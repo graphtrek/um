@@ -15,32 +15,40 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "PASSWORD_RESET_TOKEN", uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
 public class PasswordResetToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String token;
-    private Instant expirationTime;
-    private static final int EXPIRATION_TIME = 10;
+
+    @Column(nullable = false)
+    private int timePeriodMinutes;
+
+    @Column(nullable = false)
+    private Instant issuedAtUtcTime;
+
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
+
     @UpdateTimestamp(source = SourceType.DB)
     private Instant updatedAt;
 
     @OneToOne
-    @JoinColumn(name = "principal_id")
+    @JoinColumn(name = "umuser_id")
     private UmUser umUser;
 
-    public PasswordResetToken(String token, UmUser umUser) {
+    public PasswordResetToken(String token,int timePeriodMinutes, UmUser umUser) {
         super();
         this.token = token;
         this.umUser = umUser;
-        this.expirationTime = this.getTokenExpirationTime();
+        this.timePeriodMinutes = timePeriodMinutes;
+        this.issuedAtUtcTime = Instant.now();
     }
 
     public Instant getTokenExpirationTime() {
-        Instant now = Instant.now();
-        return now.plus(EXPIRATION_TIME, ChronoUnit.MINUTES);
+        return issuedAtUtcTime.plus(timePeriodMinutes, ChronoUnit.MINUTES);
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Slf4j
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final UmUserRepository umUserRepository;
-
+    private static final int TIME_PERIOD_MINUTES = 30;
     @Transactional
     public void validateToken(String token) {
         log.info("Received token: {}", token);
@@ -45,9 +46,11 @@ public class VerificationTokenService {
         VerificationToken verificationToken =
                 verificationTokenRepository.findByToken(oldToken).
                         orElseThrow(() -> new InvalidPasswordResetTokenException("Invalid verification oldToken:" + oldToken));
-        var verificationTokenTime = new VerificationToken();
+
         verificationToken.setToken(UUID.randomUUID().toString());
-        verificationToken.setExpirationTime(verificationTokenTime.getTokenExpirationTime());
+        Instant now = Instant.now();
+        Instant expiration = now.plus(TIME_PERIOD_MINUTES, ChronoUnit.MINUTES);
+        verificationToken.setIssuedAtUtcTime(expiration);
         return verificationTokenRepository.save(verificationToken);
     }
 

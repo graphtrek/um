@@ -22,7 +22,7 @@ public class RegistrationService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TotpService totpService;
-
+    private static final int TIME_PERIOD_MINUTES = 30;
 
     @Transactional
     public VerificationToken registerUser(UmUser umUser) throws UserAlreadyExistsException {
@@ -35,7 +35,7 @@ public class RegistrationService {
         umUser.setSecret(totpService.generateSecret());
         umUserRepository.save(umUser);
 
-        var verificationToken = new VerificationToken(UUID.randomUUID().toString(), umUser);
+        var verificationToken = new VerificationToken(UUID.randomUUID().toString(), TIME_PERIOD_MINUTES, umUser);
         verificationTokenRepository.save(verificationToken);
         log.info("Saved verificationToken: {}", verificationToken.getToken());
         return verificationToken;
