@@ -2,9 +2,8 @@ $(function () {
     "use strict";
     $(document).ready(function(){
         console.log('profile.js loaded');
-
+        refreshToken();
         const token = localStorage.getItem("token");
-
         $.ajax({
             url: "/api/profile",
             method: "GET",
@@ -25,7 +24,6 @@ $(function () {
                 },
                 401: function() {
                     $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                    localStorage.removeItem("token");
                 },
                 500: function() {
                     $("#errorMessage").append("HTTP 500 application error");

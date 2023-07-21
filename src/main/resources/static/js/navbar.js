@@ -10,7 +10,8 @@
         console.log("token is expired:",isExpired);
         return isExpired;
     }
-    function initNavbar() {
+
+    function refreshToken() {
         const isExpired = checkToken();
         console.log("JWT isExpired:", isExpired);
         if(isExpired) {
@@ -19,6 +20,7 @@
                 url: "/api/refreshToken",
                 method: "POST",
                 dataType: "text",
+                async: false,
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     refreshToken: refreshToken
@@ -58,6 +60,11 @@
                 }
             });
         }
+    }
+
+    function initNavbar() {
+
+        refreshToken();
 
         const token = localStorage.getItem("token");
         $("#logout").on("click", function (event) {

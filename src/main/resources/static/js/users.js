@@ -2,7 +2,7 @@ $(function () {
     "use strict";
     $(document).ready(function(){
         console.log('users.js loaded');
-
+        refreshToken();
         const token = localStorage.getItem("token");
         console.log("token:",token);
         let table;
@@ -106,7 +106,6 @@ $(function () {
                 },
                 401: function() {
                     $("#errorMessage").append("HTTP 401 UnAuthenticated");
-                    localStorage.removeItem("token");
                 }
             },
             success: function (response) {
