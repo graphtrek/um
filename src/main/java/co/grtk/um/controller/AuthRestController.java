@@ -39,6 +39,22 @@ public class AuthRestController {
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/api/refreshToken")
+    public ResponseEntity<TokenResponse> refreshToken(
+            @RequestBody TokenRequest tokenRequest,
+            HttpServletRequest request) {
+
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+        String refreshToken = tokenRequest.getRefreshToken();
+        LOG.info("/api/refreshToken called ipAddress:{} refreshToken:{}", ipAddress, refreshToken);
+        TokenResponse tokenResponse = tokenManager.refreshToken(refreshToken,ipAddress);
+        return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+    }
+
+
     @PostMapping("/api/logout")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     public ResponseEntity<String> logoutUser(Authentication authentication) {

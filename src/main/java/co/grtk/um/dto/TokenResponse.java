@@ -11,5 +11,6 @@ public class TokenResponse {
     String userName;
     String email;
     String scope;
-
+    int expiresIn;
+    int refreshExpiresIn;
 }

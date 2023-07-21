@@ -1,6 +1,7 @@
 package co.grtk.um.manager;
 
 import co.grtk.um.dto.TokenResponse;
+import co.grtk.um.exception.TokenRefreshException;
 import co.grtk.um.model.JwtToken;
 import co.grtk.um.model.MfaType;
 import co.grtk.um.model.RefreshToken;
@@ -13,10 +14,7 @@ import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -32,56 +30,66 @@ public class TokenManager {
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         log.info("Token requested for user:{} isAdmin:{}", authentication.getName(),isAdmin);
         TokenResponse tokenResponse;
-        String scope = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
         UmUser umUser = userDetailsService.loadUserByEmail(authentication.getName());
 
         if(MfaType.APP == umUser.getMfaType()) {
-            tokenResponse = createTokenResponseForTotpCode(umUser,totpCode,scope,ipAddress);
+            tokenResponse = createTokenResponseForTotpCode(umUser,totpCode,ipAddress);
         } else {
-            tokenResponse = createTokenResponseForUser(umUser,scope,ipAddress);
+            tokenResponse = createTokenResponseForUser(umUser,ipAddress);
         }
         return tokenResponse;
     }
 
-    private TokenResponse createTokenResponseForTotpCode(UmUser umUser, String totpCode, String scope, String ipAddress) {
+    private TokenResponse createTokenResponseForTotpCode(UmUser umUser, String totpCode, String ipAddress) {
         TokenResponse tokenResponse;
         if(StringUtils.isBlank(totpCode)) {
-            tokenResponse = createTokenResponseForQrCode(umUser, scope);
+            tokenResponse = createTokenResponseForQrCode(umUser);
             log.info("Admin {} 2FA authentication QRCode: {}", umUser.getEmail(), tokenResponse.getQrCode());
         } else {
             totpService.verifyCode(totpCode, umUser.getSecret());
             log.info("Admin {} 2FA has valid code: {}", umUser.getEmail(), totpCode);
-            tokenResponse = createTokenResponseForUser(umUser,scope,ipAddress);
+            tokenResponse = createTokenResponseForUser(umUser, ipAddress);
             log.info("Token granted for user:{} token:{}", umUser.getEmail(), tokenResponse.getAccessToken());
         }
         return tokenResponse;
     }
 
-    private TokenResponse createTokenResponseForQrCode(UmUser umUser, String scope) {
+    private TokenResponse createTokenResponseForQrCode(UmUser umUser) {
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setEmail(umUser.getEmail());
         tokenResponse.setUserName(umUser.getName());
-        tokenResponse.setScope(scope);
+        tokenResponse.setScope(umUser.getRoles());
         tokenResponse.setQrCode(totpService.getUriForImage(umUser.getSecret()));
         return tokenResponse;
     }
 
-    private TokenResponse createTokenResponseForUser(UmUser umUser,String scope, String ipAddress) {
+    private TokenResponse createTokenResponseForUser(UmUser umUser, String ipAddress) {
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setEmail(umUser.getEmail());
         tokenResponse.setUserName(umUser.getName());
-        tokenResponse.setScope(scope);
-        JwtToken jwtToken = jwtTokenService.generateToken(umUser, scope, ipAddress);
-        RefreshToken refreshToken = refreshTokenService.findOrCreateRefreshToken(umUser);
+        tokenResponse.setScope(umUser.getRoles());
+
+        JwtToken jwtToken = jwtTokenService.generateToken(umUser, ipAddress);
         tokenResponse.setAccessToken(jwtToken.getToken());
+        tokenResponse.setExpiresIn(jwtToken.getTimePeriodMinutes());
+
+        RefreshToken refreshToken = refreshTokenService.findOrCreateRefreshToken(umUser);
         tokenResponse.setRefreshToken(refreshToken.getToken());
+        tokenResponse.setRefreshExpiresIn(refreshToken.getTimePeriodMinutes());
         return tokenResponse;
     }
 
     public void deleteRefreshToken(String email) {
         UmUser umUser = userDetailsService.loadUserByEmail(email);
         refreshTokenService.deleteByUser(umUser);
+    }
+
+    public TokenResponse refreshToken(String refreshToken, String ipAddress) {
+        return refreshTokenService.findByToken(refreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUmUser)
+                .map(umUser -> createTokenResponseForUser(umUser,ipAddress))
+                .orElseThrow(() -> new TokenRefreshException(refreshToken,
+                        "Refresh token is not in database!"));
     }
 }

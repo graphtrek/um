@@ -22,15 +22,15 @@ public class JwtTokenService {
     private static final int TIME_PERIOD_MINUTES = 5;
 
     @Transactional
-    public JwtToken generateToken(UmUser umUser, String scope, String ipAddress) {
+    public JwtToken generateToken(UmUser umUser, String ipAddress) {
         Instant now = Instant.now();
-        Instant expiration = now.plus(1, ChronoUnit.MINUTES);
+        Instant expiration = now.plus(TIME_PERIOD_MINUTES, ChronoUnit.MINUTES);
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(expiration)
                 .subject(umUser.getEmail())
-                .claim("scope", scope)
+                .claim("scope", umUser.getRoles())
                 .build();
 
         Jwt jwt = this.encoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
@@ -38,7 +38,7 @@ public class JwtTokenService {
         JwtToken jwtToken = new JwtToken(umUser,jwt,TIME_PERIOD_MINUTES, ipAddress);
         jwtTokenRepository.save(jwtToken);
 
-        log.info("generated JwtToken email:{} scope:{} ipAddress:{}", umUser.getEmail(), scope, ipAddress);
+        log.info("generated JwtToken email:{} scope:{} ipAddress:{}", umUser.getEmail(), umUser.getRoles(), ipAddress);
         return jwtToken;
     }
 

@@ -25,6 +25,7 @@ $(function () {
                         if(responseData.accessToken) {
                             console.log("The username or password were correct granted token:", responseData.accessToken);
                             localStorage.setItem("token", responseData.accessToken);
+                            localStorage.setItem("refreshToken", responseData.refreshToken);
                             location.href = "/profile";
                         } else {
                             console.log("The username or password were correct qrCode:", responseData.qrCode);
@@ -35,10 +36,12 @@ $(function () {
                     400: function() {
                         $("#errorMessage").append("HTTP 400 Verification code not Correct. Try again.");
                         localStorage.removeItem("token");
+                        localStorage.removeItem("refreshToken");
                     },
                     401: function() {
                         $("#errorMessage").append("HTTP 401 The username or password were not correct. Try again.");
                         localStorage.removeItem("token");
+                        localStorage.removeItem("refreshToken");
                     }
                 },
                 success: function (response) {

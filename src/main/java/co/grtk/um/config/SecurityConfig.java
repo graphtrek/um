@@ -50,6 +50,7 @@ public class SecurityConfig {
                 "/assets/**",
                 "/js/**",
                 "/api/token",
+                "/api/refreshToken",
                 "/api/resendToken",
                 "/api/registerUserForm",
                 "/api/registerUser",

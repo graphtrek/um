@@ -25,17 +25,17 @@ public class RefreshTokenService {
   public RefreshToken findOrCreateRefreshToken(UmUser umUser) {
     RefreshToken refreshToken =
             refreshTokenRepository.
-                    findByUmUser(umUser).
+                    findByUmUser(umUser).map(this::verifyExpiration).
                     orElseGet(() -> new RefreshToken(umUser,TIME_PERIOD_MINUTES));
-    verifyExpiration(refreshToken);
     return refreshTokenRepository.save(refreshToken);
   }
 
-  public void verifyExpiration(RefreshToken refreshToken) {
+  public RefreshToken verifyExpiration(RefreshToken refreshToken) {
     Instant now = Instant.now();
     if (now.isAfter(refreshToken.getTokenExpirationTime())){
       throw new TokenRefreshException(refreshToken.getToken(), " refreshToken expired");
     }
+    return refreshToken;
   }
 
   @Transactional

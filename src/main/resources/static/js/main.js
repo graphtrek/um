@@ -104,7 +104,8 @@ function convertFormToJSON(form) {
           this.nextElementSibling.classList.toggle('dropdown-active')
         }
       }, true)
-      initNavbar();
+      if(typeof initNavbar === 'function')
+        initNavbar();
       // $("#logout").on("click", function (event) {
       //   localStorage.removeItem("token");
       //   location.href = "/";
