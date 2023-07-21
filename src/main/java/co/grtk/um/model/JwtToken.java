@@ -38,6 +38,9 @@ public class JwtToken {
     @Column(nullable = false)
     private String subject;
 
+    @Column(nullable = false)
+    private String userName;
+
     private String ip;
 
     @CreationTimestamp(source = SourceType.DB)
@@ -51,6 +54,7 @@ public class JwtToken {
 
     public JwtToken(UmUser umUser, Jwt jwt, int timePeriodMinutes, String ip) {
         this.umUser = umUser;
+        this.userName = umUser.getName();
         this.subject = umUser.getEmail();
         this.scope = jwt.getClaimAsString("scope");
         this.expiresAtUtcTime = jwt.getExpiresAt();

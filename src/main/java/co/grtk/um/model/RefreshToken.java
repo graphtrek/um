@@ -27,6 +27,12 @@ public class RefreshToken {
   @JoinColumn(name = "umuser_id")
   private UmUser umUser;
 
+  @Column(nullable = false)
+  private String userName;
+
+  @Column(nullable = false)
+  private String userEmail;
+
   @Column(nullable = false, unique = true)
   private String token;
 
@@ -46,9 +52,10 @@ public class RefreshToken {
   private Instant updatedAt;
 
   public RefreshToken(UmUser umUser, int timePeriodMinutes) {
-    super();
     this.token = UUID.randomUUID().toString();
     this.umUser = umUser;
+    this.userName = umUser.getName();
+    this.userEmail = umUser.getEmail();
     this.timePeriodMinutes = timePeriodMinutes;
     this.issuedAtUtcTime = Instant.now();
     this.expiresAtUtcTime = getTokenExpirationTime();

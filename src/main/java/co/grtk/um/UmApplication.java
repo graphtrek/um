@@ -37,15 +37,17 @@ public class UmApplication {
 			throw new UmException("Unable to start application", e);
 		}
 		return args ->
-			users.save(new UmUser(
-							applicationConfig.getAdminUserName(),
-							applicationConfig.getAdminUserEmail(),
-							encoder.encode(applicationConfig.getAdminUserPassword()),
-							applicationConfig.getAdminUserRoles(),
-							UmUserStatus.REGISTERED,
-							secret,
-							MfaType.APP
-					)
+			users.findByEmail(applicationConfig.getAdminUserEmail()).orElseGet(() ->
+				users.save(new UmUser(
+								applicationConfig.getAdminUserName(),
+								applicationConfig.getAdminUserEmail(),
+								encoder.encode(applicationConfig.getAdminUserPassword()),
+								applicationConfig.getAdminUserRoles(),
+								UmUserStatus.REGISTERED,
+								secret,
+								MfaType.APP
+						)
+				)
 			);
 		}
 

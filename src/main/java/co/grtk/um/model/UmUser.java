@@ -43,8 +43,9 @@ public class UmUser {
     @Enumerated(EnumType.STRING)
     private UmUserStatus status;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private MfaType mfaType;
+    private MfaType mfaType = MfaType.NONE;
 
     private String secret;
 

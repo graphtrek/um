@@ -17,7 +17,6 @@ import static lombok.AccessLevel.PRIVATE;
 public class ApplicationConfig {
 
     String name;
-
     String adminUserName;
     String adminUserPassword;
     String adminUserEmail;

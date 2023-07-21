@@ -25,6 +25,12 @@ public class PasswordResetToken {
     private String token;
 
     @Column(nullable = false)
+    private String userName;
+
+    @Column(nullable = false, unique = true)
+    private String userEmail;
+
+    @Column(nullable = false)
     private int timePeriodMinutes;
 
     @Column(nullable = false)
@@ -44,9 +50,10 @@ public class PasswordResetToken {
     private UmUser umUser;
 
     public PasswordResetToken(String token,int timePeriodMinutes, UmUser umUser) {
-        super();
         this.token = token;
         this.umUser = umUser;
+        this.userName = umUser.getName();
+        this.userEmail = umUser.getEmail();
         this.timePeriodMinutes = timePeriodMinutes;
         this.issuedAtUtcTime = Instant.now();
         this.expiresAtUtcTime = getTokenExpirationTime();
