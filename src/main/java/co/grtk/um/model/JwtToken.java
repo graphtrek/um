@@ -15,6 +15,10 @@ import java.time.Instant;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(indexes = {
+        @Index(name = "issuedAtUtcTime", columnList = "issuedAtUtcTime"),
+        @Index(name = "subject", columnList = "subject"),
+        @Index(name = "userName", columnList = "userName")  })
 public class JwtToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

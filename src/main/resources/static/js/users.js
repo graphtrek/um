@@ -4,7 +4,6 @@ $(function () {
         console.log('users.js loaded');
         refreshToken();
         const token = localStorage.getItem("token");
-        console.log("token:",token);
         let table;
         let rowId;
         $.ajax({
