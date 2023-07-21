@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +23,12 @@ public class AuthRestController {
         this.tokenManager = tokenManager;
     }
 
-    @PostMapping("/token")
-    public ResponseEntity<TokenResponse> token(@RequestBody TokenRequest tokenRequest, Authentication authentication, HttpServletRequest request) {
+    @PostMapping("/api/token")
+    public ResponseEntity<TokenResponse> token(
+            @RequestBody TokenRequest tokenRequest,
+            Authentication authentication,
+            HttpServletRequest request) {
+
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
@@ -32,5 +37,13 @@ public class AuthRestController {
         LOG.info("/token called user:{} ipAddress:{} totpCode:{}", authentication.getName(), ipAddress, totpCode);
         TokenResponse tokenResponse = tokenManager.getJwtToken(authentication, ipAddress, tokenRequest.getCode());
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/logout")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
+    public ResponseEntity<String> logoutUser(Authentication authentication) {
+        LOG.info("/api/logout called user:{}", authentication.getName());
+        tokenManager.deleteRefreshToken(authentication.getName());
+        return new ResponseEntity<>("Log out successful!", HttpStatus.OK);
     }
 }

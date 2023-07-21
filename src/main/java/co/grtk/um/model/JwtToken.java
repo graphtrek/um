@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.Instant;
 
@@ -23,7 +24,13 @@ public class JwtToken {
     private String token;
 
     @Column(nullable = false)
-    private Instant expirationUtcTime;
+    private int timePeriodMinutes;
+
+    @Column(nullable = false)
+    private Instant issuedAtUtcTime;
+
+    @Column(nullable = false)
+    private Instant expiresAtUtcTime;
 
     @Column(nullable = false)
     private String scope;
@@ -42,12 +49,14 @@ public class JwtToken {
     @ManyToOne
     private UmUser umUser;
 
-    public JwtToken(UmUser umUser, String scope, Instant expirationUtcTime, String token, String ip) {
+    public JwtToken(UmUser umUser, Jwt jwt, int timePeriodMinutes, String ip) {
         this.umUser = umUser;
         this.subject = umUser.getEmail();
-        this.scope = scope;
-        this.expirationUtcTime = expirationUtcTime;
-        this.token = token;
+        this.scope = jwt.getClaimAsString("scope");
+        this.expiresAtUtcTime = jwt.getExpiresAt();
+        this.issuedAtUtcTime = jwt.getIssuedAt();
+        this.token = jwt.getTokenValue();
         this.ip = ip;
+        this.timePeriodMinutes = timePeriodMinutes;
     }
 }

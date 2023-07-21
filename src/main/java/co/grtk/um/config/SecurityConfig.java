@@ -49,7 +49,7 @@ public class SecurityConfig {
                 "/navbar",
                 "/assets/**",
                 "/js/**",
-                "/token",
+                "/api/token",
                 "/api/resendToken",
                 "/api/registerUserForm",
                 "/api/registerUser",
@@ -69,7 +69,6 @@ public class SecurityConfig {
                 return http
                         .csrf(csrf -> csrf.ignoringRequestMatchers(
                                 AntPathRequestMatcher.antMatcher("/h2-console/**"),
-                                AntPathRequestMatcher.antMatcher("/token"),
                                 AntPathRequestMatcher.antMatcher("/api/**"))
                         )
                         .authorizeHttpRequests( auth -> auth

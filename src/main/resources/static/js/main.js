@@ -104,12 +104,12 @@ function convertFormToJSON(form) {
           this.nextElementSibling.classList.toggle('dropdown-active')
         }
       }, true)
-
-      $("#logout").on("click", function (event) {
-        localStorage.removeItem("token");
-        location.href = "/";
-        event.preventDefault();
-      });
+      initNavbar();
+      // $("#logout").on("click", function (event) {
+      //   localStorage.removeItem("token");
+      //   location.href = "/";
+      //   event.preventDefault();
+      // });
     }
 
   });

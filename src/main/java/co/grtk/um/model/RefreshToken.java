@@ -36,6 +36,9 @@ public class RefreshToken {
   @Column(nullable = false)
   private Instant issuedAtUtcTime;
 
+  @Column(nullable = false)
+  private Instant expiresAtUtcTime;
+
   @CreationTimestamp(source = SourceType.DB)
   private Instant createdAt;
 
@@ -48,6 +51,7 @@ public class RefreshToken {
     this.umUser = umUser;
     this.timePeriodMinutes = timePeriodMinutes;
     this.issuedAtUtcTime = Instant.now();
+    this.expiresAtUtcTime = getTokenExpirationTime();
   }
   public Instant getTokenExpirationTime() {
     return issuedAtUtcTime.plus(timePeriodMinutes, ChronoUnit.MINUTES);

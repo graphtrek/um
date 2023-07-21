@@ -16,7 +16,7 @@ import java.util.Optional;
 public class RefreshTokenService {
 
   private final RefreshTokenRepository refreshTokenRepository;
-  private static final int TIME_PERIOD_MINUTES = 30;
+  private static final int TIME_PERIOD_MINUTES = 60 * 24;
   public Optional<RefreshToken> findByToken(String token) {
     return refreshTokenRepository.findByToken(token);
   }

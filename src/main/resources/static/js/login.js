@@ -8,7 +8,7 @@ $(function () {
             const password = $("#loginFormPassword").val();
             const code = $("#loginFormCode").val();
             $.ajax({
-                url: "/token",
+                url: "/api/token",
                 method: "POST",
                 dataType : "text",
                 contentType: "application/json; charset=utf-8",

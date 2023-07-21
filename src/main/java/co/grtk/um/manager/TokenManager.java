@@ -79,4 +79,9 @@ public class TokenManager {
         tokenResponse.setRefreshToken(refreshToken.getToken());
         return tokenResponse;
     }
+
+    public void deleteRefreshToken(String email) {
+        UmUser umUser = userDetailsService.loadUserByEmail(email);
+        refreshTokenService.deleteByUser(umUser);
+    }
 }

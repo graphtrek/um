@@ -30,6 +30,9 @@ public class PasswordResetToken {
     @Column(nullable = false)
     private Instant issuedAtUtcTime;
 
+    @Column(nullable = false)
+    private Instant expiresAtUtcTime;
+
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
 
@@ -46,6 +49,7 @@ public class PasswordResetToken {
         this.umUser = umUser;
         this.timePeriodMinutes = timePeriodMinutes;
         this.issuedAtUtcTime = Instant.now();
+        this.expiresAtUtcTime = getTokenExpirationTime();
     }
 
     public Instant getTokenExpirationTime() {
