@@ -16,6 +16,10 @@ public class TemplatesController {
     static final String LOGIN_INDEX = "pages/login";
     static final String REGISTER_INDEX = "pages/register";
     static final String VIEW_USERS = "pages/users";
+    static final String VIEW_JWT_TOKENS = "pages/jwt-tokens";
+    static final String VIEW_REGISTRATION_TOKENS = "pages/registration-tokens";
+    static final String VIEW_PASSWORD_RESET_TOKENS = "pages/password-reset-tokens";
+    static final String VIEW_REFRESH_TOKENS = "pages/refresh-tokens";
     static final String VIEW_PROFILE = "pages/profile";
     static final String VIEW_NAVBAR = "fragments/navbar";
     static final String VIEW_FORGOT_PASSWORD = "pages/forgot-password";
@@ -65,13 +69,52 @@ public class TemplatesController {
         return VIEW_CHANGE_PASSWORD;
     }
 
-
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute(PAGE, "users");
         model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
         return VIEW_USERS;
+    }
+
+    @GetMapping("/jwt-tokens")
+    public String getJwtTokens(Authentication authentication, Model model) {
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
+        model.addAttribute(PAGE, "jwt-tokens");
+        model.addAttribute(ERROR, false);
+        model.addAttribute(SECURED, true);
+        model.addAttribute("admin", isAdmin);
+        return VIEW_JWT_TOKENS;
+    }
+
+    @GetMapping("/registration-tokens")
+    public String getRegistrationTokens(Authentication authentication, Model model) {
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
+        model.addAttribute(PAGE, "registration-tokens");
+        model.addAttribute(ERROR, false);
+        model.addAttribute(SECURED, true);
+        model.addAttribute("admin", isAdmin);
+        return VIEW_REGISTRATION_TOKENS;
+    }
+
+    @GetMapping("/password-reset-tokens")
+    public String getPasswordResetTokens(Authentication authentication, Model model) {
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
+        model.addAttribute(PAGE, "password-reset-tokens");
+        model.addAttribute(ERROR, false);
+        model.addAttribute(SECURED, true);
+        model.addAttribute("admin", isAdmin);
+        return VIEW_PASSWORD_RESET_TOKENS;
+    }
+
+    @GetMapping("/refresh-tokens")
+    public String getRefreshTokens(Authentication authentication, Model model) {
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
+        model.addAttribute(PAGE, "refresh-tokens");
+        model.addAttribute(ERROR, false);
+        model.addAttribute(SECURED, true);
+        model.addAttribute("admin", isAdmin);
+        return VIEW_REFRESH_TOKENS;
     }
 
     @GetMapping("/profile")
