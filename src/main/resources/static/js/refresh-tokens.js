@@ -33,7 +33,7 @@ $(function () {
                         ]);
                     }
                     table = $("#tokensTable").DataTable({
-                        fixedHeader: true,
+                        fixedHeader: false,
                         scrollY: '50vh',
                         data: data,
                         columnDefs: [

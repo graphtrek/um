@@ -1,5 +1,6 @@
 package co.grtk.um.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class UmExceptionAdvice {
     private static final String ERROR = "error";
@@ -19,6 +21,7 @@ public class UmExceptionAdvice {
         ex.getBindingResult()
                 .getFieldErrors()
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        log.error("MethodArgumentNotValidException ex:{}", ex.getMessage());
         return errors;
     }
 
@@ -27,6 +30,7 @@ public class UmExceptionAdvice {
     public Map<String, String> userAlreadyExists(UserAlreadyExistsException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("UserAlreadyExistsException ex:{}", ex.getMessage());
         return error;
     }
 
@@ -35,6 +39,7 @@ public class UmExceptionAdvice {
     public Map<String, String> invalidTwoFactorVerificationCode(InvalidTwoFactorVerificationCode ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("InvalidTwoFactorVerificationCode ex:{}", ex.getMessage());
         return error;
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -42,6 +47,7 @@ public class UmExceptionAdvice {
     public Map<String, String> userNotFound(UserNotFoundException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("UserNotFoundException ex:{}", ex.getMessage());
         return error;
     }
 
@@ -50,6 +56,7 @@ public class UmExceptionAdvice {
     public Map<String, String> invalidVerificationToken(InvalidVerificationTokenException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("InvalidVerificationTokenException ex:{}", ex.getMessage());
         return error;
     }
 
@@ -58,6 +65,7 @@ public class UmExceptionAdvice {
     public Map<String, String> invalidPasswordRestToken(InvalidPasswordResetTokenException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("InvalidPasswordResetTokenException ex:{}", ex.getMessage());
         return error;
     }
 
@@ -66,6 +74,7 @@ public class UmExceptionAdvice {
     public Map<String, String> umException(UmException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("UmException ex:{}", ex.getMessage());
         return error;
     }
 
@@ -74,6 +83,7 @@ public class UmExceptionAdvice {
     public Map<String, String> tokenRefreshException(TokenRefreshException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
+        log.error("TokenRefreshException ex:{}", ex.getMessage());
         return error;
     }
 
