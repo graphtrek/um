@@ -39,8 +39,8 @@ $(function () {
                         columnDefs: [
                             {
                                 target: 0,
-                                visible: false,
-                                searchable: false
+                                visible: true,
+                                searchable: true
                             },
                         ],
                         columns: [
