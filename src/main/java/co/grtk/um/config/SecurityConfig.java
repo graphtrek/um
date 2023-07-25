@@ -50,7 +50,6 @@ public class SecurityConfig {
                 "/registration-tokens",
                 "/password-reset-tokens",
                 "/refresh-tokens",
-                "/navbar",
                 "/assets/**",
                 "/js/**",
                 "/api/token",

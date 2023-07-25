@@ -31,6 +31,7 @@ $(function () {
                     }
                     table = $("#usersTable").DataTable({
                         fixedHeader: true,
+                        scrollY: '50vh',
                         data: data,
                         columnDefs: [
                             {

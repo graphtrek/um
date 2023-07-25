@@ -3,7 +3,7 @@
     <li><a class="nav-link" href="/profile">Profile</a></li>
     <li th:if="${admin} == true" class="dropdown"><a href="#"><span>Tokens</span> <i class="bi bi-chevron-down"></i></a>
         <ul>
-            <li th:if="${admin} == true"><a href="#">JWT</a></li>
+            <li th:if="${admin} == true"><a href="/jwt-tokens">JWT</a></li>
             <li th:if="${admin} == true"><a href="#">Registration</a></li>
             <li th:if="${admin} == true"><a href="#">PasswordReset</a></li>
             <li th:if="${admin} == true"><a href="#">Refresh</a></li>

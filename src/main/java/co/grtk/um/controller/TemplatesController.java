@@ -27,6 +27,7 @@ public class TemplatesController {
     static final String SECURED = "secured";
     static final String ERROR = "error";
     static final String PAGE = "page";
+    static final String ADMIN = "admin";
 
     @GetMapping(value = "/")
     public String getHome(Model model) {
@@ -78,42 +79,34 @@ public class TemplatesController {
     }
 
     @GetMapping("/jwt-tokens")
-    public String getJwtTokens(Authentication authentication, Model model) {
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
+    public String getJwtTokens(Model model) {
         model.addAttribute(PAGE, "jwt-tokens");
         model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
-        model.addAttribute("admin", isAdmin);
         return VIEW_JWT_TOKENS;
     }
 
     @GetMapping("/registration-tokens")
     public String getRegistrationTokens(Authentication authentication, Model model) {
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         model.addAttribute(PAGE, "registration-tokens");
         model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
-        model.addAttribute("admin", isAdmin);
         return VIEW_REGISTRATION_TOKENS;
     }
 
     @GetMapping("/password-reset-tokens")
     public String getPasswordResetTokens(Authentication authentication, Model model) {
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         model.addAttribute(PAGE, "password-reset-tokens");
         model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
-        model.addAttribute("admin", isAdmin);
         return VIEW_PASSWORD_RESET_TOKENS;
     }
 
     @GetMapping("/refresh-tokens")
     public String getRefreshTokens(Authentication authentication, Model model) {
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         model.addAttribute(PAGE, "refresh-tokens");
         model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
-        model.addAttribute("admin", isAdmin);
         return VIEW_REFRESH_TOKENS;
     }
 
@@ -131,7 +124,7 @@ public class TemplatesController {
         model.addAttribute(ERROR, false);
         model.addAttribute(PAGE, "navbar");
         model.addAttribute(SECURED, true);
-        model.addAttribute("admin", isAdmin);
+        model.addAttribute(ADMIN, isAdmin);
         return VIEW_NAVBAR;
     }
 

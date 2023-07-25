@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Slf4j
@@ -26,12 +27,13 @@ public class TokenManager {
     private final UmUserDetailsService userDetailsService;
     private final RefreshTokenService refreshTokenService;
 
+    @Transactional
     public TokenResponse getJwtToken(Authentication authentication, String ipAddress, String totpCode) {
         boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         log.info("Token requested for user:{} isAdmin:{}", authentication.getName(),isAdmin);
         TokenResponse tokenResponse;
         UmUser umUser = userDetailsService.loadUserByEmail(authentication.getName());
-
+        deleteRefreshToken(umUser.getEmail());
         if(MfaType.APP == umUser.getMfaType()) {
             tokenResponse = createTokenResponseForTotpCode(umUser,totpCode,ipAddress);
         } else {
@@ -79,6 +81,7 @@ public class TokenManager {
         return tokenResponse;
     }
 
+    @Transactional
     public void deleteRefreshToken(String email) {
         UmUser umUser = userDetailsService.loadUserByEmail(email);
         refreshTokenService.deleteByUser(umUser);

@@ -5,12 +5,13 @@ import co.grtk.um.model.UmUser;
 import co.grtk.um.repository.JwtTokenRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class JwtTokenService {
     private final JwsHeader jwsHeader = JwsHeader.with(() -> "RS256").type("JWT").build();
     private static final int TIME_PERIOD_MINUTES = 5;
 
-    @Transactional
+
     public JwtToken generateToken(UmUser umUser, String ipAddress) {
         Instant now = Instant.now();
         Instant expiration = now.plus(TIME_PERIOD_MINUTES, ChronoUnit.MINUTES);
@@ -40,6 +41,10 @@ public class JwtTokenService {
 
         log.info("generated JwtToken email:{} scope:{} ipAddress:{}", umUser.getEmail(), umUser.getRoles(), ipAddress);
         return jwtToken;
+    }
+
+    public List<JwtToken> loadAllJwtToken() {
+        return jwtTokenRepository.findAll(Sort.by(Sort.Direction.DESC, "expiresAtUtcTime"));
     }
 
 }

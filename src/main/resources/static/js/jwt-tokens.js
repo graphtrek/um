@@ -20,17 +20,21 @@ $(function () {
                     var tokens = JSON.parse(response);
                     var data = [];
                     for (var i=0; i<tokens.length; i++) {
-                        const tokens = tokens[i];
+                        const token = tokens[i];
+                        let issuedAtUtcTime = new Date(token.issuedAtUtcTime);
+                        let expiresAtUtcTime = new Date(token.expiresAtUtcTime);
                         data.push([
-                            user.id,
-                            user.name,
-                            user.email,
-                            user.roles,
-                            user.status
+                            token.subject,
+                            token.userName,
+                            token.scope,
+                            issuedAtUtcTime.toLocaleDateString() + ' ' + issuedAtUtcTime.toLocaleTimeString(),
+                            expiresAtUtcTime.toLocaleDateString() + ' ' + expiresAtUtcTime.toLocaleTimeString(),
+                            token.ip
                         ]);
                     }
                     table = $("#tokensTable").DataTable({
                         fixedHeader: true,
+                        scrollY: '50vh',
                         data: data,
                         columnDefs: [
                             {
@@ -40,11 +44,12 @@ $(function () {
                             },
                         ],
                         columns: [
-                            { title: 'id' },
-                            { title: 'name' },
-                            { title: 'email' },
-                            { title: 'roles' },
-                            { title: 'status' }
+                            { title: 'Subject' },
+                            { title: 'User' },
+                            { title: 'Scope' },
+                            { title: 'Issued' },
+                            { title: 'Expires' },
+                            { title: 'IP' }
                         ]
                     });
 
