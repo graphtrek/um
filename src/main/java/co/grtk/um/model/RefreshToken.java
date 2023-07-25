@@ -31,10 +31,12 @@ public class RefreshToken {
   private String userName;
 
   @Column(nullable = false)
-  private String userEmail;
+   private String userEmail;
 
   @Column(nullable = false, unique = true)
   private String token;
+
+  private String ip;
 
   @Column(nullable = false)
   private int timePeriodMinutes;
@@ -51,7 +53,7 @@ public class RefreshToken {
   @UpdateTimestamp(source = SourceType.DB)
   private Instant updatedAt;
 
-  public RefreshToken(UmUser umUser, int timePeriodMinutes) {
+  public RefreshToken(UmUser umUser, int timePeriodMinutes, String ipAddress) {
     this.token = UUID.randomUUID().toString();
     this.umUser = umUser;
     this.userName = umUser.getName();
@@ -59,6 +61,7 @@ public class RefreshToken {
     this.timePeriodMinutes = timePeriodMinutes;
     this.issuedAtUtcTime = Instant.now();
     this.expiresAtUtcTime = getTokenExpirationTime();
+    this.ip = ipAddress;
   }
   public Instant getTokenExpirationTime() {
     return issuedAtUtcTime.plus(timePeriodMinutes, ChronoUnit.MINUTES);

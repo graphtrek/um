@@ -1,6 +1,7 @@
 package co.grtk.um.controller;
 
 import co.grtk.um.dto.JwtTokenDTO;
+import co.grtk.um.dto.RefreshTokenDTO;
 import co.grtk.um.service.JwtTokenService;
 import co.grtk.um.service.PasswordResetTokenService;
 import co.grtk.um.service.RefreshTokenService;
@@ -31,4 +32,12 @@ public class TokensRestController {
                 jwtTokenService.loadAllJwtToken().stream().
                         map(token -> modelMapper.map(token, JwtTokenDTO.class)).toList(), HttpStatus.OK);
     }
+
+    @GetMapping("/api/refresh-tokens")
+    public ResponseEntity<List<RefreshTokenDTO>> getRefreshTokens() {
+        return new ResponseEntity<>(
+                refreshTokenService.loadAllRefreshToken().stream().
+                        map(token -> modelMapper.map(token, RefreshTokenDTO.class)).toList(), HttpStatus.OK);
+    }
+
 }

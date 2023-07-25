@@ -75,7 +75,7 @@ public class TokenManager {
         tokenResponse.setAccessToken(jwtToken.getToken());
         tokenResponse.setExpiresIn(jwtToken.getTimePeriodMinutes());
 
-        RefreshToken refreshToken = refreshTokenService.findOrCreateRefreshToken(umUser);
+        RefreshToken refreshToken = refreshTokenService.findOrCreateRefreshToken(umUser, ipAddress);
         tokenResponse.setRefreshToken(refreshToken.getToken());
         tokenResponse.setRefreshExpiresIn(refreshToken.getTimePeriodMinutes());
         return tokenResponse;
