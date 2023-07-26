@@ -5,7 +5,6 @@ import co.grtk.um.model.UmUser;
 import co.grtk.um.repository.JwtTokenRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,7 @@ public class JwtTokenService {
     }
 
     public List<JwtToken> loadAllJwtToken() {
-        return jwtTokenRepository.findAll(Sort.by(Sort.Direction.DESC, "expiresAtUtcTime"));
+        return jwtTokenRepository.findByExpiresAtUtcTimeAfterOrderByExpiresAtUtcTimeDesc(Instant.now());
     }
 
 }

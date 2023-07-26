@@ -2,9 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
 import co.grtk.um.exception.InvalidVerificationTokenException;
-import co.grtk.um.model.UmUser;
 import co.grtk.um.service.PasswordResetTokenService;
-import co.grtk.um.service.RegistrationService;
 import co.grtk.um.service.VerificationTokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import static co.grtk.um.controller.TemplatesController.*;
 
@@ -20,21 +17,16 @@ import static co.grtk.um.controller.TemplatesController.*;
 @Slf4j
 @Controller
 public class RegistrationController {
-    private final RegistrationService registrationService;
     private final VerificationTokenService verificationTokenService;
     private final PasswordResetTokenService passwordResetTokenService;
     private static final String ERROR = "error";
-    @PostMapping("/api/registerUserForm")
-    public String postRegister(@ModelAttribute("User") UmUser umUser, Model model) {
-        log.info("POST /api/registerUserForm user: {}", umUser);
-        registrationService.registerUser(umUser);
-        return REGISTER_INDEX;
-    }
+
+
     @GetMapping("/api/validateToken")
-    public String validateToken(@ModelAttribute("token") String token, Model model){
+    public String validateToken(@ModelAttribute("token") String token, Model model) {
         log.info("validateToken token {}", token);
         model.addAttribute("page", "login");
-        model.addAttribute("secured",false);
+        model.addAttribute("secured", false);
         model.addAttribute("token", token);
         model.addAttribute(ERROR, false);
         try {
@@ -47,10 +39,10 @@ public class RegistrationController {
     }
 
     @GetMapping("/api/validatePasswordResetToken")
-    public String validatePasswordResetToken(@ModelAttribute("token") String token, Model model){
+    public String validatePasswordResetToken(@ModelAttribute("token") String token, Model model) {
         log.info("validatePasswordResetToken token {}", token);
         model.addAttribute("page", "login");
-        model.addAttribute("secured",false);
+        model.addAttribute("secured", false);
         model.addAttribute("token", token);
         model.addAttribute(ERROR, false);
         try {

@@ -27,7 +27,7 @@ public class RegistrationService {
     @Transactional
     public VerificationToken registerUser(UmUser umUser) throws UserAlreadyExistsException {
         umUserRepository.findByEmail(umUser.getEmail()).ifPresent(user1 -> {
-            throw new UserAlreadyExistsException("User Already Exists");
+            throw new UserAlreadyExistsException("User Already Exists " + umUser.getEmail());
         });
         umUser.setPassword(passwordEncoder.encode(umUser.getPassword()));
         umUser.setRoles("ROLE_USER");

@@ -24,7 +24,6 @@ public class RefreshToken {
   private long id;
 
   @OneToOne
-  @JoinColumn(name = "umuser_id")
   private UmUser umUser;
 
   @Column(nullable = false)

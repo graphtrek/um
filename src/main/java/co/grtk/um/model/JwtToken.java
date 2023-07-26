@@ -17,6 +17,8 @@ import java.time.Instant;
 @NoArgsConstructor
 @Table(indexes = {
         @Index(name = "issuedAtUtcTime", columnList = "issuedAtUtcTime"),
+        @Index(name = "expiresAtUtcTime", columnList = "expiresAtUtcTime"),
+        @Index(name = "scope", columnList = "scope"),
         @Index(name = "subject", columnList = "subject"),
         @Index(name = "userName", columnList = "userName")  })
 public class JwtToken {

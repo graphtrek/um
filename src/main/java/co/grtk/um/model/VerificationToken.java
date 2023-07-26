@@ -45,8 +45,7 @@ public class VerificationToken {
     @UpdateTimestamp(source = SourceType.DB)
     private Instant updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "umuser_id")
+    @ManyToOne
     private UmUser umUser;
 
     public VerificationToken(String token, int timePeriodMinutes, UmUser umUser) {

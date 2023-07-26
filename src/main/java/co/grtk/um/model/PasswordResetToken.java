@@ -27,7 +27,7 @@ public class PasswordResetToken {
     @Column(nullable = false)
     private String userName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userEmail;
 
     @Column(nullable = false)
@@ -45,8 +45,7 @@ public class PasswordResetToken {
     @UpdateTimestamp(source = SourceType.DB)
     private Instant updatedAt;
 
-    @OneToOne
-    @JoinColumn(name = "umuser_id")
+    @ManyToOne
     private UmUser umUser;
 
     public PasswordResetToken(String token,int timePeriodMinutes, UmUser umUser) {

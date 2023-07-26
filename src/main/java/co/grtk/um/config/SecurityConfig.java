@@ -36,37 +36,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-        private static final String[] WHITE_LIST_URLS = {
-                "/",
-                "/totp",
-                "/favicon.ico",
-                "/login",
-                "/register",
-                "/forgot-password",
-                "/change-password",
-                "/users",
-                "/profile",
-                "/jwt-tokens",
-                "/registration-tokens",
-                "/password-reset-tokens",
-                "/refresh-tokens",
-                "/assets/**",
-                "/js/**",
-                "/api/token",
-                "/api/refreshToken",
-                "/api/resendToken",
-                "/api/registerUserForm",
-                "/api/registerUser",
-                "/api/validateToken",
-                "/api/forgotPassword",
-                "/api/resendPasswordResetToken",
-                "/api/validatePasswordResetToken",
-                "/api/resetPassword"
-        };
-
         private final RsaKeyProperties jwtConfigProperties;
         private final UmUserDetailsService userDetailsService;
-
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -76,7 +47,29 @@ public class SecurityConfig {
                                 AntPathRequestMatcher.antMatcher("/api/**"))
                         )
                         .authorizeHttpRequests( auth -> auth
-                                .requestMatchers(WHITE_LIST_URLS).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("favicon.ico")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/assets/**")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/js/**")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/login")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/token")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/resendToken")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/validateToken")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/refreshToken")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/register")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/registerUser")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/forgot-password")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/forgotPassword")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/change-password")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/resetPassword")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/resendPasswordResetToken")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/validatePasswordResetToken")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/profile")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/users")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/jwt-tokens")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/refresh-tokens")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/registration-tokens")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/password-reset-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                                 .anyRequest().authenticated()
                         )
