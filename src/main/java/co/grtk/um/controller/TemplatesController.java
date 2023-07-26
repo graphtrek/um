@@ -17,7 +17,7 @@ public class TemplatesController {
     static final String REGISTER_INDEX = "pages/register";
     static final String VIEW_USERS = "pages/users";
     static final String VIEW_JWT_TOKENS = "pages/jwt-tokens";
-    static final String VIEW_REGISTRATION_TOKENS = "pages/verification-tokens";
+    static final String VIEW_REGISTRATION_TOKENS = "pages/registration-tokens";
     static final String VIEW_PASSWORD_RESET_TOKENS = "pages/password-reset-tokens";
     static final String VIEW_REFRESH_TOKENS = "pages/refresh-tokens";
     static final String VIEW_PROFILE = "pages/profile";
@@ -86,9 +86,9 @@ public class TemplatesController {
         return VIEW_JWT_TOKENS;
     }
 
-    @GetMapping("/verification-tokens")
-    public String getVerificationTokens(Authentication authentication, Model model) {
-        model.addAttribute(PAGE, "verification-tokens");
+    @GetMapping("/registration-tokens")
+    public String getRegistrationTokens(Authentication authentication, Model model) {
+        model.addAttribute(PAGE, "registration-tokens");
         model.addAttribute(ERROR, false);
         model.addAttribute(SECURED, true);
         return VIEW_REGISTRATION_TOKENS;

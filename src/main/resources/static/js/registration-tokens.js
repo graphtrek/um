@@ -1,13 +1,13 @@
 $(function () {
     "use strict";
     $(document).ready(function(){
-        console.log('verification-tokens.js loaded');
+        console.log('registration-tokens.js loaded');
         refreshToken();
         const token = localStorage.getItem("token");
         let table;
         let rowId;
         $.ajax({
-            url: "/api/verification-tokens",
+            url: "/api/registration-tokens",
             dataType : "text",
             contentType: "application/json; charset=utf-8",
             method: "GET",

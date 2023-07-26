@@ -1,5 +1,6 @@
 package co.grtk.um.listener;
 
+import co.grtk.um.exception.UmException;
 import co.grtk.um.service.MailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,11 @@ public class MailEventListener implements ApplicationListener<MailEvent> {
     public void onApplicationEvent(MailEvent event) throws RuntimeException {
         try {
             if(MailType.REGISTRATION.equals(event.getMailType()))
-                mailService.sendVerificationEmail(event.getUmUser(), event.getApplicationUrl());
+                mailService.sendRegistrationEmail(event.getUmUser(), event.getApplicationUrl());
             else if(MailType.PASSWORD_RESET.equals(event.getMailType()))
-                mailService.sendPasswordResetVerificationEmail(event.getUmUser(), event.getApplicationUrl());
+                mailService.sendPasswordResetEmail(event.getUmUser(), event.getApplicationUrl());
         } catch (MessagingException | UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new UmException("Unable to start application", e);
         }
     }
 }

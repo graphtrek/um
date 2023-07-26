@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class VerificationTokenDTO {
+public class RegistrationTokenDTO {
 
     private String token;
 

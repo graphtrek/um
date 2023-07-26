@@ -68,7 +68,7 @@ public class SecurityConfig {
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/users")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/jwt-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/refresh-tokens")).permitAll()
-                                .requestMatchers(AntPathRequestMatcher.antMatcher("/verification-tokens")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/registration-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/password-reset-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                                 .anyRequest().authenticated()

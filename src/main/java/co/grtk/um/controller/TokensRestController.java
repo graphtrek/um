@@ -3,11 +3,11 @@ package co.grtk.um.controller;
 import co.grtk.um.dto.JwtTokenDTO;
 import co.grtk.um.dto.PasswordResetTokenDTO;
 import co.grtk.um.dto.RefreshTokenDTO;
-import co.grtk.um.dto.VerificationTokenDTO;
+import co.grtk.um.dto.RegistrationTokenDTO;
 import co.grtk.um.service.JwtTokenService;
 import co.grtk.um.service.PasswordResetTokenService;
 import co.grtk.um.service.RefreshTokenService;
-import co.grtk.um.service.VerificationTokenService;
+import co.grtk.um.service.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,7 +25,7 @@ import java.util.List;
 public class TokensRestController {
     public final JwtTokenService jwtTokenService;
     public final PasswordResetTokenService passwordResetTokenService;
-    public final VerificationTokenService verificationTokenService;
+    public final RegistrationTokenService registrationTokenService;
     public final RefreshTokenService refreshTokenService;
     public final ModelMapper modelMapper;
 
@@ -46,11 +46,11 @@ public class TokensRestController {
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-    @GetMapping("/api/verification-tokens")
-    public ResponseEntity<List<VerificationTokenDTO>> getVerificationTokens() {
+    @GetMapping("/api/registration-tokens")
+    public ResponseEntity<List<RegistrationTokenDTO>> getRegistrationTokens() {
         return new ResponseEntity<>(
-                verificationTokenService.loadAllVerificationTokens().stream().
-                        map(token -> modelMapper.map(token, VerificationTokenDTO.class)).toList(), HttpStatus.OK);
+                registrationTokenService.loadAllRegistrationTokens().stream().
+                        map(token -> modelMapper.map(token, RegistrationTokenDTO.class)).toList(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")

@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 public class MailService {
     private final JavaMailSender mailSender;
 
-    public void sendVerificationEmail(UmUser umUser, String url) throws MessagingException, UnsupportedEncodingException {
+    public void sendRegistrationEmail(UmUser umUser, String url) throws MessagingException, UnsupportedEncodingException {
         String subject = "Email Verification";
         String mailContent = "<p> Hi, "+ umUser.getName() + ", </p>"+
                 "<p>Thank you for registering with us," +
@@ -29,7 +29,7 @@ public class MailService {
     }
 
 
-    public void sendPasswordResetVerificationEmail(UmUser umUser, String url) throws MessagingException, UnsupportedEncodingException {
+    public void sendPasswordResetEmail(UmUser umUser, String url) throws MessagingException, UnsupportedEncodingException {
         String subject = "Password Reset Request Verification";
         String mailContent = "<p> Hi, "+ umUser.getName()+ ", </p>"+
                 "<p><b>You recently requested to reset your password,</b>" +

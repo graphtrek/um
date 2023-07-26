@@ -16,7 +16,7 @@ import java.time.temporal.ChronoUnit;
 @Entity
 @NoArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames={"token"}))
-public class VerificationToken {
+public class RegistrationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +48,7 @@ public class VerificationToken {
     @ManyToOne
     private UmUser umUser;
 
-    public VerificationToken(String token, int timePeriodMinutes, UmUser umUser) {
+    public RegistrationToken(String token, int timePeriodMinutes, UmUser umUser) {
         this.token = token;
         this.umUser = umUser;
         this.userName = umUser.getName();

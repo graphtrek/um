@@ -3,9 +3,9 @@ package co.grtk.um.service;
 import co.grtk.um.exception.UserAlreadyExistsException;
 import co.grtk.um.model.UmUser;
 import co.grtk.um.model.UmUserStatus;
-import co.grtk.um.model.VerificationToken;
+import co.grtk.um.model.RegistrationToken;
 import co.grtk.um.repository.UmUserRepository;
-import co.grtk.um.repository.VerificationTokenRepository;
+import co.grtk.um.repository.RegistrationTokenRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,13 +19,13 @@ import java.util.UUID;
 @Service
 public class RegistrationService {
     private final UmUserRepository umUserRepository;
-    private final VerificationTokenRepository verificationTokenRepository;
+    private final RegistrationTokenRepository registrationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final TotpService totpService;
     private static final int TIME_PERIOD_MINUTES = 30;
 
     @Transactional
-    public VerificationToken registerUser(UmUser umUser) throws UserAlreadyExistsException {
+    public RegistrationToken registerUser(UmUser umUser) throws UserAlreadyExistsException {
         umUserRepository.findByEmail(umUser.getEmail()).ifPresent(user1 -> {
             throw new UserAlreadyExistsException("User Already Exists " + umUser.getEmail());
         });
@@ -35,8 +35,8 @@ public class RegistrationService {
         umUser.setSecret(totpService.generateSecret());
         umUserRepository.save(umUser);
 
-        var verificationToken = new VerificationToken(UUID.randomUUID().toString(), TIME_PERIOD_MINUTES, umUser);
-        verificationTokenRepository.save(verificationToken);
+        var verificationToken = new RegistrationToken(UUID.randomUUID().toString(), TIME_PERIOD_MINUTES, umUser);
+        registrationTokenRepository.save(verificationToken);
         log.info("Saved verificationToken: {}", verificationToken.getToken());
         return verificationToken;
     }

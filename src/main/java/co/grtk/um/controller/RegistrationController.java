@@ -1,9 +1,9 @@
 package co.grtk.um.controller;
 
 import co.grtk.um.exception.InvalidPasswordResetTokenException;
-import co.grtk.um.exception.InvalidVerificationTokenException;
+import co.grtk.um.exception.InvalidRegistrationTokenException;
 import co.grtk.um.service.PasswordResetTokenService;
-import co.grtk.um.service.VerificationTokenService;
+import co.grtk.um.service.RegistrationTokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,7 @@ import static co.grtk.um.controller.TemplatesController.*;
 @Slf4j
 @Controller
 public class RegistrationController {
-    private final VerificationTokenService verificationTokenService;
+    private final RegistrationTokenService registrationTokenService;
     private final PasswordResetTokenService passwordResetTokenService;
     private static final String ERROR = "error";
 
@@ -30,8 +30,8 @@ public class RegistrationController {
         model.addAttribute("token", token);
         model.addAttribute(ERROR, false);
         try {
-            verificationTokenService.validateToken(token);
-        } catch (InvalidVerificationTokenException e) {
+            registrationTokenService.validateToken(token);
+        } catch (InvalidRegistrationTokenException e) {
             log.error("InvalidVerificationToken :" + token);
             model.addAttribute(ERROR, true);
         }

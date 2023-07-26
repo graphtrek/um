@@ -87,6 +87,7 @@ public class TokenManager {
         refreshTokenService.deleteByUser(umUser);
     }
 
+    @Transactional
     public TokenResponse refreshToken(String refreshToken, String ipAddress) {
         return refreshTokenService.findByToken(refreshToken)
                 .map(refreshTokenService::verifyExpiration)

@@ -52,11 +52,11 @@ public class UmExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(InvalidVerificationTokenException.class)
-    public Map<String, String> invalidVerificationToken(InvalidVerificationTokenException ex){
+    @ExceptionHandler(InvalidRegistrationTokenException.class)
+    public Map<String, String> invalidRegistrationToken(InvalidRegistrationTokenException ex){
         Map<String, String> error = new HashMap<>();
         error.put(ERROR, ex.getMessage());
-        log.error("InvalidVerificationTokenException ex:{}", ex.getMessage());
+        log.error("InvalidRegistrationTokenException ex:{}", ex.getMessage());
         return error;
     }
 
