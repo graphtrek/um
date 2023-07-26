@@ -5,11 +5,11 @@
         <ul>
             <li th:if="${admin} == true"><a href="/jwt-tokens">JWT</a></li>
             <li th:if="${admin} == true"><a href="/refresh-tokens">Refresh</a></li>
-            <li th:if="${admin} == true"><a href="#">Registration</a></li>
-            <li th:if="${admin} == true"><a href="#">PasswordReset</a></li>
+            <li th:if="${admin} == true"><a href="/verification-tokens">Registration</a></li>
+            <li th:if="${admin} == true"><a href="/password-reset-tokens">PasswordReset</a></li>
         </ul>
     </li>
     <li th:if="${admin} == true"><a class="nav-link" href="/users">Users</a></li>
-    <li><a class="nav-link" id="logout" href="">Logout</a></li>
+    <li><a class="nav-link" id="logout" href="#">Logout</a></li>
 </ul>
 <i class="bi bi-list mobile-nav-toggle"></i>

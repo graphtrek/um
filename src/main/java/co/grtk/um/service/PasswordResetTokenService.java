@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -57,5 +58,9 @@ public class PasswordResetTokenService {
     public PasswordResetToken findPasswordResetToken(String token){
       return passwordResetTokenRepository.
               findByToken(token).orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND));
+    }
+
+    public List<PasswordResetToken> loadAllPasswordResetTokens() {
+        return passwordResetTokenRepository.findAll();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -52,6 +53,10 @@ public class VerificationTokenService {
         Instant expiration = now.plus(TIME_PERIOD_MINUTES, ChronoUnit.MINUTES);
         verificationToken.setIssuedAtUtcTime(expiration);
         return verificationTokenRepository.save(verificationToken);
+    }
+
+    public List<VerificationToken> loadAllVerificationTokens(){
+        return verificationTokenRepository.findAll();
     }
 
 }
