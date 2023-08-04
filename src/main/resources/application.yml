@@ -44,3 +44,9 @@ application:
   adminUserEmail: ${ADMIN_USER_EMAIL}
   adminUserPassword: ${ADMIN_USER_PASSWORD}
   adminUserRoles: ${ADMIN_USER_ROLES}
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: '*'

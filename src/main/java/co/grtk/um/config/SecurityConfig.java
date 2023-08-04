@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 AntPathRequestMatcher.antMatcher("/api/**"))
                         )
                         .authorizeHttpRequests( auth -> auth
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/actuator/**")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("favicon.ico")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/assets/**")).permitAll()
