@@ -43,6 +43,9 @@ public class SecurityConfig {
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
                         .csrf(csrf -> csrf.ignoringRequestMatchers(
+                                AntPathRequestMatcher.antMatcher("/swagger-ui.html"),
+                                AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
+                                AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
                                 AntPathRequestMatcher.antMatcher("/h2-console/**"),
                                 AntPathRequestMatcher.antMatcher("/api/**"))
                         )
@@ -72,6 +75,9 @@ public class SecurityConfig {
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/registration-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/password-reset-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui.html")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui/**")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/v3/api-docs/**")).permitAll()
                                 .anyRequest().authenticated()
                         )
                         .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))

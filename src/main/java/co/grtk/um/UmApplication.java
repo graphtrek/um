@@ -8,6 +8,7 @@ import co.grtk.um.model.UmUser;
 import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.repository.UmUserRepository;
 import co.grtk.um.service.TotpService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Slf4j
+@OpenAPIDefinition
 @EnableConfigurationProperties(RsaKeyProperties.class)
 @SpringBootApplication
 public class UmApplication {

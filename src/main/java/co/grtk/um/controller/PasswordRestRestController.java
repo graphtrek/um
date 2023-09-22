@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-import static co.grtk.um.controller.TemplatesController.applicationUrl;
+import static co.grtk.um.controller.UIController.applicationUrl;
 
 @Slf4j
 @AllArgsConstructor

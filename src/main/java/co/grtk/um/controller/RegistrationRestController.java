@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static co.grtk.um.controller.TemplatesController.applicationUrl;
+import static co.grtk.um.controller.UIController.applicationUrl;
 
 @AllArgsConstructor
 @Slf4j

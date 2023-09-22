@@ -1,10 +1,15 @@
 server:
+  compression:
+    enabled: true
   port : 8081
   shutdown: graceful
 
 spring:
   config:
     import: classpath:env.properties
+  threads:
+    virtual:
+      enabled: true
   thymeleaf:
     cache: false
   jpa:
@@ -36,6 +41,11 @@ spring:
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
+
+# Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
 
 application:
   name: UserManager

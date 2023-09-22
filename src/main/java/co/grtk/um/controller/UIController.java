@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Slf4j
 @Controller
-public class TemplatesController {
+public class UIController {
     static final String VIEW_INDEX = "pages/index";
     static final String LOGIN_INDEX = "pages/login";
     static final String REGISTER_INDEX = "pages/register";

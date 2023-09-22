@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import static co.grtk.um.controller.TemplatesController.*;
+import static co.grtk.um.controller.UIController.*;
 
 @AllArgsConstructor
 @Slf4j
