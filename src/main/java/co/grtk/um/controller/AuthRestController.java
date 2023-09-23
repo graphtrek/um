@@ -34,8 +34,10 @@ public class AuthRestController {
             ipAddress = request.getRemoteAddr();
         }
         String totpCode = tokenRequest.getCode();
-        LOG.info("/token called user:{} ipAddress:{} totpCode:{}", authentication.getName(), ipAddress, totpCode);
-        TokenResponse tokenResponse = tokenManager.getJwtToken(authentication, ipAddress, tokenRequest.getCode());
+        LOG.info("/token called user:{} ipAddress:{} totpCode:{}",
+                authentication.getName(), ipAddress, totpCode);
+        TokenResponse tokenResponse =
+                tokenManager.getJwtToken(authentication, ipAddress, tokenRequest.getCode());
         return new ResponseEntity<>(tokenResponse, HttpStatus.OK);
     }
 
@@ -56,7 +58,7 @@ public class AuthRestController {
 
 
     @PostMapping("/api/logout")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER') or hasAuthority('SCOPE_ROLE_ADMIN')")
     public ResponseEntity<String> logoutUser(Authentication authentication) {
         LOG.info("/api/logout called user:{}", authentication.getName());
         tokenManager.deleteRefreshToken(authentication.getName());

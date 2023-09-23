@@ -3,6 +3,7 @@ package co.grtk.um.service;
 import co.grtk.um.model.JwtToken;
 import co.grtk.um.model.UmUser;
 import co.grtk.um.repository.JwtTokenRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.*;
@@ -19,27 +20,26 @@ public class JwtTokenService {
     private final JwtTokenRepository jwtTokenRepository;
     private final JwtEncoder encoder;
     private final JwsHeader jwsHeader = JwsHeader.with(() -> "RS256").type("JWT").build();
-    private static final int TIME_PERIOD_MINUTES = 5;
 
-
-    public JwtToken generateToken(UmUser umUser, String ipAddress) {
+    public Jwt generateToken(String email, String scope, int timePeriodMinutes) {
         Instant now = Instant.now();
-        Instant expiration = now.plus(TIME_PERIOD_MINUTES, ChronoUnit.MINUTES);
+        Instant expiration = now.plus(timePeriodMinutes, ChronoUnit.MINUTES);
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(expiration)
-                .subject(umUser.getEmail())
-                .claim("scope", umUser.getRoles())
+                .subject(email)
+                .claim("scope", scope)
                 .build();
 
-        Jwt jwt = this.encoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
+        return this.encoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
+    }
 
-        JwtToken jwtToken = new JwtToken(umUser,jwt,TIME_PERIOD_MINUTES, ipAddress);
-        jwtTokenRepository.save(jwtToken);
-
-        log.info("generated JwtToken email:{} scope:{} ipAddress:{}", umUser.getEmail(), umUser.getRoles(), ipAddress);
-        return jwtToken;
+    @Transactional
+    public JwtToken saveJwtToken(UmUser umUser, Jwt jwt, int expiresIn, String ipAddress) {
+        JwtToken jwtToken = new JwtToken(umUser,jwt, expiresIn, ipAddress);
+        return  jwtTokenRepository.save(jwtToken);
     }
 
     public List<JwtToken> loadAllJwtToken() {

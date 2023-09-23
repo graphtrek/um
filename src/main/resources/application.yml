@@ -48,12 +48,15 @@ springdoc:
     path: /swagger-ui.html
 
 application:
-  name: UserManager
+  applicationName: UserManager
 
   adminUserName: ${ADMIN_USER_NAME}
   adminUserEmail: ${ADMIN_USER_EMAIL}
   adminUserPassword: ${ADMIN_USER_PASSWORD}
-  adminUserRoles: ${ADMIN_USER_ROLES}
+
+  testUserName: ${TEST_USER_NAME}
+  testUserEmail: ${TEST_USER_EMAIL}
+  testUserPassword: ${TEST_USER_PASSWORD}
 
 management:
   endpoints:

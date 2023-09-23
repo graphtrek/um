@@ -44,7 +44,7 @@ public class TotpService {
         QrData data = new QrData.Builder()
                 .label("Two-factor-auth-test")
                 .secret(secret)
-                .issuer(applicationConfig.getName())
+                .issuer(applicationConfig.getApplicationName())
                 .algorithm(HashingAlgorithm.SHA1)
                 .digits(6)
                 .period(30)

@@ -16,10 +16,14 @@ import static lombok.AccessLevel.PRIVATE;
 @ConfigurationProperties(prefix = "application")
 public class ApplicationConfig {
 
-    String name;
+    String applicationName;
+
     String adminUserName;
     String adminUserPassword;
     String adminUserEmail;
-    String adminUserRoles;
+
+    String testUserName;
+    String testUserPassword;
+    String testUserEmail;
 
 }

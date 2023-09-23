@@ -10,6 +10,8 @@ import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Entity
@@ -25,7 +27,7 @@ import java.time.Instant;
 public class UmUser {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -37,9 +39,6 @@ public class UmUser {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String roles;
-
     @Enumerated(EnumType.STRING)
     private UmUserStatus status;
 
@@ -49,6 +48,9 @@ public class UmUser {
 
     private String secret;
 
+    @Column(nullable = false)
+    private boolean enabled = true;
+
     @CreationTimestamp(source = SourceType.DB)
     private Instant createdAt;
 
@@ -56,7 +58,13 @@ public class UmUser {
     private Instant updatedAt;
     public UmUser() {}
 
-    public UmUser(String name, String email, String password, String roles, UmUserStatus umUserStatus, String secret, MfaType mfaType) {
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UmUserRole> roles = new HashSet<>();
+
+    public UmUser(String name, String email, String password, Set<UmUserRole> roles, UmUserStatus umUserStatus, String secret, MfaType mfaType) {
         this.name = name;
         this.email = email;
         this.password = password;
