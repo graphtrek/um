@@ -16,7 +16,7 @@ $(function () {
                     $("#id").val(profileData.id);
                     $("#email").val(profileData.email);
                     $("#name").val(profileData.name);
-                    $("#roles").val(profileData.roles);
+                    //$("#roles").val(profileData.roles);
                     $("#status").val(profileData.status);
                 },
                 400: function() {

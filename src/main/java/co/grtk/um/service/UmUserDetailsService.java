@@ -104,7 +104,6 @@ public class UmUserDetailsService implements org.springframework.security.core.u
                 .findByIdAndEmail(userDTO.getId(),userDTO.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException(
                         ERRORLOG + userDTO.getEmail()));
-        umUser.setName(userDTO.getName());
         mapUmUserDTO(umUser,userDTO);
         umUser = umUserRepository.save(umUser);
         return modelMapper.map(umUser,UserDTO.class);
@@ -123,13 +122,14 @@ public class UmUserDetailsService implements org.springframework.security.core.u
     }
 
     private void mapUmUserDTO(UmUser umUser, UserDTO userDTO) {
-        umUser.setStatus(userDTO.getStatus());
-        Set<UmUserRole> roles = Arrays.stream(userDTO.getRoles().split(","))
-                .map( role -> umUserRoleRepository.findByName(role).orElseThrow(
-                        () -> new UmException("Inconsistenet Database UmUserRole:" + role + " does not exists")
-                )).collect(Collectors.toSet());
+        umUser.setName(userDTO.getName());
+//        umUser.setStatus(userDTO.getStatus());
+//        Set<UmUserRole> roles = Arrays.stream(userDTO.getRoles().split(","))
+//                .map( role -> umUserRoleRepository.findByName(role).orElseThrow(
+//                        () -> new UmException("Inconsistenet Database UmUserRole:" + role + " does not exists")
+//                )).collect(Collectors.toSet());
 
-        umUser.setRoles(roles);
+ //       umUser.setRoles(roles);
     }
 
 

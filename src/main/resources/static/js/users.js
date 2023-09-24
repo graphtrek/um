@@ -25,7 +25,7 @@ $(function () {
                             user.id,
                             user.name,
                             user.email,
-                            user.roles,
+                            //user.roles,
                             user.status
                         ]);
                     }
@@ -44,7 +44,7 @@ $(function () {
                             { title: 'id' },
                             { title: 'name' },
                             { title: 'email' },
-                            { title: 'roles' },
+                            //{ title: 'roles' },
                             { title: 'status' }
                         ]
                     });
@@ -60,8 +60,8 @@ $(function () {
                             id:  data[0],
                             name:  data[1],
                             email:  data[2],
-                            roles: data[3],
-                            status: data[4]
+                            status: data[3],
+                            // roles: data[4]
                         }
 
                         let entries = Object.entries(rowData)
@@ -126,7 +126,7 @@ $(function () {
             $("#submitButtonLoading").removeAttr("hidden");
             console.log("User:", user);
 
-            let newData = [user.id ,user.name, user.email, user.roles, user.status] //Array, data here must match structure of table data
+            let newData = [user.id ,user.name, user.email, user.status] //Array, data here must match structure of table data
             table.row(rowId).data( newData ).draw();
 
             e.preventDefault();
