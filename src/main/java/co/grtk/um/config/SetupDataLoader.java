@@ -67,7 +67,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 applicationConfig.getTestUserEmail(),
                 applicationConfig.getTestUserPassword(),
                 Set.of(userRole),
-                "",
+                secret,
                 MfaType.NONE);
         log.info("Created TEST USER {}", testUser);
         alreadySetup = true;

@@ -13,11 +13,22 @@ $(function () {
             statusCode: {
                 200: function(profileData) {
                     console.log("200 OK response:", profileData);
+                    const jwtToken = parseJwt(token);
+                    console.log("token:", jwtToken);
+                    if(jwtToken.scope !== "ROLE_ADMIN") {
+                        $("#authenticationTypeSelector").removeClass("hidden");
+                        $('#userForm ul.dropdown-menu li[code]').removeClass('active');
+                        const $active_li = $('#authenticationTypeDropDown').find('li[code="'+ profileData.mfaType +'"]');
+                        const selText = $active_li.find('a:first').html();
+                        const selCode = $active_li.attr("code");
+                        $('#authenticationTypeButton').attr("code",selCode);
+                        $('#authenticationTypeButton').find('span:first').html(selText);
+                    }
+
                     $("#id").val(profileData.id);
                     $("#email").val(profileData.email);
                     $("#name").val(profileData.name);
-                    //$("#roles").val(profileData.roles);
-                    $("#status").val(profileData.status);
+                    $("#phone").val(profileData.phone);
                 },
                 400: function() {
                     $("#errorMessage").append("HTTP 400 User Already Exists");
@@ -44,9 +55,26 @@ $(function () {
                 $("#successMessage").hide();
             }
         });
+        $('#authenticationTypeDropDown li').click(function(event) {
+            const idx = $(this).index();
+            const $ul = $(this).parent();
+            $ul.find('li').removeClass('active');
+            $(this).addClass('active');
+            const selText = $(this).find('a:first').html();
+            const selCode = $(this).attr("code");
+
+            const $dropdownButton = $(this).closest('div.dropdown').find('button.dropdown-toggle');
+            $dropdownButton.find('span:first').html(selText);
+            $dropdownButton.attr('code', selCode);
+            console.log("authenticationTypeDropDown idx:", idx, " selText:", selText, " selCode:", selCode);
+        });
 
         $("#userForm").on("submit", function (e) {
+            refreshToken();
+            const token = localStorage.getItem("token");
+
             const user = convertFormToJSON(this);
+            user.mfaType = $('#authenticationTypeButton').attr("code");
             $("#submitButton").attr("disabled", true);
             $("#submitButtonLoading").removeAttr("hidden");
             $.ajax({

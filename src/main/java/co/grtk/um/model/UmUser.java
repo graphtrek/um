@@ -48,6 +48,8 @@ public class UmUser {
 
     private String secret;
 
+    private String phone;
+
     @Column(nullable = false)
     private boolean enabled = true;
 

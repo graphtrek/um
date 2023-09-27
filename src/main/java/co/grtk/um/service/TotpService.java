@@ -40,9 +40,9 @@ public class TotpService {
         return generator.generate();
     }
 
-    public String getUriForImage(String secret) {
+    public String getUriForImage(String secret, String userName) {
         QrData data = new QrData.Builder()
-                .label("Two-factor-auth-test")
+                .label(userName)
                 .secret(secret)
                 .issuer(applicationConfig.getApplicationName())
                 .algorithm(HashingAlgorithm.SHA1)

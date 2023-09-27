@@ -39,6 +39,7 @@ public class JwtTokenService {
     @Transactional
     public JwtToken saveJwtToken(UmUser umUser, Jwt jwt, int expiresIn, String ipAddress) {
         JwtToken jwtToken = new JwtToken(umUser,jwt, expiresIn, ipAddress);
+        log.info("generated JwtToken email:{} scope:{} ipAddress:{}", umUser.getEmail(), jwtToken.getScope(), ipAddress);
         return  jwtTokenRepository.save(jwtToken);
     }
 

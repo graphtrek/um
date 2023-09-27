@@ -1,40 +1,29 @@
 package co.grtk.um.service;
 
 
-import co.grtk.um.dto.UserDTO;
-import co.grtk.um.exception.UmException;
-import co.grtk.um.exception.UserNotFoundException;
-import co.grtk.um.model.UmUser;
 import co.grtk.um.model.UmUserPrivilege;
 import co.grtk.um.model.UmUserRole;
 import co.grtk.um.model.UmUserStatus;
 import co.grtk.um.repository.UmUserRepository;
-import co.grtk.um.repository.UmUserRoleRepository;
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 public class UmUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UmUserRepository umUserRepository;
-    private final UmUserRoleRepository umUserRoleRepository;
-    public final ModelMapper modelMapper;
 
     private static final String ERRORLOG = "User not found email: ";
-    public UmUserDetailsService(UmUserRepository umUserRepository,
-                                UmUserRoleRepository umUserRoleRepository,
-                                ModelMapper modelMapper) {
+    public UmUserDetailsService(UmUserRepository umUserRepository) {
         this.umUserRepository = umUserRepository;
-        this.umUserRoleRepository = umUserRoleRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -79,58 +68,4 @@ public class UmUserDetailsService implements org.springframework.security.core.u
         }
         return authorities;
     }
-
-
-    public UmUser findByEmail(String email) throws UserNotFoundException {
-        return umUserRepository
-                .findByEmailAndStatus(email, UmUserStatus.REGISTERED)
-                .orElseThrow(() -> new UsernameNotFoundException(ERRORLOG + email));
-    }
-
-    @Transactional
-    public UserDTO loadUser(String email) throws UserNotFoundException {
-        UmUser umUser = findByEmail(email);
-        return modelMapper.map(umUser,UserDTO.class);
-    }
-
-    @Transactional
-    public List<UserDTO> loadAllUsers(){
-        return Arrays.stream(modelMapper.map(umUserRepository.findAll(),UserDTO[].class)).toList();
-    }
-
-    @Transactional
-    public UserDTO saveUser(UserDTO userDTO) {
-        UmUser umUser = umUserRepository
-                .findByIdAndEmail(userDTO.getId(),userDTO.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        ERRORLOG + userDTO.getEmail()));
-        mapUmUserDTO(umUser,userDTO);
-        umUser = umUserRepository.save(umUser);
-        return modelMapper.map(umUser,UserDTO.class);
-    }
-
-    @Transactional
-    public UserDTO saveProfile(String email, UserDTO userDTO) {
-        UmUser umUser = umUserRepository
-                    .findByIdAndEmailAndStatus(userDTO.getId(),email, UmUserStatus.REGISTERED)
-                    .orElseThrow(() -> new UsernameNotFoundException(
-                            "UserProfile not found id:" + userDTO.getId() + " email: " + email));
-
-        mapUmUserDTO(umUser,userDTO);
-        umUser = umUserRepository.save(umUser);
-        return modelMapper.map(umUser,UserDTO.class);
-    }
-
-    private void mapUmUserDTO(UmUser umUser, UserDTO userDTO) {
-        umUser.setName(userDTO.getName());
-//        umUser.setStatus(userDTO.getStatus());
-//        Set<UmUserRole> roles = Arrays.stream(userDTO.getRoles().split(","))
-//                .map( role -> umUserRoleRepository.findByName(role).orElseThrow(
-//                        () -> new UmException("Inconsistenet Database UmUserRole:" + role + " does not exists")
-//                )).collect(Collectors.toSet());
-
- //       umUser.setRoles(roles);
-    }
-
-
 }

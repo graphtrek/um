@@ -25,8 +25,8 @@ $(function () {
                             user.id,
                             user.name,
                             user.email,
-                            //user.roles,
                             user.status
+                            //user.roles
                         ]);
                     }
                     table = $("#usersTable").DataTable({
@@ -44,8 +44,8 @@ $(function () {
                             { title: 'id' },
                             { title: 'name' },
                             { title: 'email' },
-                            //{ title: 'roles' },
                             { title: 'status' }
+                            //{ title: 'roles' }
                         ]
                     });
 
@@ -60,42 +60,9 @@ $(function () {
                             id:  data[0],
                             name:  data[1],
                             email:  data[2],
-                            status: data[3],
+                            status: data[3]
                             // roles: data[4]
                         }
-
-                        let entries = Object.entries(rowData)
-                        entries.map( ([key, val] = entry) => {
-                            console.log("key:", key, "value:", val);
-                            let elementKey = "#" + key;
-                            if ( $( elementKey ).length ) {
-                                let type = $(elementKey).prop('nodeName');
-                                console.log("type:", type);
-                                switch (type) {
-                                    default:
-                                        $(elementKey).val(val);
-                                        break;
-
-                                    case 'radio':
-                                    case 'checkbox': {
-                                    }
-                                        break;
-
-                                    case 'select-multiple': {
-                                    }
-                                        break;
-
-                                    case 'select':
-                                    case 'select-one':
-                                        break;
-
-                                    case 'date':
-                                        break;
-                                }
-
-                            }
-
-                        });
 
                         $("#tableSection").hide();
                         $("#formSection").show();

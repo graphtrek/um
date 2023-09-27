@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import static co.grtk.um.manager.TokenManager.isAdmin;
+
 @Slf4j
 @Controller
 public class UIController {
@@ -24,7 +26,6 @@ public class UIController {
     static final String VIEW_NAVBAR = "fragments/navbar";
     static final String VIEW_FORGOT_PASSWORD = "pages/forgot-password";
     static final String VIEW_CHANGE_PASSWORD = "pages/change-password";
-    static final String SECURED = "secured";
     static final String ERROR = "error";
     static final String PAGE = "page";
     static final String ADMIN = "admin";
@@ -33,7 +34,6 @@ public class UIController {
     public String getHome(Model model) {
         model.addAttribute(PAGE, "home");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, false);
         return VIEW_INDEX;
     }
 
@@ -41,7 +41,6 @@ public class UIController {
     public String getLogin(Model model) {
         model.addAttribute(PAGE, "login");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, false);
         return LOGIN_INDEX;
     }
 
@@ -49,7 +48,6 @@ public class UIController {
     public String getRegister(Model model) {
         model.addAttribute(PAGE, "register");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, false);
         return REGISTER_INDEX;
     }
 
@@ -57,7 +55,6 @@ public class UIController {
     public String getForgotPassword(Model model) {
         model.addAttribute(PAGE, "forgot-password");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, false);
         return VIEW_FORGOT_PASSWORD;
     }
 
@@ -66,7 +63,6 @@ public class UIController {
         model.addAttribute(PAGE, "change-password");
         model.addAttribute(ERROR, false);
         model.addAttribute("token", token);
-        model.addAttribute(SECURED, false);
         return VIEW_CHANGE_PASSWORD;
     }
 
@@ -74,7 +70,6 @@ public class UIController {
     public String getUsers(Model model) {
         model.addAttribute(PAGE, "users");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, true);
         return VIEW_USERS;
     }
 
@@ -82,49 +77,42 @@ public class UIController {
     public String getJwtTokens(Model model) {
         model.addAttribute(PAGE, "jwt-tokens");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, true);
         return VIEW_JWT_TOKENS;
     }
 
     @GetMapping("/registration-tokens")
-    public String getRegistrationTokens(Authentication authentication, Model model) {
+    public String getRegistrationTokens(Model model) {
         model.addAttribute(PAGE, "registration-tokens");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, true);
         return VIEW_REGISTRATION_TOKENS;
     }
 
     @GetMapping("/password-reset-tokens")
-    public String getPasswordResetTokens(Authentication authentication, Model model) {
+    public String getPasswordResetTokens(Model model) {
         model.addAttribute(PAGE, "password-reset-tokens");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, true);
         return VIEW_PASSWORD_RESET_TOKENS;
     }
 
     @GetMapping("/refresh-tokens")
-    public String getRefreshTokens(Authentication authentication, Model model) {
+    public String getRefreshTokens(Model model) {
         model.addAttribute(PAGE, "refresh-tokens");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, true);
         return VIEW_REFRESH_TOKENS;
     }
 
     @GetMapping("/profile")
     public String getProfile(Model model) {
-        model.addAttribute(PAGE, "profile");
         model.addAttribute(ERROR, false);
-        model.addAttribute(SECURED, true);
+        model.addAttribute(PAGE, "profile");
         return VIEW_PROFILE;
     }
 
     @GetMapping("/navbar")
     public String getNavbar(Authentication authentication, Model model) {
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().toUpperCase().contains("ADMIN"));
         model.addAttribute(ERROR, false);
         model.addAttribute(PAGE, "navbar");
-        model.addAttribute(SECURED, true);
-        model.addAttribute(ADMIN, isAdmin);
+        model.addAttribute(ADMIN, isAdmin(authentication));
         return VIEW_NAVBAR;
     }
 
