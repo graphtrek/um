@@ -45,7 +45,7 @@ $(function () {
                 console.log("Success response:", response);
                 $("#errorMessage").empty();
                 $("#errorMessage").hide();
-                $("#successMessage").show();
+                $("#successMessage").hide();
             },
             error: function(response) {
                 console.log("Error response:", response);
@@ -89,7 +89,7 @@ $(function () {
                 statusCode: {
                     200: function(user) {
                         console.log("200 OK response:", user);
-
+                        $('#successMessage').fadeOut(2000);
                         //$("#resendEmail").attr("href","/api/resendToken?token=" + response);
                         //location.href = "/login";
                     },

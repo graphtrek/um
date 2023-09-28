@@ -16,10 +16,10 @@ $(function () {
             },
             statusCode: {
                 200: function(response) {
-                    console.log("HTTP 200 OK response:", response);
-                    var tokens = JSON.parse(response);
-                    var data = [];
-                    for (var i=0; i<tokens.length; i++) {
+                    let tokens = JSON.parse(response);
+                    console.log("HTTP 200 OK tokens:", tokens);
+                    let data = [];
+                    for (let i=0; i<tokens.length; i++) {
                         const token = tokens[i];
                         let issuedAtUtcTime = new Date(token.issuedAtUtcTime);
                         let expiresAtUtcTime = new Date(token.expiresAtUtcTime);
@@ -58,7 +58,6 @@ $(function () {
                 }
             },
             success: function (response) {
-                console.log("Success response:", response);
                 $("#errorMessage").empty();
                 $("#errorMessage").hide();
             },

@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +32,22 @@ public class UmUserService {
 
     @Transactional
     public List<UserDTO> loadAllUsers(){
-        return Arrays.stream(modelMapper.map(umUserRepository.findAll(),UserDTO[].class)).toList();
+        List<UserDTO> users = new ArrayList<>();
+        umUserRepository.findAll().forEach(umUser -> {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(umUser.getId());
+            userDTO.setStatus(umUser.getStatus());
+            userDTO.setName(umUser.getName());
+            userDTO.setEmail(umUser.getEmail());
+            userDTO.setPhone(umUser.getPhone());
+            userDTO.setMfaType(umUser.getMfaType());
+            userDTO.setRoles(
+                    umUser.getRoles().stream()
+                            .map(UmUserRole::getName)
+                            .collect(Collectors.joining(",")));
+            users.add(userDTO);
+        });
+        return users;
     }
 
     @Transactional

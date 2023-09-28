@@ -16,16 +16,18 @@ $(function () {
             },
             statusCode: {
                 200: function(response) {
-                    console.log("HTTP 200 OK response:", response);
-                    var users = JSON.parse(response);
-                    var data = [];
-                    for (var i=0; i<users.length; i++) {
-                        const user = users[i];
+                    const users = JSON.parse(response);
+                    console.log("HTTP 200 OK users:", users);
+                    let data = [];
+                    for (let i=0; i<users.length; i++) {
+                        let user = users[i];
                         data.push([
                             user.id,
                             user.name,
                             user.email,
-                            user.status
+                            user.status,
+                            user.mfaType,
+                            user.phone
                             //user.roles
                         ]);
                     }
@@ -44,7 +46,9 @@ $(function () {
                             { title: 'id' },
                             { title: 'name' },
                             { title: 'email' },
-                            { title: 'status' }
+                            { title: 'status' },
+                            { title: 'mfa' },
+                            { title: 'phone' }
                             //{ title: 'roles' }
                         ]
                     });
@@ -56,13 +60,16 @@ $(function () {
                         let data = table.row(this).data();
                         console.log('You clicked on ' + data[0] + "'s row");
 
-                        var rowData = {
+                        let rowData = {
                             id:  data[0],
                             name:  data[1],
                             email:  data[2],
-                            status: data[3]
+                            status: data[3],
+                            mfaType: data[4],
+                            phone: data[5]
                             // roles: data[4]
                         }
+
 
                         $("#tableSection").hide();
                         $("#formSection").show();
@@ -76,7 +83,6 @@ $(function () {
                 }
             },
             success: function (response) {
-                console.log("Success response:", response);
                 $("#errorMessage").empty();
                 $("#errorMessage").hide();
             },

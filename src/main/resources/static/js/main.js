@@ -83,7 +83,6 @@ function refreshToken() {
         }
       },
       success: function (response) {
-        console.log("Success response:", response);
         $("#errorMessage").empty();
         $("#errorMessage").hide();
       },
