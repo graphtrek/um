@@ -55,18 +55,9 @@ $(function () {
                 $("#successMessage").hide();
             }
         });
-        $('#authenticationTypeDropDown li').click(function(event) {
-            const idx = $(this).index();
-            const $ul = $(this).parent();
-            $ul.find('li').removeClass('active');
-            $(this).addClass('active');
-            const selText = $(this).find('a:first').html();
-            const selCode = $(this).attr("code");
 
-            const $dropdownButton = $(this).closest('div.dropdown').find('button.dropdown-toggle');
-            $dropdownButton.find('span:first').html(selText);
-            $dropdownButton.attr('code', selCode);
-            console.log("authenticationTypeDropDown idx:", idx, " selText:", selText, " selCode:", selCode);
+        $('#authenticationTypeDropDown li').click(function(event) {
+            dropdownSelector(this);
         });
 
         $("#userForm").on("submit", function (e) {

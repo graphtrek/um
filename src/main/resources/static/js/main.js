@@ -42,6 +42,20 @@ function checkToken(){
   return isExpired;
 }
 
+function dropdownSelector(from) {
+  const idx = $(from).index();
+  const $ul = $(from).parent();
+  $ul.find('li').removeClass('active');
+  $(this).addClass('active');
+  const selText = $(from).find('a:first').html();
+  const selCode = $(from).attr("code");
+
+  const $dropdownButton = $(from).closest('div.dropdown').find('button.dropdown-toggle');
+  $dropdownButton.find('span:first').html(selText);
+  $dropdownButton.attr('code', selCode);
+  console.log( $dropdownButton.attr('id'), " idx:", idx, " selText:", selText, " selCode:", selCode);
+};
+
 function refreshToken() {
   const isExpired = checkToken();
   console.log("JWT isExpired:", isExpired);

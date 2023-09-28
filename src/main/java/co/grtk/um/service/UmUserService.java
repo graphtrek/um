@@ -2,6 +2,7 @@ package co.grtk.um.service;
 
 import co.grtk.um.dto.UserDTO;
 import co.grtk.um.exception.UmException;
+import co.grtk.um.model.MfaType;
 import co.grtk.um.model.UmUser;
 import co.grtk.um.model.UmUserRole;
 import co.grtk.um.repository.UmUserRepository;
@@ -58,12 +59,23 @@ public class UmUserService {
                         ERRORLOG + userDTO.getEmail()));
         mapUmUserDTO(umUser,userDTO);
         umUser = umUserRepository.save(umUser);
-        return modelMapper.map(umUser,UserDTO.class);
+        UserDTO savedUserDTO = modelMapper.map(umUser,UserDTO.class);
+        savedUserDTO.setRoles(
+                umUser.getRoles().stream()
+                        .map(UmUserRole::getName)
+                        .collect(Collectors.joining(",")));
+        return userDTO;
     }
 
     private void mapUmUserDTO(UmUser umUser, UserDTO userDTO) {
         umUser.setName(userDTO.getName());
-        umUser.setMfaType(userDTO.getMfaType());
+        boolean isAdmin =
+                umUser.getRoles().stream().anyMatch(umUserRole -> "ROLE_ADMIN".equalsIgnoreCase(umUserRole.getName()));
+        if(isAdmin) {
+            umUser.setMfaType(MfaType.APP);
+        } else {
+            umUser.setMfaType(userDTO.getMfaType());
+        }
         umUser.setPhone(userDTO.getPhone());
         umUser.setStatus(userDTO.getStatus());
         if(StringUtils.isNotBlank(userDTO.getRoles())) {

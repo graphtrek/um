@@ -4,6 +4,7 @@ $(function () {
         console.log('users.js loaded');
         refreshToken();
         const token = localStorage.getItem("token");
+
         let table;
         let rowId;
         $.ajax({
@@ -123,20 +124,85 @@ $(function () {
         });
 
         $("#userForm").on("submit", function (e) {
-            const user = convertFormToJSON(this);
-            $("#submitButton").attr("disabled", true);
-            $("#submitButtonLoading").removeAttr("hidden");
-            console.log("User:", user);
+            refreshToken();
+            const token = localStorage.getItem("token");
 
-            let newData = [user.id ,user.name, user.email, user.status] //Array, data here must match structure of table data
-            table.row(rowId).data( newData ).draw();
+            let user = convertFormToJSON(this);
+            user.mfaType = $('#authenticationTypeButton').attr("code");
+            user.status = $('#userStatusButton').attr("code");
+            user.roles = $('#userRoleButton').attr("code");
 
+            $.ajax({
+                url: "/api/saveUser",
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                dataType : "text",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(user),
+                statusCode: {
+                    200: function(response) {
+                        let user = JSON.parse(response);
+                        console.log("200 OK response:", user);
+
+                        $("#submitButton").attr("disabled", true);
+                        $("#submitButtonLoading").removeAttr("hidden");
+                        console.log("User:", user);
+
+                        let newData = [ user.id,
+                            user.name,
+                            user.email,
+                            user.status,
+                            user.mfaType,
+                            user.phone,
+                            user.roles] //Array, data here must match structure of table data
+
+                        $("#tableSection").show();
+                        $("#formSection").hide();
+                        $('#successMessage').fadeOut(2000);
+
+                        table.row(rowId).data( newData ).draw();
+                        table.columns.adjust().draw();
+                    },
+                    400: function() {
+                        $("#errorMessage").append("HTTP 400 User Already Exists");
+                    },
+                    401: function() {
+                        $("#errorMessage").append("HTTP 401 UnAuthenticated");
+                    },
+                    500: function() {
+                        $("#errorMessage").append("HTTP 500 application error");
+                    }
+                },
+                success: function (response) {
+                    console.log("Success response:", response);
+                    $("#submitButton").attr("disabled", false);
+                    $("#errorMessage").empty();
+                    $("#errorMessage").hide();
+                    $("#successMessage").show();
+                    $("#submitButtonLoading").attr("hidden","hidden");
+                },
+                error: function(response) {
+                    console.log("Error response:", response);
+                    $("#submitButton").attr("disabled", false);
+                    $("#errorMessage").empty();
+                    $("#errorMessage").show();
+                    $("#successMessage").hide();
+                    $("#submitButtonLoading").attr("hidden","hidden");
+                }
+            });
             e.preventDefault();
-            $("#formSection").hide();
-            $("#tableSection").show();
-
         });
 
-
+        $('#authenticationTypeDropDown li').click(function(event) {
+            dropdownSelector(this);
+        });
+        $('#userStatusDropDown li').click(function(event) {
+            dropdownSelector(this);
+        });
+        $('#userRoleDropDown li').click(function(event) {
+            dropdownSelector(this);
+        });
     });
 });
