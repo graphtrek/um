@@ -27,8 +27,8 @@ $(function () {
                             user.email,
                             user.status,
                             user.mfaType,
-                            user.phone
-                            //user.roles
+                            user.phone,
+                            user.roles
                         ]);
                     }
                     table = $("#usersTable").DataTable({
@@ -48,8 +48,8 @@ $(function () {
                             { title: 'email' },
                             { title: 'status' },
                             { title: 'mfa' },
-                            { title: 'phone' }
-                            //{ title: 'roles' }
+                            { title: 'phone' },
+                            { title: 'roles' }
                         ]
                     });
 
@@ -60,16 +60,45 @@ $(function () {
                         let data = table.row(this).data();
                         console.log('You clicked on ' + data[0] + "'s row");
 
-                        let rowData = {
+                        let profileData = {
                             id:  data[0],
                             name:  data[1],
                             email:  data[2],
                             status: data[3],
                             mfaType: data[4],
-                            phone: data[5]
-                            // roles: data[4]
+                            phone: data[5],
+                            roles: data[6]
                         }
 
+                        $("#id").val(profileData.id);
+                        $("#email").val(profileData.email);
+                        $("#name").val(profileData.name);
+                        $("#phone").val(profileData.phone);
+
+                        $('#userForm ul.dropdown-menu li[code]').removeClass('active');
+
+                        if(profileData.roles !== "ROLE_ADMIN") {
+                            $("#authenticationTypeSelector").removeClass("hidden");
+                            const $mfaType_li = $('#authenticationTypeDropDown').find('li[code="'+ profileData.mfaType +'"]');
+                            const selMfaTypeText = $mfaType_li.find('a:first').html();
+                            const selMfaTypeCode = $mfaType_li.attr("code");
+                            $('#authenticationTypeButton').attr("code",selMfaTypeCode);
+                            $('#authenticationTypeButton').find('span:first').html(selMfaTypeText);
+                        }
+
+                        $("#userStatusSelector").removeClass("hidden");
+                        const $status_li = $('#userStatusDropDown').find('li[code="'+ profileData.status +'"]');
+                        const selStatusText = $status_li.find('a:first').html();
+                        const selStatusCode = $status_li.attr("code");
+                        $('#userStatusButton').attr("code",selStatusCode);
+                        $('#userStatusButton').find('span:first').html(selStatusText);
+
+                        $("#userRoleSelector").removeClass("hidden");
+                        const $role_li = $('#userRoleDropDown').find('li[code="'+ profileData.roles +'"]');
+                        const selRoleText = $role_li.find('a:first').html();
+                        const selRoleCode = $role_li.attr("code");
+                        $('#userRoleButton').attr("code",selRoleCode);
+                        $('#userRoleButton').find('span:first').html(selRoleText);
 
                         $("#tableSection").hide();
                         $("#formSection").show();

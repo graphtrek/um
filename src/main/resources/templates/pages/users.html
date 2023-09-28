@@ -54,7 +54,7 @@
                             <!--DropDowns -->
                             <div class="row gy-6">
                                 <!--Authentication Method DropDown -->
-                                <div id="authenticationTypeSelector" class="form-outline col-md-4">
+                                <div id="authenticationTypeSelector" class="form-outline col-md-4 hidden">
                                     <i class="fas fa-key fa-lg me-1 fa-fw"></i>
                                     <label for="name" class="form-label">Authentication</label>
                                     <div class="dropdown">
@@ -62,7 +62,7 @@
                                             <span>Email & Password</span>
                                         </button>
                                         <ul id="authenticationTypeDropDown" class="dropdown-menu" aria-labelledby="authenticationTypeDropDown">
-                                            <li code="NONE"><a class="active dropdown-item" href="#">Email & Password</a></li>
+                                            <li code="NONE"><a class="dropdown-item" href="#">Email & Password</a></li>
                                             <li code="APP"><a class="dropdown-item" href="#">Authentication App</a></li>
                                         </ul>
                                     </div>
@@ -77,7 +77,7 @@
                                             <span>REGISTERED</span>
                                         </button>
                                         <ul id="userStatusDropDown" class="dropdown-menu" aria-labelledby="userStatusDropDown">
-                                            <li code="PENDING"><a class="active dropdown-item" href="#">Email Not Confirmed</a></li>
+                                            <li code="PENDING"><a class="dropdown-item" href="#">Email Not Confirmed</a></li>
                                             <li code="REGISTERED"><a class="dropdown-item" href="#">Registered</a></li>
                                             <li code="LOCKED"><a class="dropdown-item" href="#">Locked</a></li>
                                             <li code="DELETED"><a class="dropdown-item" href="#">Deleted</a></li>
@@ -95,7 +95,7 @@
                                         </button>
                                         <ul id="userRoleDropDown" class="dropdown-menu" aria-labelledby="userRoleDropDown">
                                             <li code="ROLE_USER"><a class="dropdown-item" href="#">User</a></li>
-                                            <li code="ROLE_ADMIN"><a class="active dropdown-item" href="#">Admin</a></li>
+                                            <li code="ROLE_ADMIN"><a class="dropdown-item" href="#">Admin</a></li>
                                         </ul>
                                     </div>
                                 </div>
