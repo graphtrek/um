@@ -26,6 +26,7 @@ public class UIController {
     static final String VIEW_NAVBAR = "fragments/navbar";
     static final String VIEW_FORGOT_PASSWORD = "pages/forgot-password";
     static final String VIEW_CHANGE_PASSWORD = "pages/change-password";
+    static final String VIEW_ACTIVITY_LOGS = "pages/activity-logs";
     static final String ERROR = "error";
     static final String PAGE = "page";
     static final String ADMIN = "admin";
@@ -106,6 +107,13 @@ public class UIController {
         model.addAttribute(ERROR, false);
         model.addAttribute(PAGE, "profile");
         return VIEW_PROFILE;
+    }
+
+    @GetMapping("/activity-logs")
+    public String getActivityLogs(Model model) {
+        model.addAttribute(ERROR, false);
+        model.addAttribute(PAGE, "activity-logs");
+        return VIEW_ACTIVITY_LOGS;
     }
 
     @GetMapping("/navbar")

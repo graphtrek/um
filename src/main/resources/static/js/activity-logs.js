@@ -1,13 +1,12 @@
 $(function () {
     "use strict";
-    $(document).ready(function(){
-        console.log('registration-tokens.js loaded');
+    $(document).ready(function() {
+        console.log('activity-logs.js loaded');
         refreshToken();
         const token = localStorage.getItem("token");
         let table;
-        let rowId;
         $.ajax({
-            url: "/api/registration-tokens",
+            url: "/api/logs",
             dataType : "text",
             contentType: "application/json; charset=utf-8",
             method: "GET",
@@ -16,21 +15,23 @@ $(function () {
             },
             statusCode: {
                 200: function(response) {
-                    let tokens = JSON.parse(response);
-                    console.log("HTTP 200 OK tokens:", tokens);
+                    let activityLogs = JSON.parse(response);
+                    console.log("HTTP 200 OK activityLogs:", activityLogs);
                     let data = [];
-                    for (let i=0; i<tokens.length; i++) {
-                        const token = tokens[i];
-                        let issuedAtUtcTime = new Date(token.issuedAtUtcTime);
-                        let expiresAtUtcTime = new Date(token.expiresAtUtcTime);
+                    for (let i= 0; i < activityLogs.length; i++) {
+                        const activityLog = activityLogs[i];
+                        let timeStamp = new Date(activityLog.timeStamp);
                         data.push([
-                            token.userEmail,
-                            token.userName,
-                            issuedAtUtcTime.toLocaleDateString() + ' ' + issuedAtUtcTime.toLocaleTimeString(),
-                            expiresAtUtcTime.toLocaleDateString() + ' ' + expiresAtUtcTime.toLocaleTimeString()
+                            activityLog.eventId,
+                            activityLog.clientId,
+                            activityLog.appId,
+                            activityLog.category,
+                            activityLog.textParams,
+                            activityLog.activityCode,
+                            timeStamp.toLocaleDateString() + ' ' + timeStamp.toLocaleTimeString()
                         ]);
                     }
-                    table = $("#tokensTable").DataTable({
+                    table = $("#activityLogsTable").DataTable({
                         fixedHeader: false,
                         scrollY: '50vh',
                         data: data,
@@ -42,10 +43,13 @@ $(function () {
                             },
                         ],
                         columns: [
-                            { title: 'Email' },
-                            { title: 'User' },
-                            { title: 'Issued' },
-                            { title: 'Expires' }
+                            { title: 'eventId' },
+                            { title: 'clientId' },
+                            { title: 'appId' },
+                            { title: 'category' },
+                            { title: 'textParams' },
+                            { title: 'activityCode' },
+                            { title: 'timeStamp' }
                         ]
                     });
 
