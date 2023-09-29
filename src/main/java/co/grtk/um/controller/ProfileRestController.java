@@ -15,7 +15,7 @@ import java.security.Principal;
 @Slf4j
 @RestController
 @AllArgsConstructor
-public class ProfileController {
+public class ProfileRestController {
     private final ProfileService profileService;
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER') or hasAuthority('SCOPE_ROLE_ADMIN')")

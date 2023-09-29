@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class ActivityLogController {
+public class ActivityLogRestController {
 
     private final ActivityLogService activityLogService;
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER') or hasAuthority('SCOPE_ROLE_ADMIN')")
