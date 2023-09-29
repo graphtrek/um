@@ -19,6 +19,24 @@ These additional references should also help you:
 * [GIT Spring Data Elastic Search Example](https://github.com/TechPrimers/spring-data-elastic-example-3/tree/master)
 
 ### KAFKA
+``` 
+# Start Kafka without ZooKeeper  
+kafka-storage random-uuid 
+kafka-storage format -t <uuid> -c ../etc/kafka/kraft/server.properties
+kafka-server-start ../etc/kafka/kraft/server.properties
+
+# Create Topic
+kafka-topics --bootstrap-server localhost:9092 --create --topic ActivityLog --partitions 1 --replication-factor 1
+
+# View topic contents
+kcat -b localhost:9092 -t ActivityLog
+
+# Metadata Listing
+kcat -b localhost:9092 -L -J
+kcat -b localhost:9092 -L
+
+``` 
+
 * [Kafka without zookeeper](https://linuxhint.com/run-apache-kafka-without-zookeeper)
 * [KafkaCat](https://docs.confluent.io/platform/current/tools/kafkacat-usage.html)
 * [Apache Kafka® Producer Example using SpringBoot 3.x | Java Techie](https://github.com/Java-Techie-jt/kafka-producer-example/tree/main)

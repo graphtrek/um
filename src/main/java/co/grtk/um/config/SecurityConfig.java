@@ -75,6 +75,7 @@ public class SecurityConfig {
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/registration-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/password-reset-tokens")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/activity-logs")).permitAll()
+                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/logUserActivity")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui.html")).permitAll()
                                 .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui/**")).permitAll()

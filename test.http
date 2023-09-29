@@ -1,0 +1,29 @@
+### GET request ping
+GET http://localhost:8081/api/ping
+Accept: application/json
+
+### GET request list
+GET http://localhost:801/api/listUserActivity
+Accept: application/json
+
+### Send POST request add
+POST http://localhost:8081/api/logUserActivity
+Content-Type: application/json
+
+{
+  "eventId": "11111",
+  "token": "0089402-1de8-4c86-847d-1da57c3878da",
+  "clientId": "Imre",
+  "channelId": "UM_WEB",
+  "appId": "UM",
+  "activityCode": "TEST",
+  "resultCode": "OK",
+  "timeStamp": "2023-09-29T15:12:01.292Z",
+  "correlationId": "1",
+  "category": "UM_TESTS",
+  "textParams": "XXXX,YYYY",
+  "logLevel": "INFO"
+}
+
+
+

@@ -26,4 +26,11 @@ public class ApplicationConfig {
     String testUserPassword;
     String testUserEmail;
 
+    String activityLogBaseUrl;
+
+    String kafkaBootstrapServer;
+    String kafkaTopicName;
+    int kafkaTopicNumPartitions = 1;
+    short kafkaTopicReplicationFactor = 1;
+
 }

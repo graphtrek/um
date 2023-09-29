@@ -6,7 +6,7 @@ $(function () {
         const token = localStorage.getItem("token");
         let table;
         $.ajax({
-            url: "/api/logs",
+            url: "/api/listUserActivity",
             dataType : "text",
             contentType: "application/json; charset=utf-8",
             method: "GET",

@@ -16,7 +16,10 @@ public class ActivityLogService {
     public final RestClient activityLogClient;
 
     public List<UserActivityLogDTO> listActivityLogs() {
-        return activityLogClient.get().uri("/list").retrieve().body(new ParameterizedTypeReference<List<UserActivityLogDTO>>() {});
+        return activityLogClient.get()
+                .uri("/listUserActivity")
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<UserActivityLogDTO>>() {});
     }
 
 }
