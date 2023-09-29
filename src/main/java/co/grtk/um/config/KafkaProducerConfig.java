@@ -17,21 +17,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Configuration
 public class KafkaProducerConfig {
-    private final ApplicationConfig applicationConfig;
+    private final AppConfig appConfig;
 
     @Bean
     public NewTopic createTopic(){
         return new NewTopic(
-                applicationConfig.getKafkaTopicName(),
-                applicationConfig.getKafkaTopicNumPartitions(),
-                applicationConfig.getKafkaTopicReplicationFactor());
+                appConfig.getKafkaTopicName(),
+                appConfig.getKafkaTopicNumPartitions(),
+                appConfig.getKafkaTopicReplicationFactor());
     }
 
     @Bean
     public Map<String,Object> producerConfig(){
         Map<String,Object> props=new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                applicationConfig.getKafkaBootstrapServer());
+                appConfig.getKafkaBootstrapServer());
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,

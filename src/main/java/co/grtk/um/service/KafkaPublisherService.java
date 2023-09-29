@@ -1,7 +1,7 @@
 package co.grtk.um.service;
 
-import co.grtk.um.config.ApplicationConfig;
-import co.grtk.um.dto.UserActivityLogDTO;
+import co.grtk.um.config.AppConfig;
+import co.grtk.ual.dto.UserActivityLogDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,12 +15,12 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class KafkaPublisherService {
     private final KafkaTemplate<String,Object> template;
-    private final ApplicationConfig applicationConfig;
+    private final AppConfig appConfig;
 
     public void logUserActivity(UserActivityLogDTO userActivityLogDTO) {
         try {
             CompletableFuture<SendResult<String, Object>> future =
-                    template.send(applicationConfig.getKafkaTopicName(), userActivityLogDTO);
+                    template.send(appConfig.getKafkaTopicName(), userActivityLogDTO);
             future.whenComplete((result, ex) -> {
                 if (ex == null) {
                    log.info("Sent message=[" + userActivityLogDTO.toString() +
@@ -32,7 +32,7 @@ public class KafkaPublisherService {
             });
 
         } catch (Exception ex) {
-            log.error("ERROR sendLogToTopic:" + applicationConfig.getKafkaTopicName(),  ex);
+            log.error("ERROR sendLogToTopic:" + appConfig.getKafkaTopicName(),  ex);
         }
     }
 }

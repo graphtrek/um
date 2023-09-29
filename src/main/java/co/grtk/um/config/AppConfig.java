@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Component
 @ConfigurationProperties(prefix = "application")
-public class ApplicationConfig {
+public class AppConfig {
 
     String applicationName;
 

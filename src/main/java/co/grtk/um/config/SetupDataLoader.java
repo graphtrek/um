@@ -28,7 +28,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private final UmUserPrivilegeRepository privilegeRepository;
     private final PasswordEncoder passwordEncoder;
     private final TotpService totpService;
-    private final ApplicationConfig applicationConfig;
+    private final AppConfig appConfig;
 
     @Override
     @Transactional
@@ -54,18 +54,18 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         // == create initial user
         String secret = generateSecret();
         var adminUser = createUserIfNotFound(
-                applicationConfig.getAdminUserName(),
-                applicationConfig.getAdminUserEmail(),
-                applicationConfig.getAdminUserPassword(),
+                appConfig.getAdminUserName(),
+                appConfig.getAdminUserEmail(),
+                appConfig.getAdminUserPassword(),
                 Set.of(adminRole),
                 secret,
                 MfaType.APP);
         log.info("Created ADMIN USER {}", adminUser);
 
         var testUser = createUserIfNotFound(
-                applicationConfig.getTestUserName(),
-                applicationConfig.getTestUserEmail(),
-                applicationConfig.getTestUserPassword(),
+                appConfig.getTestUserName(),
+                appConfig.getTestUserEmail(),
+                appConfig.getTestUserPassword(),
                 Set.of(userRole),
                 secret,
                 MfaType.NONE);
@@ -80,7 +80,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             String actualCode = totpService.generateCode(secret, 30);
             boolean isValid = totpService.isValidCode(secret, actualCode,30);
             log.info("Admin:{} secret:{} actualCode:{} isValid:{}",
-                    applicationConfig.getAdminUserName(), secret, actualCode, isValid);
+                    appConfig.getAdminUserName(), secret, actualCode, isValid);
         } catch (Exception e) {
             throw new UmException("Unable to start application", e);
         }

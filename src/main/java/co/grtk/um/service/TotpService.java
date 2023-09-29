@@ -1,6 +1,6 @@
 package co.grtk.um.service;
 
-import co.grtk.um.config.ApplicationConfig;
+import co.grtk.um.config.AppConfig;
 import co.grtk.um.exception.InvalidTwoFactorVerificationCode;
 import dev.samstevens.totp.code.DefaultCodeGenerator;
 import dev.samstevens.totp.code.DefaultCodeVerifier;
@@ -23,13 +23,13 @@ import static dev.samstevens.totp.util.Utils.getDataUriForImage;
 @Slf4j
 public class TotpService {
 
-    private final ApplicationConfig applicationConfig;
+    private final AppConfig appConfig;
     private final TimeProvider timeProvider;
     private final DefaultCodeGenerator codeGenerator;
 
     private final DefaultCodeVerifier verifier;
-    public TotpService(ApplicationConfig applicationConfig) {
-        this.applicationConfig = applicationConfig;
+    public TotpService(AppConfig appConfig) {
+        this.appConfig = appConfig;
         this.timeProvider = new SystemTimeProvider();
         this.codeGenerator = new DefaultCodeGenerator();
         this.verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
@@ -44,7 +44,7 @@ public class TotpService {
         QrData data = new QrData.Builder()
                 .label(userName)
                 .secret(secret)
-                .issuer(applicationConfig.getApplicationName())
+                .issuer(appConfig.getApplicationName())
                 .algorithm(HashingAlgorithm.SHA1)
                 .digits(6)
                 .period(30)

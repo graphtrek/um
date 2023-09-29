@@ -1,6 +1,6 @@
 package co.grtk.um.controller;
 
-import co.grtk.um.dto.UserActivityLogDTO;
+import co.grtk.ual.dto.UserActivityLogDTO;
 import co.grtk.um.service.ActivityLogService;
 import co.grtk.um.service.KafkaPublisherService;
 import lombok.RequiredArgsConstructor;

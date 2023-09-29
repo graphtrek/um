@@ -9,12 +9,12 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    private final ApplicationConfig applicationConfig;
+    private final AppConfig appConfig;
     @Bean
     public RestClient getActivityLogClient() {
         return RestClient
                 .builder()
-                .baseUrl(applicationConfig.getActivityLogBaseUrl())
+                .baseUrl(appConfig.getActivityLogBaseUrl())
                 .build();
     }
 }
