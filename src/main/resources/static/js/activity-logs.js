@@ -22,17 +22,23 @@ $(function () {
                         const activityLog = activityLogs[i];
                         let timeStamp = new Date(activityLog.timeStamp);
                         data.push([
-                            activityLog.eventId,
+                            timeStamp.toLocaleDateString() + ' ' + timeStamp.toLocaleTimeString([], {
+                                hourCycle: 'h23',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: "2-digit"
+                            }),
                             activityLog.clientId,
                             activityLog.appId,
+                            activityLog.activityCode,
                             activityLog.category,
                             activityLog.textParams,
-                            activityLog.activityCode,
-                            timeStamp.toLocaleDateString() + ' ' + timeStamp.toLocaleTimeString()
+                            activityLog.eventId
                         ]);
                     }
                     table = $("#activityLogsTable").DataTable({
                         fixedHeader: true,
+                        order: [[0, 'desc']],
                         scrollX: true,
                         autoWidth: true,
                         scrollY: '50vh',
@@ -45,13 +51,13 @@ $(function () {
                             },
                         ],
                         columns: [
-                            { title: 'eventId' },
+                            { title: 'timeStamp' },
                             { title: 'clientId' },
                             { title: 'appId' },
+                            { title: 'activityCode' },
                             { title: 'category' },
                             { title: 'textParams' },
-                            { title: 'activityCode' },
-                            { title: 'timeStamp' }
+                            { title: 'eventId' }
                         ]
                     });
 

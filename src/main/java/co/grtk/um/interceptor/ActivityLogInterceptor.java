@@ -53,8 +53,8 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
             userActivityLogDTO.setTimeStamp(LocalDateTime.now());
             userActivityLogDTO.setAppId(appConfig.getApplicationName());
             userActivityLogDTO.setEventId(UUID.randomUUID().toString());
-            String activityCode = request.getMethod() + "_" + request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
-            userActivityLogDTO.setCategory("API_CALL");
+            String activityCode = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
+            userActivityLogDTO.setCategory(request.getMethod().toUpperCase());
             userActivityLogDTO.setLogLevel("INFO");
             userActivityLogDTO.setTextParams(authorities.toString());
             userActivityLogDTO.setActivityCode(activityCode.toUpperCase());
