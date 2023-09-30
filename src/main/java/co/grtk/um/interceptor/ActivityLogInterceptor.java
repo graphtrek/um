@@ -31,7 +31,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // Capture start time of API call
         long startTime = System.currentTimeMillis();
-        log.info("Request received for URL: " + request.getRequestURI());
+        log.debug("Request received for URL: " + request.getRequestURI());
         request.setAttribute("startTime", startTime);
         return true;
     }
@@ -61,7 +61,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
             userActivityLogDTO.setResultCode(String.valueOf(response.getStatus()));
             userActivityLogDTO.setToken(request.getHeader("Authorization"));
             kafkaPublisherService.logUserActivityAsync(userActivityLogDTO);
-            log.info("Request processing completed for URL: " + request.getRequestURI() + ". Total Time Taken: " + timeTaken + "ms user: currentPrincipalName");
+            log.debug("Request processing completed for URL: " + request.getRequestURI() + ". Total Time Taken: " + timeTaken + "ms user: currentPrincipalName");
         }
     }
 }

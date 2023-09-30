@@ -32,7 +32,9 @@ $(function () {
                         ]);
                     }
                     table = $("#activityLogsTable").DataTable({
-                        fixedHeader: false,
+                        fixedHeader: true,
+                        scrollX: true,
+                        autoWidth: true,
                         scrollY: '50vh',
                         data: data,
                         columnDefs: [

@@ -28,15 +28,17 @@ public class KafkaPublisherService {
 
     public void logUserActivity(UserActivityLogDTO userActivityLogDTO) {
         try {
+            long start = System.currentTimeMillis();
             CompletableFuture<SendResult<String, Object>> future =
                     template.send(appConfig.getKafkaTopicName(), userActivityLogDTO);
             future.whenComplete((result, ex) -> {
+                long elapsed = System.currentTimeMillis() - start;
                 if (ex == null) {
                    log.info("Sent message=[" + userActivityLogDTO.toString() +
-                            "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                            "] with offset=[" + result.getRecordMetadata().offset() + "] elapsed:" + elapsed);
                 } else {
                     log.error("Unable to send message=[" +
-                            userActivityLogDTO.toString() + "]", ex.getMessage());
+                            userActivityLogDTO.toString() + "] elapsed:" + elapsed, ex.getMessage());
                 }
             });
 
