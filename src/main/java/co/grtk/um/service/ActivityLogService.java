@@ -18,6 +18,7 @@ public class ActivityLogService {
     public List<UserActivityLogDTO> listActivityLogs() {
         return activityLogClient.get()
                 .uri("/listUserActivity")
+                .header("Authorization","Basic X2VzbF9pbnRlcm5hbF93czpfZXNsX2ludGVybmFsX3dz")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<UserActivityLogDTO>>() {});
     }
