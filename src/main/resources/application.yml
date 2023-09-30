@@ -37,6 +37,12 @@ spring:
           auth: true
           starttls:
             enable: true
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 64
+        queue-capacity: 16
 
 rsa:
   private-key: classpath:certs/private.pem

@@ -28,6 +28,9 @@ kafka-server-start ../etc/kafka/kraft/server.properties
 # Create Topic
 kafka-topics --bootstrap-server localhost:9092 --create --topic ActivityLog --partitions 1 --replication-factor 1
 
+# Delete Topic
+kafka-topics --bootstrap-server localhost:9092 --delete --topic ActivityLog
+
 # View topic contents
 kcat -b localhost:9092 -t ActivityLog
 

@@ -1,14 +1,17 @@
 package co.grtk.um.service;
 
-import co.grtk.um.config.AppConfig;
 import co.grtk.ual.dto.UserActivityLogDTO;
+import co.grtk.um.config.AppConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
+
+import static java.lang.Thread.currentThread;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,6 +19,12 @@ import java.util.concurrent.CompletableFuture;
 public class KafkaPublisherService {
     private final KafkaTemplate<String,Object> template;
     private final AppConfig appConfig;
+
+    @Async
+    public void logUserActivityAsync(UserActivityLogDTO userActivityLogDTO) throws InterruptedException {
+        log.info("Async thread virtual:" + currentThread().isVirtual());
+        logUserActivity(userActivityLogDTO);
+    }
 
     public void logUserActivity(UserActivityLogDTO userActivityLogDTO) {
         try {
