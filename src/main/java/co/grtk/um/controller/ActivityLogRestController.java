@@ -1,14 +1,12 @@
 package co.grtk.um.controller;
 
 import co.grtk.ual.dto.UserActivityLogDTO;
+import co.grtk.ual.dto.UserActivityLogRequestDTO;
 import co.grtk.um.service.ActivityLogService;
 import co.grtk.um.service.KafkaPublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +19,8 @@ public class ActivityLogRestController {
 
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER') or hasAuthority('SCOPE_ROLE_ADMIN')")
     @GetMapping("/api/listUserActivity")
-    public List<UserActivityLogDTO> listActivityLogs() {
-        return activityLogService.listActivityLogs();
+    public List<UserActivityLogDTO> listActivityLogs(@ModelAttribute UserActivityLogRequestDTO dto) {
+        return activityLogService.listActivityLogs(dto);
     }
 
     @PostMapping("/api/logUserActivity")
