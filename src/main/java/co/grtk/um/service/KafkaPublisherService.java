@@ -21,7 +21,7 @@ public class KafkaPublisherService {
     private final AppConfig appConfig;
 
     @Async
-    public void logUserActivityAsync(UserActivityLogDTO userActivityLogDTO) throws InterruptedException {
+    public void logUserActivityAsync(UserActivityLogDTO userActivityLogDTO)  {
         log.info("Async thread virtual:" + currentThread().isVirtual());
         logUserActivity(userActivityLogDTO);
     }

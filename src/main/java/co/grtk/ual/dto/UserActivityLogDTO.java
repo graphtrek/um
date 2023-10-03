@@ -18,4 +18,5 @@ public class UserActivityLogDTO {
     private String activityCode;
     private String resultCode;
     private String logLevel;
+    private int elapsed;
 }

@@ -33,7 +33,9 @@ $(function () {
                             activityLog.activityCode,
                             activityLog.category,
                             activityLog.textParams,
+                            activityLog.elapsed,
                             activityLog.eventId
+
                         ]);
                     }
                     table = $("#activityLogsTable").DataTable({
@@ -57,6 +59,7 @@ $(function () {
                             { title: 'activityCode' },
                             { title: 'category' },
                             { title: 'textParams' },
+                            { title: 'elapsed' },
                             { title: 'eventId' }
                         ]
                     });
