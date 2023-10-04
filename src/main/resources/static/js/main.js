@@ -142,7 +142,7 @@ function refreshToken() {
     function setNav() {
       $('#navbar li a').removeClass('active');
 
-      var path = location.pathname;
+      let path = location.pathname;
       path = path.replace(/\/$/, "");
       path = decodeURIComponent(path).trim();
       console.log('path: ', path);
@@ -150,7 +150,7 @@ function refreshToken() {
         $("#navbar li a").filter(":first").addClass('active');
       } else {
         $("#navbar li a").each(function () {
-          var href = $(this).attr('href');
+          let href = $(this).attr('href');
           if (href.length > 1 && path.indexOf(href) !== -1) {
             $(this).addClass('active');
           }
@@ -204,8 +204,9 @@ function refreshToken() {
       if(typeof initNavbar === 'function')
         initNavbar();
 
-      const token = localStorage.getItem("token");
+
       $("#logout").on("click", function (event) {
+        const token = localStorage.getItem("token");
         $.ajax({
           url: "/api/logout",
           method: "POST",
