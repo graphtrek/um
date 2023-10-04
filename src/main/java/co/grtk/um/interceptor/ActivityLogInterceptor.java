@@ -3,6 +3,7 @@ package co.grtk.um.interceptor;
 import co.grtk.ual.dto.UserActivityLogDTO;
 import co.grtk.um.config.AppConfig;
 import co.grtk.um.service.KafkaPublisherService;
+import co.grtk.um.service.RequestContextService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
@@ -26,6 +26,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
 
     private final KafkaPublisherService kafkaPublisherService;
     private final AppConfig appConfig;
+    public final RequestContextService requestContextService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -33,6 +34,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
         long startTime = System.currentTimeMillis();
         log.debug("Request received for URL: " + request.getRequestURI());
         request.setAttribute("startTime", startTime);
+        requestContextService.setContextFromRequest(request);
         return true;
     }
 
@@ -61,6 +63,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
             userActivityLogDTO.setResultCode(String.valueOf(response.getStatus()));
             userActivityLogDTO.setToken(request.getHeader("Authorization"));
             kafkaPublisherService.logUserActivityAsync(userActivityLogDTO);
+            requestContextService.clearContext();
             log.debug("Request processing completed for URL: " + request.getRequestURI() + ". Total Time Taken: " + timeTaken + "ms user: currentPrincipalName");
         }
     }
