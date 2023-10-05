@@ -16,6 +16,7 @@ public class RequestContextService {
         protected Map<String,String> headers;
         protected String uri;
         protected String name;
+        protected long started = System.currentTimeMillis();
     }
 
     private static final InheritableThreadLocal<RequestContext> requestContext = new InheritableThreadLocal<>() {
@@ -29,6 +30,22 @@ public class RequestContextService {
         requestContext.get().name = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
         requestContext.get().uri = request.getRequestURI();
         requestContext.get().headers = getHeadersInfo(request);
+    }
+
+    public String getHeader(String headerName) {
+        return requestContext.get().headers.get(headerName);
+    }
+
+    public String getUri() {
+        return requestContext.get().uri;
+    }
+
+    public long elapsed() {
+        return System.currentTimeMillis() - requestContext.get().started;
+    }
+
+    public String name() {
+        return requestContext.get().name;
     }
 
     public void clearContext() {

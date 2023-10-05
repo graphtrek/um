@@ -31,9 +31,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // Capture start time of API call
-        long startTime = System.currentTimeMillis();
         log.debug("Request received for URL: " + request.getRequestURI());
-        request.setAttribute("startTime", startTime);
         requestContextService.setContextFromRequest(request);
         return true;
     }
@@ -41,9 +39,7 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // Capture end time of API call and calculate response time
-        long startTime = (long) request.getAttribute("startTime");
-        long endTime = System.currentTimeMillis();
-        long timeTaken = endTime - startTime;
+
         String token = request.getHeader("Authorization");
         if(StringUtils.isNotBlank(token) &&  request.getRequestURI().startsWith("/api/")) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -63,8 +59,10 @@ public class ActivityLogInterceptor implements AsyncHandlerInterceptor {
             userActivityLogDTO.setResultCode(String.valueOf(response.getStatus()));
             userActivityLogDTO.setToken(request.getHeader("Authorization"));
             kafkaPublisherService.logUserActivityAsync(userActivityLogDTO);
+            long elapsed = requestContextService.elapsed();;
             requestContextService.clearContext();
-            log.debug("Request processing completed for URL: " + request.getRequestURI() + ". Total Time Taken: " + timeTaken + "ms user: currentPrincipalName");
+            log.info("Request processing completed for URL: {}. Total Time Taken: {} ms user: {}",
+                    request.getRequestURI() , elapsed , currentPrincipalName);
         }
     }
 }
