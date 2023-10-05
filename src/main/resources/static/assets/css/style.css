@@ -690,3 +690,31 @@ section {
   font-size: 13px;
   color: #012970;
 }
+
+/*--------------------------------------------------------------
+# DataTables
+--------------------------------------------------------------*/
+
+div.dt-button-collection {
+  width: 400px;
+}
+
+div.dt-button-collection button.dt-button {
+  display: inline-block;
+  width: 32%;
+}
+div.dt-button-collection button.buttons-colvis {
+  display: inline-block;
+  width: 49%;
+}
+div.dt-button-collection h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: 100;
+  border-bottom: 1px solid rgba(150, 150, 150, 0.5);
+  font-size: 1em;
+  padding: 0 1em;
+}
+div.dt-button-collection h3.not-top-heading {
+  margin-top: 10px;
+}

@@ -40,7 +40,12 @@ public class UmUserService {
             userDTO.setStatus(umUser.getStatus());
             userDTO.setName(umUser.getName());
             userDTO.setEmail(umUser.getEmail());
-            userDTO.setPhone(umUser.getPhone());
+
+            if(StringUtils.isBlank(umUser.getPhone()))
+                userDTO.setPhone("");
+            else
+                userDTO.setPhone(umUser.getPhone());
+
             userDTO.setMfaType(umUser.getMfaType());
             userDTO.setRoles(
                     umUser.getRoles().stream()

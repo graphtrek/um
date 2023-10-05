@@ -32,8 +32,8 @@ $(function () {
                             activityLog.appId,
                             activityLog.activityCode,
                             activityLog.category,
-                            activityLog.textParams,
                             activityLog.elapsed,
+                            activityLog.textParams,
                             activityLog.eventId
 
                         ]);
@@ -41,6 +41,7 @@ $(function () {
                     table = $("#activityLogsTable").DataTable({
                         fixedHeader: true,
                         order: [[0, 'desc']],
+                        lengthMenu: [10, 25, 50, 100, 500, 1000, 5000],
                         scrollX: true,
                         autoWidth: true,
                         scrollY: '50vh',
@@ -58,10 +59,26 @@ $(function () {
                             { title: 'appId' },
                             { title: 'activityCode' },
                             { title: 'category' },
-                            { title: 'textParams' },
                             { title: 'elapsed' },
+                            { title: 'textParams' },
                             { title: 'eventId' }
+                        ],
+                        dom: 'lifrtpB',
+                        buttons: [
+                            {
+                                extend: 'collection',
+                                className: 'custom-html-collection',
+                                buttons: [
+                                    '<h3>Export</h3>',
+                                    'pdf',
+                                    'csv',
+                                    'excel',
+                                    '<h3 class="not-top-heading">Column Visibility</h3>',
+                                    'columnsToggle'
+                                ]
+                            }
                         ]
+
                     });
 
                 },

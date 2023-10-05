@@ -34,6 +34,7 @@ $(function () {
                     }
                     table = $("#usersTable").DataTable({
                         fixedHeader: false,
+                        lengthMenu: [10, 25, 50, 100, 500, 1000],
                         scrollY: '50vh',
                         data: data,
                         columnDefs: [
@@ -204,5 +205,7 @@ $(function () {
         $('#userRoleDropDown li').click(function(event) {
             dropdownSelector(this);
         });
+
+
     });
 });
