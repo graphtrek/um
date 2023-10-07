@@ -25,5 +25,26 @@ Content-Type: application/json
   "logLevel": "INFO"
 }
 
+### Send POST request with json body
+POST https://um.graphtrek.co/api/process/script/lb/um/serverscript/usersload.js HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9,hu;q=0.8,la;q=0.7
+Cache-Control: no-cache
+Connection: keep-alive
+Content-Length: 1316
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+#Cookie: JSESSIONID=3Si9q3XrAQP2Nh_kZmEVhuIssMMHSLYMCTfCSM39
+Host: um.graphtrek.co
+Origin: https://um.graphtrek.co
+Pragma: no-cache
+Referer: https://um.graphtrek.co/users.html
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-origin
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36
+sec-ch-ua: "Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "macOS"
 
 

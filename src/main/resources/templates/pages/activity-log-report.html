@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}">
+
+<th:block layout:fragment="content">
+
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div id="errorMessage" class="alert alert-danger hidden" role="alert">
+                </div>
+            </div>
+            <div class="row overflow-auto" style="max-height: 600px;">
+                <div id="reportSection"></div>
+            </div>
+        </div>
+
+    </section>
+
+</th:block>
+
+<th:block layout:fragment="page_scripts">
+    <script th:src="@{/js/activity-log-report.js}"></script>
+    <script th:src="@{/js/navbar.js}"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pivottable/2.22.0/pivot.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pivottable/2.22.0/pivot.min.js"></script>
+    <!--
+            <script src="//cdnjs.cloudflare.com/ajax/libs/pivottable/2.20.0/export_renderers.min.js"></script>
+    -->
+    <script src="//cdn.plot.ly/plotly-basic-latest.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/plotly_renderers.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.0/xlsx.full.min.js"></script>
+
+</th:block>
+
+</html>

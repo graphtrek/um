@@ -10,7 +10,14 @@
         </ul>
     </li>
     <li th:if="${admin} == true"><a class="nav-link" href="/users">Users</a></li>
-    <li><a class="nav-link" id="activityLogs" href="/activity-logs">ActivityLogs</a></li>
+
+    <li th:if="${admin} == true" class="dropdown"><a href="#"><span>ActivityLogs</span> <i class="bi bi-chevron-down"></i></a>
+        <ul>
+            <li><a class="nav-link" id="activityLogs" href="/activity-logs">ActivityLogs</a></li>
+            <li><a class="nav-link" id="activityLogReport" href="/activity-log-report">ActivityLogReport</a></li>
+        </ul>
+    </li>
+
     <li><a class="nav-link" id="logout" href="#">Logout</a></li>
 </ul>
 <i class="bi bi-list mobile-nav-toggle"></i>
