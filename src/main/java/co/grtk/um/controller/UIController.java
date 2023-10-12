@@ -28,6 +28,7 @@ public class UIController {
     static final String VIEW_CHANGE_PASSWORD = "pages/change-password";
     static final String VIEW_ACTIVITY_LOGS = "pages/activity-logs";
     static final String VIEW_ACTIVITY_LOG_REPORT = "pages/activity-log-report";
+    static final String VIEW_LIST_BEANS = "pages/list-beans";
     static final String ERROR = "error";
     static final String PAGE = "page";
     static final String ADMIN = "admin";
@@ -122,6 +123,13 @@ public class UIController {
         model.addAttribute(ERROR, false);
         model.addAttribute(PAGE, "activity-log-report");
         return VIEW_ACTIVITY_LOG_REPORT;
+    }
+
+    @GetMapping("/list-beans")
+    public String getViewListBeans(Model model) {
+        model.addAttribute(ERROR, false);
+        model.addAttribute(PAGE, "list-beans");
+        return VIEW_LIST_BEANS;
     }
 
     @GetMapping("/navbar")

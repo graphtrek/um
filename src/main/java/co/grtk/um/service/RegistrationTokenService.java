@@ -25,12 +25,12 @@ public class RegistrationTokenService {
     private final UmUserRepository umUserRepository;
     private static final int TIME_PERIOD_MINUTES = 30;
     @Transactional
-    public void validateToken(String token) {
+    public void validateRegistrationToken(String token) {
         log.info("Received token: {}", token);
         RegistrationToken registrationToken =
                 registrationTokenRepository.findByToken(token).
                         orElseThrow(() ->
-                                new InvalidPasswordResetTokenException("Invalid verification token:" + token));
+                                new InvalidRegistrationTokenException("Invalid verification token:" + token));
 
         UmUser umUser = registrationToken.getUmUser();
 

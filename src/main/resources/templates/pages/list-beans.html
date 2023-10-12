@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layout}">
+
+<th:block layout:fragment="content">
+
+    <section id="hero" class="hero d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div id="errorMessage" class="alert alert-danger hidden" role="alert">
+                </div>
+            </div>
+            <div class="row display" id="tableSection">
+                <table id="beansTable" class="nowrap style='width:100%' display"></table>
+            </div>
+        </div>
+
+    </section>
+
+</th:block>
+
+<th:block layout:fragment="page_scripts">
+    <script type="text/javascript" th:src="@{/js/list-beans.js}"></script>
+    <script type="text/javascript" th:src="@{/js/navbar.js}"></script>
+</th:block>
+
+</html>

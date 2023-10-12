@@ -95,7 +95,7 @@ $(function () {
                 type: "GET",
                 dataType : "text",
                 contentType: "application/json; charset=utf-8",
-                url: "/api/resendToken",
+                url: "/api/resendRegistrationToken",
                 data: {
                     token: localStorage.getItem("verificationToken")
                 },

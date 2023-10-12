@@ -22,15 +22,15 @@ public class RegistrationController {
     private static final String ERROR = "error";
 
 
-    @GetMapping("/api/validateToken")
-    public String validateToken(@ModelAttribute("token") String token, Model model) {
+    @GetMapping("/api/validateRegistrationToken")
+    public String validateRegistrationToken(@ModelAttribute("token") String token, Model model) {
         log.info("validateToken token {}", token);
         model.addAttribute("page", "login");
         model.addAttribute("secured", false);
         model.addAttribute("token", token);
         model.addAttribute(ERROR, false);
         try {
-            registrationTokenService.validateToken(token);
+            registrationTokenService.validateRegistrationToken(token);
         } catch (InvalidRegistrationTokenException e) {
             log.error("InvalidVerificationToken :" + token);
             model.addAttribute(ERROR, true);

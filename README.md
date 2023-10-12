@@ -23,6 +23,9 @@ These additional references should also help you:
 # Start Kafka without ZooKeeper  
 kafka-storage random-uuid 
 kafka-storage format -t <uuid> -c ../etc/kafka/kraft/server.properties
+
+kafka-storage format -t C3v5d30mSC-5Loi-R6c-UQ -c ../etc/kafka/kraft/server.properties
+
 kafka-server-start ../etc/kafka/kraft/server.properties
 
 # Create Topic

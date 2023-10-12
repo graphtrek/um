@@ -206,6 +206,7 @@ function refreshToken() {
 
 
       $("#logout").on("click", function (event) {
+        refreshToken();
         const token = localStorage.getItem("token");
         $.ajax({
           url: "/api/logout",

@@ -1,12 +1,13 @@
 <ul>
     <li><a class="nav-link" href="/">Home</a></li>
     <li><a class="nav-link" href="/profile">Profile</a></li>
-    <li th:if="${admin} == true" class="dropdown"><a href="#"><span>Tokens</span> <i class="bi bi-chevron-down"></i></a>
+    <li th:if="${admin} == true" class="dropdown"><a href="#"><span>Admin</span> <i class="bi bi-chevron-down"></i></a>
         <ul>
-            <li th:if="${admin} == true"><a href="/jwt-tokens">JWT</a></li>
-            <li th:if="${admin} == true"><a href="/refresh-tokens">Refresh</a></li>
-            <li th:if="${admin} == true"><a href="/registration-tokens">Registration</a></li>
-            <li th:if="${admin} == true"><a href="/password-reset-tokens">PasswordReset</a></li>
+            <li th:if="${admin} == true"><a href="/list-beans">List Beans</a></li>
+            <li th:if="${admin} == true"><a href="/jwt-tokens">Active JWT Tokens</a></li>
+            <li th:if="${admin} == true"><a href="/refresh-tokens">Refresh Tokens</a></li>
+            <li th:if="${admin} == true"><a href="/registration-tokens">Registration Tokens</a></li>
+            <li th:if="${admin} == true"><a href="/password-reset-tokens">PasswordReset Tokens</a></li>
         </ul>
     </li>
     <li th:if="${admin} == true"><a class="nav-link" href="/users">Users</a></li>

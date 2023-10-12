@@ -32,19 +32,19 @@ public class RegistrationRestController {
                 new MailEvent(
                         MailType.REGISTRATION,
                         registrationToken.getUmUser(),
-                        applicationUrl(request) + "/api/validateToken?token="+ registrationToken.getToken()));
+                        applicationUrl(request) + "/api/validateRegistrationToken?token="+ registrationToken.getToken()));
         return new ResponseEntity<>(registrationToken.getToken(), HttpStatus.OK);
     }
 
-    @GetMapping("/api/resendToken")
-    public ResponseEntity<String> resendToken(@RequestParam("token") String oldToken,final HttpServletRequest request) {
+    @GetMapping("/api/resendRegistrationToken")
+    public ResponseEntity<String> resendRegistrationToken(@RequestParam("token") String oldToken, final HttpServletRequest request) {
         log.info("resendToken application url: {}", applicationUrl(request));
         RegistrationToken registrationToken = registrationTokenService.generateNewRegistrationToken(oldToken);
         publisher.publishEvent(
                 new MailEvent(
                     MailType.REGISTRATION,
                     registrationToken.getUmUser(),
-                        applicationUrl(request) + "/api/validateToken?token="+ registrationToken.getToken()));
+                        applicationUrl(request) + "/api/validateRegistrationToken?token="+ registrationToken.getToken()));
         return new ResponseEntity<>(registrationToken.getToken(), HttpStatus.OK);
     }
 

@@ -28,14 +28,16 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationToken registerUser(UmUser umUser) throws UserAlreadyExistsException {
-        umUserRepository.findByEmail(umUser.getEmail()).ifPresent(user1 -> {
+        umUserRepository.findByEmailAndStatus(umUser.getEmail(), UmUserStatus.REGISTERED).ifPresent(user1 -> {
             throw new UserAlreadyExistsException("User Already Exists " + umUser.getEmail());
         });
 
         UmUserRole userRole = umUserRoleRepository.findByName("ROLE_USER").orElseThrow(
                 () -> new UmException("Inconsistent Database UmUserRole USER does not exists")
         );
-
+        umUserRepository.findByEmail(umUser.getEmail()).ifPresent(dbUser  -> {
+            umUser.setEmail(dbUser.getEmail()); umUser.setId(dbUser.getId());
+        });
         umUser.setPassword(passwordEncoder.encode(umUser.getPassword()));
         umUser.setRoles(Set.of(userRole));
         umUser.setStatus(UmUserStatus.PENDING);

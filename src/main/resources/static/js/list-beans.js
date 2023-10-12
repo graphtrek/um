@@ -1,12 +1,12 @@
 $(function () {
     "use strict";
     $(document).ready(function() {
-        console.log('activity-logs.js loaded');
+        console.log('list-beans.js loaded');
         refreshToken();
         const token = localStorage.getItem("token");
         let table;
         $.ajax({
-            url: "/api/listUserActivity",
+            url: "/api/list-beans",
             dataType : "text",
             contentType: "application/json; charset=utf-8",
             method: "GET",
@@ -15,31 +15,32 @@ $(function () {
             },
             statusCode: {
                 200: function(response) {
-                    let activityLogs = JSON.parse(response);
-                    console.log("HTTP 200 OK activityLogs:", activityLogs);
+                    let beans = JSON.parse(response);
+                    console.log("HTTP 200 OK activityLogs:", beans);
                     let data = [];
-                    for (let i= 0; i < activityLogs.length; i++) {
-                        const activityLog = activityLogs[i];
-                        let timeStamp = new Date(activityLog.timeStamp);
+                    for (let i= 0; i < beans.length; i++) {
+                        const bean = beans[i];
+                        let start = new Date(bean.start);
+                        let end = new Date(bean.end);
+
                         data.push([
-                            timeStamp.toLocaleDateString() + ' ' + timeStamp.toLocaleTimeString([], {
+                            bean.elapsed,
+                            start.toLocaleDateString() + ' ' + start.toLocaleTimeString([], {
                                 hourCycle: 'h23',
                                 hour: '2-digit',
                                 minute: '2-digit',
                                 second: "2-digit"
                             }),
-                            activityLog.clientId,
-                            activityLog.appId,
-                            activityLog.activityCode,
-                            activityLog.category,
-                            activityLog.elapsed,
-                            activityLog.resultCode,
-                            activityLog.textParams,
-                            activityLog.eventId
-
+                            end.toLocaleDateString() + ' ' + end.toLocaleTimeString([], {
+                                hourCycle: 'h23',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: "2-digit"
+                            }),
+                            bean.beanName
                         ]);
                     }
-                    table = $("#activityLogsTable").DataTable({
+                    table = $("#beansTable").DataTable({
                         fixedHeader: true,
                         order: [[0, 'desc']],
                         lengthMenu: [10, 25, 50, 100, 500, 1000, 5000],
@@ -55,15 +56,10 @@ $(function () {
                             },
                         ],
                         columns: [
-                            { title: 'timeStamp' },
-                            { title: 'clientId' },
-                            { title: 'appId' },
-                            { title: 'activityCode' },
-                            { title: 'category' },
-                            { title: 'elapsed' },
-                            { title: 'resultCode'},
-                            { title: 'textParams' },
-                            { title: 'eventId' }
+                            { title: 'Initialization time (ms)' },
+                            { title: 'Start' },
+                            { title: 'End' },
+                            { title: 'BeanName' }
                         ],
                         dom: 'lifrtpB',
                         buttons: [
