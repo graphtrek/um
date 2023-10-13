@@ -28,6 +28,9 @@ kafka-storage format -t C3v5d30mSC-5Loi-R6c-UQ -c ../etc/kafka/kraft/server.prop
 
 kafka-server-start ../etc/kafka/kraft/server.properties
 
+# Delete topic
+kafka-topics --bootstrap-server localhost:9092 --topic ActivityLog --delete
+
 # Create Topic
 kafka-topics --bootstrap-server localhost:9092 --create --topic ActivityLog --partitions 1 --replication-factor 1
 

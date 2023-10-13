@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class UserActivityLogDTO {
-    private String id;
     private String eventId;
     private String token;
     private String clientId;

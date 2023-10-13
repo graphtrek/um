@@ -12,8 +12,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = UmApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class UmApplicationTests {
 

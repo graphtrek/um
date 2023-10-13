@@ -33,7 +33,7 @@ $(function () {
         let reportDefaultConfigTimesheet = {
             renderers: renderers,
             //cols: ['partnerCategory'],
-            rows: ['activityCode','clientId'],
+            rows: ['activityCode','appId'],
             aggregators: {
                 "Count":      function() { return tpl.count()() },
                 "Sum of elapsed":      function() { return tpl.sum()(["elapsed"]) }
