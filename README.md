@@ -1,5 +1,7 @@
 # Getting Started
 
+![ActivityLog_to_Kafka_v01.drawio.png](ActivityLog_to_Kafka_v01.drawio.png)
+
 ## Links
 
 These additional references should also help you:

@@ -41,7 +41,7 @@ $(function () {
             rendererName: 'Bar Chart',
             //rendererName: "TSV Export",
             aggregatorName: 'Count',
-            hiddenFromDragDrop: ['id','timeStamp','eventId'],
+            hiddenFromDragDrop: ['id','timeStamp','eventId','textParams','correlationId'],
             hiddenFromAggregators: ['id'],
             vals: ['eventId'],
             //aggregator: Sum(intFormat)(["hours"]),
