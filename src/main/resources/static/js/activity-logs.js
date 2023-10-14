@@ -29,6 +29,7 @@ $(function () {
                                 second: "2-digit"
                             }),
                             activityLog.clientId,
+                            activityLog.text,
                             activityLog.appId,
                             activityLog.activityCode,
                             activityLog.category,
@@ -57,6 +58,7 @@ $(function () {
                         columns: [
                             { title: 'timeStamp' },
                             { title: 'clientId' },
+                            { title: 'text'},
                             { title: 'appId' },
                             { title: 'activityCode' },
                             { title: 'category' },
