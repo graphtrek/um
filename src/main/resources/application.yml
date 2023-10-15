@@ -20,6 +20,12 @@ spring:
   h2:
     console:
       enabled: true
+  cache:
+    type: jcache
+    jcache:
+      provider: com.hazelcast.client.cache.HazelcastClientCachingProvider
+  hazelcast:
+    config: classpath:hazelcast-client.yml
   datasource:
     #url: jdbc:h2:mem:um
     url: jdbc:h2:file:./data/h2/um1;AUTO_SERVER=TRUE
@@ -63,6 +69,8 @@ logging:
 
 application:
   applicationName: UserManager
+  cache:
+    enabled: true
 
   adminUserName: ${ADMIN_USER_NAME}
   adminUserEmail: ${ADMIN_USER_EMAIL}
