@@ -1,4 +1,4 @@
-    console.log('profile.js loaded');
+    console.log('navbar.js loaded');
 
     function initNavbar() {
         refreshToken();
