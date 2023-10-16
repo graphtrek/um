@@ -1,0 +1,93 @@
+server:
+  compression:
+    enabled: true
+  port : 8081
+  shutdown: graceful
+
+spring:
+  config:
+    import: classpath:env.properties
+  threads:
+    virtual:
+      enabled: true
+  thymeleaf:
+    cache: false
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+  cache:
+    type: jcache
+    jcache:
+      provider: com.hazelcast.client.cache.HazelcastClientCachingProvider
+  hazelcast:
+    config: classpath:hazelcast-client-remote.yml
+  datasource:
+    #url: jdbc:h2:mem:um
+    url: jdbc:h2:file:./data/h2/um1;AUTO_SERVER=TRUE
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 64
+        queue-capacity: 16
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+
+# Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          client: DEBUG
+
+
+application:
+  applicationName: UserManager
+  cache:
+    enabled: true
+
+  adminUserName: ${ADMIN_USER_NAME}
+  adminUserEmail: ${ADMIN_USER_EMAIL}
+  adminUserPassword: ${ADMIN_USER_PASSWORD}
+
+  testUserName: ${TEST_USER_NAME}
+  testUserEmail: ${TEST_USER_EMAIL}
+  testUserPassword: ${TEST_USER_PASSWORD}
+
+  activityLogBaseUrl: http://localhost:8082/api
+
+  kafkaBootstrapServer: 192.168.0.31:9092
+  kafkaTopicName: ActivityLog
+  kafkaTopicNumPartitions: 1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: '*'
