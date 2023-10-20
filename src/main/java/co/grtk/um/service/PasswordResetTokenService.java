@@ -26,7 +26,7 @@ public class PasswordResetTokenService {
     }
 
     @Transactional
-    public PasswordResetToken generateNewPasswordResetTokenFor(String oldToken) {
+    public PasswordResetToken resendNewResetTokenForUser(String oldToken) {
         PasswordResetToken passwordResetToken =
                 passwordResetTokenRepository.
                         findByToken(oldToken).orElseThrow(() -> new InvalidPasswordResetTokenException(TOKEN_NOT_FOUND));

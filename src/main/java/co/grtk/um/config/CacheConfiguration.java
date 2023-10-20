@@ -36,12 +36,4 @@ public class CacheConfiguration {
     public CacheResultAspect getCacheResultAspect(IMap<String, GeneratedCacheKey> masterKeysMap) {
         return new CacheResultAspect(masterKeysMap);
     }
-
-    @Bean
-    public ClientConfig clientConfig() {
-        ClientConfig clientConfig = ClientConfig.load();
-        clientConfig.setClassLoader(TstGeneratedCacheKey.class.getClassLoader());
-        return clientConfig;
-    }
-
 }

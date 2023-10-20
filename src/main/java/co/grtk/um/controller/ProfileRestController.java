@@ -2,6 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.dto.ProfileDTO;
 import co.grtk.um.service.ProfileService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import java.security.Principal;
 @Slf4j
 @RestController
 @AllArgsConstructor
+@SecurityRequirement(name = "um")
 public class ProfileRestController {
     private final ProfileService profileService;
 

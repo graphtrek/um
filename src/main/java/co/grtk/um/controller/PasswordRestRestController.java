@@ -46,7 +46,7 @@ public class PasswordRestRestController {
     @GetMapping("/api/resendPasswordResetToken")
     public ResponseEntity<String> resendPasswordToken(@RequestParam("token") String oldToken, final HttpServletRequest request) {
         log.info("resendPasswordResetToken oldToken: {} applicationUrl: {}",oldToken, applicationUrl(request));
-        PasswordResetToken passwordRestToken = passwordResetTokenService.generateNewPasswordResetTokenFor(oldToken);
+        PasswordResetToken passwordRestToken = passwordResetTokenService.resendNewResetTokenForUser(oldToken);
         publisher.publishEvent(
                 new MailEvent(
                         MailType.PASSWORD_RESET,

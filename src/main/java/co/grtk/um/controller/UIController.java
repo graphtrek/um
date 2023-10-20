@@ -1,6 +1,7 @@
 package co.grtk.um.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -132,6 +133,7 @@ public class UIController {
         return VIEW_LIST_BEANS;
     }
 
+    @SecurityRequirement(name = "um")
     @GetMapping("/navbar")
     public String getNavbar(Authentication authentication, Model model) {
         model.addAttribute(ERROR, false);

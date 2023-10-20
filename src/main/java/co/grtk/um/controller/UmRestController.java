@@ -2,6 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.dto.BeanInitDTO;
 import co.grtk.um.service.LoggerBeanPostProcessor;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
+@SecurityRequirement(name = "um")
 public class UmRestController {
 
     private final LoggerBeanPostProcessor loggerBeanPostProcessor;

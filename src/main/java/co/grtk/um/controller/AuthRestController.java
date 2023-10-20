@@ -3,6 +3,7 @@ package co.grtk.um.controller;
 import co.grtk.um.dto.TokenRequest;
 import co.grtk.um.dto.TokenResponse;
 import co.grtk.um.manager.TokenManager;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,7 @@ public class AuthRestController {
     }
 
 
+    @SecurityRequirement(name = "um")
     @PostMapping("/api/logout")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_USER') or hasAuthority('SCOPE_ROLE_ADMIN')")
     public ResponseEntity<String> logoutUser(Authentication authentication) {

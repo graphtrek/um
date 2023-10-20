@@ -8,6 +8,7 @@ import co.grtk.um.service.JwtTokenService;
 import co.grtk.um.service.PasswordResetTokenService;
 import co.grtk.um.service.RefreshTokenService;
 import co.grtk.um.service.RegistrationTokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @AllArgsConstructor
+@SecurityRequirement(name = "um")
 public class TokensRestController {
     public final JwtTokenService jwtTokenService;
     public final PasswordResetTokenService passwordResetTokenService;

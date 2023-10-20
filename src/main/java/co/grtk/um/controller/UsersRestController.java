@@ -2,6 +2,7 @@ package co.grtk.um.controller;
 
 import co.grtk.um.dto.UserDTO;
 import co.grtk.um.service.UmUserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
+@SecurityRequirement(name = "um")
 public class UsersRestController {
     public final UmUserService umUserService;
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")

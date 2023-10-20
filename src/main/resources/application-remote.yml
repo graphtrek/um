@@ -24,8 +24,6 @@ spring:
     type: jcache
     jcache:
       provider: com.hazelcast.client.cache.HazelcastClientCachingProvider
-  hazelcast:
-    config: classpath:hazelcast-client-remote.yml
   datasource:
     #url: jdbc:h2:mem:um
     url: jdbc:h2:file:./data/h2/um1;AUTO_SERVER=TRUE
@@ -43,6 +41,8 @@ spring:
           auth: true
           starttls:
             enable: true
+  hazelcast:
+    config: classpath:hazelcast-remote-client.yml
   task:
     execution:
       pool:

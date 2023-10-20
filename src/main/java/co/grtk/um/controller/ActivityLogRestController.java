@@ -5,6 +5,7 @@ import co.grtk.ual.dto.UserActivityLogRequestDTO;
 import co.grtk.um.service.ActivityLogService;
 import co.grtk.um.service.KafkaPublisherService;
 import co.grtk.um.service.RequestContextService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@SecurityRequirement(name = "um")
 public class ActivityLogRestController {
 
     private final ActivityLogService activityLogService;
