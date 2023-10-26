@@ -29,21 +29,25 @@ $(function () {
                                 hourCycle: 'h23',
                                 hour: '2-digit',
                                 minute: '2-digit',
-                                second: "2-digit"
+                                second: "2-digit",
+                                fractionalSecondDigits: 3
                             }),
                             end.toLocaleDateString() + ' ' + end.toLocaleTimeString([], {
                                 hourCycle: 'h23',
                                 hour: '2-digit',
                                 minute: '2-digit',
-                                second: "2-digit"
+                                second: "2-digit",
+                                fractionalSecondDigits: 3
                             }),
+                            bean.gap,
                             bean.beanName
                         ]);
                     }
                     table = $("#beansTable").DataTable({
                         fixedHeader: true,
-                        order: [[0, 'desc']],
+                        order: [[2, 'desc']],
                         lengthMenu: [10, 25, 50, 100, 500, 1000, 5000],
+                        pageLength: 1000,
                         scrollX: true,
                         autoWidth: true,
                         scrollY: '50vh',
@@ -59,6 +63,7 @@ $(function () {
                             { title: 'Initialization time (ms)' },
                             { title: 'Start' },
                             { title: 'End' },
+                            { title: 'Gap (ms)' },
                             { title: 'BeanName' }
                         ],
                         dom: 'lifrtpB',

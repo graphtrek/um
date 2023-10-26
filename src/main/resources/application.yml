@@ -42,7 +42,7 @@ spring:
           starttls:
             enable: true
   hazelcast:
-    config: classpath:hazelcast-client.yml
+    config: ${HAZELCAST_LOCAL_CLIENT}
   task:
     execution:
       pool:
@@ -71,8 +71,6 @@ application:
   applicationName: UserManager
   cache:
     enabled: true
-  email:
-    enabled: true
 
   adminUserName: ${ADMIN_USER_NAME}
   adminUserEmail: ${ADMIN_USER_EMAIL}
@@ -84,7 +82,7 @@ application:
 
   activityLogBaseUrl: http://localhost:8082/api
 
-  kafkaBootstrapServer: localhost:9092
+  kafkaBootstrapServer: ${KAFKA_LOCAL_CLIENT}
   kafkaTopicName: ActivityLog
   kafkaTopicNumPartitions: 1
 
