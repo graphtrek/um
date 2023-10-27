@@ -51,28 +51,32 @@ public class BootLoggerService implements BeanPostProcessor, Ordered {
     public List<BeanInitDTO> logAllBeansInitializationTime() {
         List<BeanInitDTO> beanInitDTOS = new ArrayList<>();
         AtomicLong sum = new AtomicLong();
-
-
         AtomicLong gapSum = new AtomicLong(0);
-        AtomicLong previous = new AtomicLong(0);
+        AtomicLong previousEndMillis = new AtomicLong(Long.MAX_VALUE);
 
         end.entrySet().stream()
-                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-
+                .sorted(Map.Entry.comparingByValue())
                 .forEach(entry -> {
-                    long gap = previous.get() - entry.getValue();
-                    if(gap > 0)
-                        gapSum.addAndGet(gap);
-                    else
-                        gap = 0;
-                    long initTime = initializationTime(entry.getKey());
+
+                    String bean = entry.getKey();
+                    long endMillis = entry.getValue();
+                    long startMillis = start.get(bean);
+                    long initTime = initializationTime(bean);
                     sum.addAndGet(initTime);
-                    previous.set(entry.getValue());
+
                     LocalDateTime startTime =
-                            Instant.ofEpochMilli(start.get(entry.getKey())).atZone(ZoneId.systemDefault()).toLocalDateTime();
+                            Instant.ofEpochMilli(startMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
                     LocalDateTime endTime =
-                            Instant.ofEpochMilli(entry.getValue()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-                    beanInitDTOS.add(new BeanInitDTO(entry.getKey(),initTime,startTime, endTime, gap));
+                            Instant.ofEpochMilli(endMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+                    long gap = startMillis - previousEndMillis.get();
+                    if(gap > 0) {
+                        gapSum.addAndGet(gap);
+                    } else {
+                        gap = 0;
+                    }
+                    previousEndMillis.set(endMillis);
+                    beanInitDTOS.add(new BeanInitDTO(bean,initTime, startTime, endTime, gap));
 
                 });
         log.info("Application Ready Event Beans initialization took:{} ms gaps between beans:{} ms", sum.get(), gapSum.get());
