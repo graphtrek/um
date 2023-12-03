@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,7 +28,12 @@ public class ActivityLogRestController {
     @GetMapping("/api/listUserActivity")
     public List<UserActivityLogDTO> listActivityLogs(Authentication authentication, @ModelAttribute UserActivityLogRequestDTO dto) {
 
-        return activityLogService.listActivityLogs(authentication.getName());
+        String fromTs =
+                DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now().minusDays(60));
+        String toTs =
+                DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
+
+        return activityLogService.listActivityLogs(authentication.getName(),fromTs,toTs);
     }
 
     @PostMapping("/api/logUserActivity")

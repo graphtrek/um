@@ -2,7 +2,6 @@ package co.grtk.um.service;
 
 import co.grtk.ual.dto.UserActivityLogDTO;
 import co.grtk.ual.dto.UserActivityLogRequestDTO;
-import co.grtk.um.utils.cache.TstCacheKeyGenerator;
 import co.grtk.um.utils.cache.TstUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import javax.cache.annotation.CacheResult;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,12 +20,8 @@ import java.util.List;
 public class ActivityLogService {
     public final RestClient activityLogClient;
 
-    @CacheResult(cacheName="activity_logs", cacheKeyGenerator = TstCacheKeyGenerator.class)
-    public List<UserActivityLogDTO> listActivityLogs(@TstUser(isPartOfTheKey = true) String userName) {
-        String fromTs =
-                DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now().minusDays(30));
-        String toTs =
-                DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
+//    @CacheResult(cacheName="activity_logs", cacheKeyGenerator = TstCacheKeyGenerator.class)
+    public List<UserActivityLogDTO> listActivityLogs(@TstUser(isPartOfTheKey = true) String userName, String fromTs, String toTs) {
 
         //.uri("/listUserActivity?fromTs={fromTs}&toTs={toTs}","2023-01-01T08:12:01.29","2023-01-01T08:12:01.29")
 

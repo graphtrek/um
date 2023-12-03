@@ -44,6 +44,7 @@ $(function () {
                         fixedHeader: true,
                         order: [[0, 'desc']],
                         lengthMenu: [10, 25, 50, 100, 500, 1000, 5000],
+                        pageLength: 1000,
                         scrollX: true,
                         autoWidth: true,
                         scrollY: '50vh',
