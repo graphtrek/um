@@ -7,6 +7,7 @@ import co.grtk.um.service.KafkaPublisherService;
 import co.grtk.um.service.RequestContextService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @SecurityRequirement(name = "um")
+@ConditionalOnProperty(name = "application.kafka.enabled", havingValue = "true")
 public class ActivityLogRestController {
 
     private final ActivityLogService activityLogService;

@@ -1,11 +1,8 @@
 package co.grtk.um.config;
 
 import co.grtk.um.utils.cache.CacheResultAspect;
-import co.grtk.um.utils.cache.TstGeneratedCacheKey;
-import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
-
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +22,8 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @ConditionalOnProperty(name = "application.cache.enabled", havingValue = "true")
 public class CacheConfiguration {
+
+    private final HazelcastInstance hazelcastInstance;
 
     @Bean
     public IMap<String, GeneratedCacheKey> masterKeysMap(HazelcastInstance instance) {

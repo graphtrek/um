@@ -32,5 +32,6 @@ public class AppConfig {
     String kafkaTopicName;
     int kafkaTopicNumPartitions = 1;
     short kafkaTopicReplicationFactor = 1;
+    boolean kafkaProducerEnabled = false;
 
 }

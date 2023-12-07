@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ClassPathResource;
@@ -26,6 +27,7 @@ import java.util.stream.Stream;
 @SpringBootConfiguration
 @EnableAutoConfiguration
 @ComponentScan
+@ConditionalOnProperty(name = "application.kafka.enabled", havingValue = "true")
 public class DataLoaderApplication implements CommandLineRunner {
     private final KafkaPublisherService kafkaPublisherService;
     public static void main(String[] args) {

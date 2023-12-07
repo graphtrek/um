@@ -5,6 +5,7 @@ import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Configuration
+@ConditionalOnProperty(name = "application.kafkaProducerEnabled", havingValue = "true")
 public class KafkaProducerConfig {
     private final AppConfig appConfig;
 
@@ -57,7 +59,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String,Object> kafkaTemplate(){
+    public KafkaTemplate<String,Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

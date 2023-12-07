@@ -85,6 +85,7 @@ application:
   kafkaBootstrapServer: ${KAFKA_REMOTE_CLIENT}
   kafkaTopicName: ActivityLog
   kafkaTopicNumPartitions: 1
+  kafka-producer-enabled: true
 
 management:
   endpoints:
