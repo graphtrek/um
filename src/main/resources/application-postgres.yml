@@ -1,0 +1,103 @@
+server:
+  compression:
+    enabled: true
+  port : 8081
+  shutdown: graceful
+
+spring:
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/master.xml
+  config:
+    import: classpath:env.properties
+  threads:
+    virtual:
+      enabled: true
+  thymeleaf:
+    cache: false
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  h2:
+    console:
+      enabled: false
+  cache:
+    type: jcache
+    jcache:
+      provider: com.hazelcast.client.cache.HazelcastClientCachingProvider
+  datasource:
+    #url: jdbc:h2:mem:um
+    url: ${DB_URL}
+    username: ${DB_USER_NAME}
+    password: ${DB_USER_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+#  hazelcast:
+#    config: ${HAZELCAST_LOCAL_CLIENT}
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 64
+        queue-capacity: 16
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
+
+# Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          client: DEBUG
+
+
+application:
+  applicationName: UserManager
+  cache:
+    enabled: false
+
+  adminUserName: ${ADMIN_USER_NAME}
+  adminUserEmail: ${ADMIN_USER_EMAIL}
+  adminUserPassword: ${ADMIN_USER_PASSWORD}
+
+  testUserName: ${TEST_USER_NAME}
+  testUserEmail: ${TEST_USER_EMAIL}
+  testUserPassword: ${TEST_USER_PASSWORD}
+
+  activityLogBaseUrl: http://localhost:8082/api
+
+  kafkaProducerEnabled: false
+  kafkaBootstrapServer: ${KAFKA_LOCAL_CLIENT}
+  kafkaTopicName: ActivityLog
+  kafkaTopicNumPartitions: 1
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      cors:
+        allowed-origins: '*'
+        allowed-methods: '*'
+        allowed-headers: '*'
