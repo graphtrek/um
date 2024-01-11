@@ -2,8 +2,8 @@ package co.grtk.um.controller;
 
 import co.grtk.um.dto.PasswordResetRequest;
 import co.grtk.um.exception.UserNotFoundException;
-import co.grtk.um.listener.MailEvent;
-import co.grtk.um.listener.MailType;
+import co.grtk.um.eventlistener.MailEvent;
+import co.grtk.um.eventlistener.MailType;
 import co.grtk.um.model.PasswordResetToken;
 import co.grtk.um.model.UmUser;
 import co.grtk.um.repository.UmUserRepository;

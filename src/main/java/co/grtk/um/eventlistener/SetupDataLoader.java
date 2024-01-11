@@ -1,5 +1,6 @@
-package co.grtk.um.config;
+package co.grtk.um.eventlistener;
 
+import co.grtk.um.config.AppConfig;
 import co.grtk.um.exception.UmException;
 import co.grtk.um.model.*;
 import co.grtk.um.repository.UmUserPrivilegeRepository;

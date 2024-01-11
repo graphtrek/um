@@ -1,4 +1,4 @@
-package co.grtk.um.listener;
+package co.grtk.um.eventlistener;
 
 import co.grtk.um.model.UmUser;
 import lombok.Getter;

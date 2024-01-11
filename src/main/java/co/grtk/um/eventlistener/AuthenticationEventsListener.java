@@ -1,4 +1,4 @@
-package co.grtk.um.listener;
+package co.grtk.um.eventlistener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
